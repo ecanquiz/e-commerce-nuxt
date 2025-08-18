@@ -140,6 +140,11 @@
     "subtitle": "Descubre los mejores vinos de Argentina",
     "searchPlaceholder": "Buscar productos...",
     "allCategories": "Todas las categorías",
+    "redWines": "Vinos Tintos",
+    "whiteWines": "Vinos Blancos",
+    "roseWines": "Vinos Rosados",
+    "sparklingWines": "Vinos Espumosos",
+    "dessertWines": "Vinos de Postre",
     "allPrices": "Todos los precios",
     "priceRanges": {
       "under5k": "Menos de $5,000",
