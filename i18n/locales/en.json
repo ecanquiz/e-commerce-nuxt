@@ -140,6 +140,11 @@
     "subtitle": "Discover the best wines from Argentina",
     "searchPlaceholder": "Search products...",
     "allCategories": "All categories",
+    "redWines": "Red Wines",
+    "whiteWines": "White Wines",
+    "roseWines": "Rosé Wines",
+    "sparklingWines": "Sparkling Wines",
+    "dessertWines": "Dessert Wines",
     "allPrices": "All prices",
     "priceRanges": {
       "under5k": "Under $5,000",

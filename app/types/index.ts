@@ -8,6 +8,8 @@ export interface User {
   createdAt: string;
 }
 
+export interface AuthUser extends Omit<User, 'password'> {}
+
 export interface Vineyard {
   id: string;
   name: string;
@@ -46,6 +48,7 @@ export interface Product {
   food_pairing: string[];
   awards: string[];
   createdAt: string;
+  vineyard?: Vineyard;
 }
 
 export interface StockMovement {
@@ -94,7 +97,7 @@ export interface TrackingEvent {
 export interface CartItem {
   product: Product;
   quantity: number;
-  vineyard: Vineyard;
+  vineyard?: Vineyard; // TODO - TEMPORARILY undefined
 }
 
 export interface Order {
@@ -162,4 +165,3 @@ export interface Language {
     name: string;
     flag: string;
 }
-
