@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+:root {
+    --color-gold: #FFD700; /* Example gold-400 color */
+}
+
+:root {
+    --color-burgundy: #B12F2F; /* Example burgundy-600 color */
+}
+

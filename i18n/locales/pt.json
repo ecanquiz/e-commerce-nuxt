@@ -1,0 +1,274 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "view": "Ver",
+    "add": "Adicionar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "yes": "Sim",
+    "no": "Não",
+    "or": "Ou",
+    "and": "E",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "submit": "Enviar",
+    "reset": "Redefinir"
+  },
+  "navigation": {
+    "home": "Início",
+    "vineyards": "Vinícolas",
+    "products": "Produtos",
+    "about": "Sobre",
+    "contact": "Contato",
+    "cart": "Carrinho",
+    "login": "Entrar",
+    "register": "Registrar",
+    "profile": "Meu Perfil",
+    "orders": "Meus Pedidos",
+    "logout": "Sair"
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Ou criar uma nova conta",
+      "email": "Email",
+      "password": "Senha",
+      "forgotPassword": "Esqueceu sua senha?",
+      "loginButton": "Entrar",
+      "continueWith": "Ou continue com",
+      "googleLogin": "Continuar com Google",
+      "loggingIn": "Entrando...",
+      "invalidCredentials": "Email ou senha incorretos"
+    },
+    "register": {
+      "title": "Criar sua Conta",
+      "subtitle": "Escolha o tipo de conta que melhor se adapta a você",
+      "customer": {
+        "title": "Cliente",
+        "description": "Descubra e compre os melhores vinhos diretamente das vinícolas",
+        "action": "Continuar como Cliente",
+        "createAccount": "Criar Conta de Cliente"
+      },
+      "vineyard": {
+        "title": "Vinícola",
+        "description": "Venda seus vinhos e gerencie sua vinícola em nossa plataforma",
+        "action": "Registrar minha Vinícola",
+        "createAccount": "Criar Conta de Vinícola"
+      },
+      "personalInfo": "Informações Pessoais",
+      "accountInfo": "Informações da Conta",
+      "vineyardInfo": "Informações da Vinícola",
+      "fullName": "Nome completo",
+      "phone": "Telefone",
+      "phoneOptional": "Telefone (opcional)",
+      "birthDate": "Data de nascimento (opcional)",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha",
+      "vineyardName": "Nome da vinícola",
+      "location": "Localização",
+      "description": "Descrição da vinícola",
+      "winePreferences": "Tipos de vinho de seu interesse (opcional)",
+      "communicationPreferences": "Preferências de comunicação",
+      "orderNotifications": "Receber notificações de pedidos",
+      "newsletter": "Receber newsletter com ofertas especiais",
+      "alreadyHaveAccount": "Já tem uma conta?",
+      "creating": "Criando conta...",
+      "passwordMismatch": "As senhas não coincidem",
+      "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+      "accountCreationError": "Erro ao criar conta"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Descubra as Melhores Vinícolas",
+      "subtitle": "Vinhos Premium da Argentina",
+      "description": "Explore nossa seleção exclusiva de vinhos diretamente dos produtores mais prestigiosos do país.",
+      "exploreButton": "Explorar Vinícolas"
+    },
+    "features": {
+      "title": "Por que escolher viñedosya?",
+      "subtitle": "Somos a plataforma líder que conecta diretamente produtores com consumidores",
+      "directProducer": {
+        "title": "Direto do Produtor",
+        "description": "Compre diretamente das vinícolas sem intermediários, garantindo a melhor qualidade e preços justos."
+      },
+      "qualityGuaranteed": {
+        "title": "Qualidade Garantida",
+        "description": "Todas as nossas vinícolas são cuidadosamente selecionadas por nossos enólogos especialistas."
+      },
+      "exclusiveCommunity": {
+        "title": "Comunidade Exclusiva",
+        "description": "Junte-se a uma comunidade de amantes do vinho e descubra novas experiências."
+      }
+    },
+    "featuredVineyards": {
+      "title": "Vinícolas em Destaque",
+      "subtitle": "Descubra algumas das vinícolas mais prestigiosas da Argentina",
+      "viewAll": "Ver Todas as Vinícolas"
+    },
+    "popularVineyards": {
+      "title": "Vinícolas Mais Populares",
+      "subtitle": "As vinícolas mais visitadas e melhor avaliadas por nossa comunidade",
+      "exploreAll": "Explorar Todas"
+    },
+    "stats": {
+      "vineyards": "Vinícolas Parceiras",
+      "wines": "Vinhos Disponíveis",
+      "customers": "Clientes Satisfeitos",
+      "satisfaction": "Satisfação"
+    },
+    "cta": {
+      "title": "Você tem uma vinícola?",
+      "description": "Junte-se à nossa plataforma e leve seus vinhos a milhares de amantes do vinho em todo o país",
+      "registerButton": "Registrar minha Vinícola"
+    }
+  },
+  "products": {
+    "title": "Produtos",
+    "subtitle": "Descubra os melhores vinhos da Argentina",
+    "searchPlaceholder": "Buscar produtos...",
+    "allCategories": "Todas as categorias",
+    "allPrices": "Todos os preços",
+    "priceRanges": {
+      "under5k": "Menos de $5.000",
+      "5k-10k": "$5.000 - $10.000",
+      "10k-20k": "$10.000 - $20.000",
+      "over20k": "Mais de $20.000"
+    },
+    "sortOptions": {
+      "nameAZ": "Nome A-Z",
+      "priceLow": "Menor preço",
+      "priceHigh": "Maior preço",
+      "vintage": "Ano"
+    },
+    "productsFound": "produtos encontrados",
+    "noProducts": {
+      "title": "Nenhum produto encontrado",
+      "description": "Tente ajustar os filtros de busca"
+    },
+    "addToCart": "Adicionar",
+    "outOfStock": "Sem Estoque",
+    "lastUnits": "Últimas unidades",
+    "stock": "Estoque"
+  },
+  "cart": {
+    "title": "Carrinho de Compras",
+    "empty": {
+      "title": "Seu carrinho está vazio",
+      "description": "Explore nossos produtos e encontre o vinho perfeito para você",
+      "continueShoppingButton": "Continuar comprando"
+    },
+    "products": "Produtos",
+    "clearCart": "Limpar carrinho",
+    "orderSummary": "Resumo do pedido",
+    "subtotal": "Subtotal",
+    "shipping": "Envio",
+    "freeShipping": "Grátis",
+    "total": "Total",
+    "proceedToCheckout": "Finalizar compra",
+    "continueShopping": "Continuar comprando"
+  },
+  "vineyards": {
+    "title": "Vinícolas da Argentina",
+    "subtitle": "Descubra as melhores vinícolas do país",
+    "searchPlaceholder": "Buscar vinícolas...",
+    "allRegions": "Todas as regiões",
+    "sortOptions": {
+      "bestRating": "Melhor avaliação",
+      "nameAZ": "Nome A-Z",
+      "oldest": "Mais antiga"
+    },
+    "vineyardsFound": "vinícolas encontradas",
+    "noVineyards": {
+      "title": "Nenhuma vinícola encontrada",
+      "description": "Tente ajustar os filtros de busca"
+    },
+    "established": "Est.",
+    "products": "vinhos",
+    "reviews": "avaliações",
+    "viewDetails": "Ver Detalhes"
+  },
+  "vineyardDetail": {
+    "backToVineyards": "Voltar às vinícolas",
+    "establishedIn": "Estabelecida em",
+    "tabs": {
+      "overview": "Visão Geral",
+      "products": "Produtos",
+      "services": "Serviços",
+      "gallery": "Galeria",
+      "reviews": "Avaliações"
+    },
+    "aboutVineyard": "Sobre a Vinícola",
+    "information": "Informações",
+    "owner": "Proprietário",
+    "foundedIn": "Fundada em",
+    "contact": "Contato",
+    "location": "Localização",
+    "viewOnGoogleMaps": "Ver no Google Maps",
+    "statistics": "Estatísticas",
+    "quickSummary": "Resumo Rápido",
+    "featuredProducts": "Produtos em Destaque",
+    "popularServices": "Serviços Populares",
+    "viewAllProducts": "Ver todos os produtos",
+    "viewAllServices": "Ver todos os serviços",
+    "consultPrice": "Consultar preço",
+    "seeDetails": "Ver detalhes",
+    "gallery": {
+      "title": "Galeria",
+      "vineyardFacilities": "Instalações da Vinícola",
+      "serviceGalleries": "Galerias de Serviços",
+      "viewFullscreen": "Ver em tela cheia",
+      "maximize": "Maximizar",
+      "videos": "Vídeos",
+      "videoNotAvailable": "Vídeo não disponível"
+    },
+    "services": {
+      "allServices": "Todos os serviços",
+      "sortByPrice": "Ordenar por preço",
+      "priceLowToHigh": "Preço: menor para maior",
+      "priceHighToLow": "Preço: maior para menor",
+      "mostPopular": "Mais populares",
+      "availability": "Disponibilidade",
+      "servicesInDevelopment": "Serviços em desenvolvimento",
+      "workingOnServices": "Esta vinícola está trabalhando em novos serviços para oferecer a você."
+    },
+    "reviews": {
+      "ratingSummary": "Resumo de Avaliações",
+      "basedOnReviews": "Baseado em {count} avaliações",
+      "recommend": "Recomendam",
+      "wineQuality": "Qualidade do vinho",
+      "service": "Atendimento",
+      "price": "Preço",
+      "experience": "Experiência",
+      "allRatings": "Todas as avaliações",
+      "allTypes": "Todos os tipos",
+      "generalExperience": "Experiência geral",
+      "mostRecent": "Mais recentes",
+      "mostHelpful": "Mais úteis",
+      "bestRating": "Melhor avaliação",
+      "worstRating": "Pior avaliação",
+      "writeReview": "Escrever Avaliação"
+    }
+  },
+  "languages": {
+    "spanish": "Español",
+    "english": "English",
+    "portuguese": "Português"
+  },
+  "footer":{
+    "quickLinks": "Links Rápidos",
+    "description": "A plataforma líder na Argentina para ligar os amantes de vinho às melhores vinhas do país. Descubra vinhos excecionais diretamente dos produtores."
+  }
+}

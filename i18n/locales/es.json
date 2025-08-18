@@ -1,0 +1,274 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Ver",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "or": "O",
+    "and": "Y",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "submit": "Enviar",
+    "reset": "Restablecer"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "vineyards": "Viñedos",
+    "products": "Productos",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "cart": "Carrito",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "profile": "Mi Perfil",
+    "orders": "Mis Pedidos",
+    "logout": "Cerrar Sesión"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "O crear una nueva cuenta",
+      "email": "Email",
+      "password": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "loginButton": "Iniciar Sesión",
+      "continueWith": "O continúa con",
+      "googleLogin": "Continuar con Google",
+      "loggingIn": "Iniciando sesión...",
+      "invalidCredentials": "Email o contraseña incorrectos"
+    },
+    "register": {
+      "title": "Crear tu Cuenta",
+      "subtitle": "Elige el tipo de cuenta que mejor se adapte a ti",
+      "customer": {
+        "title": "Cliente",
+        "description": "Descubre y compra los mejores vinos directamente de los viñedos",
+        "action": "Continuar como Cliente",
+        "createAccount": "Crear Cuenta de Cliente"
+      },
+      "vineyard": {
+        "title": "Viñedo",
+        "description": "Vende tus vinos y gestiona tu viñedo en nuestra plataforma",
+        "action": "Registrar mi Viñedo",
+        "createAccount": "Crear Cuenta de Viñedo"
+      },
+      "personalInfo": "Información Personal",
+      "accountInfo": "Información de Cuenta",
+      "vineyardInfo": "Información del Viñedo",
+      "fullName": "Nombre completo",
+      "phone": "Teléfono",
+      "phoneOptional": "Teléfono (opcional)",
+      "birthDate": "Fecha de nacimiento (opcional)",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "vineyardName": "Nombre del viñedo",
+      "location": "Ubicación",
+      "description": "Descripción del viñedo",
+      "winePreferences": "Tipos de vino de tu interés (opcional)",
+      "communicationPreferences": "Preferencias de comunicación",
+      "orderNotifications": "Recibir notificaciones de pedidos",
+      "newsletter": "Recibir newsletter con ofertas especiales",
+      "alreadyHaveAccount": "¿Ya tienes cuenta?",
+      "creating": "Creando cuenta...",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+      "accountCreationError": "Error al crear la cuenta"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Descubre los Mejores Viñedos",
+      "subtitle": "Vinos Premium de Argentina",
+      "description": "Explora nuestra selección exclusiva de vinos directamente de los productores más prestigiosos del país.",
+      "exploreButton": "Explorar Viñedos"
+    },
+    "features": {
+      "title": "¿Por qué elegir viñedosya?",
+      "subtitle": "Somos la plataforma líder que conecta directamente a productores con consumidores",
+      "directProducer": {
+        "title": "Directo del Productor",
+        "description": "Compra directamente de los viñedos sin intermediarios, garantizando la mejor calidad y precios justos."
+      },
+      "qualityGuaranteed": {
+        "title": "Calidad Garantizada",
+        "description": "Todos nuestros viñedos son seleccionados cuidadosamente por nuestros expertos enólogos."
+      },
+      "exclusiveCommunity": {
+        "title": "Comunidad Exclusiva",
+        "description": "Únete a una comunidad de amantes del vino y descubre nuevas experiencias."
+      }
+    },
+    "featuredVineyards": {
+      "title": "Viñedos Destacados",
+      "subtitle": "Descubre algunos de los viñedos más prestigiosos de Argentina",
+      "viewAll": "Ver Todos los Viñedos"
+    },
+    "popularVineyards": {
+      "title": "Viñedos Más Populares",
+      "subtitle": "Los viñedos más visitados y mejor valorados por nuestra comunidad",
+      "exploreAll": "Explorar Todos"
+    },
+    "stats": {
+      "vineyards": "Viñedos Partner",
+      "wines": "Vinos Disponibles",
+      "customers": "Clientes Satisfechos",
+      "satisfaction": "Satisfacción"
+    },
+    "cta": {
+      "title": "¿Tienes un viñedo?",
+      "description": "Únete a nuestra plataforma y lleva tus vinos a miles de amantes del vino en todo el país",
+      "registerButton": "Registrar mi Viñedo"
+    }
+  },
+  "products": {
+    "title": "Productos",
+    "subtitle": "Descubre los mejores vinos de Argentina",
+    "searchPlaceholder": "Buscar productos...",
+    "allCategories": "Todas las categorías",
+    "allPrices": "Todos los precios",
+    "priceRanges": {
+      "under5k": "Menos de $5,000",
+      "5k-10k": "$5,000 - $10,000",
+      "10k-20k": "$10,000 - $20,000",
+      "over20k": "Más de $20,000"
+    },
+    "sortOptions": {
+      "nameAZ": "Nombre A-Z",
+      "priceLow": "Precio menor",
+      "priceHigh": "Precio mayor",
+      "vintage": "Año"
+    },
+    "productsFound": "productos encontrados",
+    "noProducts": {
+      "title": "No se encontraron productos",
+      "description": "Intenta ajustar los filtros de búsqueda"
+    },
+    "addToCart": "Agregar",
+    "outOfStock": "Sin Stock",
+    "lastUnits": "Últimas unidades",
+    "stock": "Stock"
+  },
+  "cart": {
+    "title": "Carrito de Compras",
+    "empty": {
+      "title": "Tu carrito está vacío",
+      "description": "Explora nuestros productos y encuentra el vino perfecto para ti",
+      "continueShoppingButton": "Continuar comprando"
+    },
+    "products": "Productos",
+    "clearCart": "Vaciar carrito",
+    "orderSummary": "Resumen del pedido",
+    "subtotal": "Subtotal",
+    "shipping": "Envío",
+    "freeShipping": "Gratis",
+    "total": "Total",
+    "proceedToCheckout": "Proceder al pago",
+    "continueShopping": "Continuar comprando"
+  },
+  "vineyards": {
+    "title": "Viñedos de Argentina",
+    "subtitle": "Descubre los mejores viñedos del país",
+    "searchPlaceholder": "Buscar viñedos...",
+    "allRegions": "Todas las regiones",
+    "sortOptions": {
+      "bestRating": "Mejor calificación",
+      "nameAZ": "Nombre A-Z",
+      "oldest": "Más antiguo"
+    },
+    "vineyardsFound": "viñedos encontrados",
+    "noVineyards": {
+      "title": "No se encontraron viñedos",
+      "description": "Intenta ajustar los filtros de búsqueda"
+    },
+    "established": "Est.",
+    "products": "vinos",
+    "reviews": "reseñas",
+    "viewDetails": "Ver Detalles"
+  },
+  "vineyardDetail": {
+    "backToVineyards": "Volver a viñedos",
+    "establishedIn": "Establecido en",
+    "tabs": {
+      "overview": "Información General",
+      "products": "Productos",
+      "services": "Servicios",
+      "gallery": "Galería",
+      "reviews": "Reseñas"
+    },
+    "aboutVineyard": "Acerca del Viñedo",
+    "information": "Información",
+    "owner": "Propietario",
+    "foundedIn": "Fundado en",
+    "contact": "Contacto",
+    "location": "Ubicación",
+    "viewOnGoogleMaps": "Ver en Google Maps",
+    "statistics": "Estadísticas",
+    "quickSummary": "Resumen Rápido",
+    "featuredProducts": "Productos Destacados",
+    "popularServices": "Servicios Populares",
+    "viewAllProducts": "Ver todos los productos",
+    "viewAllServices": "Ver todos los servicios",
+    "consultPrice": "Consultar precio",
+    "seeDetails": "Ver detalles",
+    "gallery": {
+      "title": "Galería",
+      "vineyardFacilities": "Instalaciones del Viñedo",
+      "serviceGalleries": "Galerías de Servicios",
+      "viewFullscreen": "Ver en pantalla completa",
+      "maximize": "Maximizar",
+      "videos": "Videos",
+      "videoNotAvailable": "Video no disponible"
+    },
+    "services": {
+      "allServices": "Todos los servicios",
+      "sortByPrice": "Ordenar por precio",
+      "priceLowToHigh": "Precio: menor a mayor",
+      "priceHighToLow": "Precio: mayor a menor",
+      "mostPopular": "Más populares",
+      "availability": "Disponibilidad",
+      "servicesInDevelopment": "Servicios en desarrollo",
+      "workingOnServices": "Este viñedo está trabajando en nuevos servicios para ofrecerte."
+    },
+    "reviews": {
+      "ratingSummary": "Resumen de Calificaciones",
+      "basedOnReviews": "Basado en {count} reseñas",
+      "recommend": "Lo recomiendan",
+      "wineQuality": "Calidad vino",
+      "service": "Atención",
+      "price": "Precio",
+      "experience": "Experiencia",
+      "allRatings": "Todas las calificaciones",
+      "allTypes": "Todos los tipos",
+      "generalExperience": "Experiencia general",
+      "mostRecent": "Más recientes",
+      "mostHelpful": "Más útiles",
+      "bestRating": "Mejor calificación",
+      "worstRating": "Peor calificación",
+      "writeReview": "Escribir Reseña"
+    }
+  },
+  "languages": {
+    "spanish": "Español",
+    "english": "English",
+    "portuguese": "Português"
+  },
+  "footer":{
+    "quickLinks": "Enlaces Rápidos",
+    "description": "La plataforma líder en Argentina para conectar amantes del vino con los mejores viñedos del país. Descubre vinos excepcionales directamente de los productores."
+  }
+}
