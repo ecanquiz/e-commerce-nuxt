@@ -1,4 +1,4 @@
-import type { CartItem, User } from '~/types'
+import type { CartItem, User } from '~~/shared/types'
 
 // Mock carts per user (in production you would use a DB)
 const userCarts = new Map<string, CartItem[]>()

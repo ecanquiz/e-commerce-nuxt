@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Globe, Check, ChevronDown } from 'lucide-vue-next';
-import type { Language, LanguageCode } from '~/types'; // Tipado opcional
+import type { Language, LanguageCode } from '~~/shared/types';
 
 const { locale, setLocale, t } = useI18n();
 const isOpen = ref(false);

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { CartItem, Product, Vineyard } from '~/types'
+import type { CartItem, Product, Vineyard } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
 export const useCartStore = defineStore('cart', () => {

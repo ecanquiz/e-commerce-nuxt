@@ -21,11 +21,24 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
 
   ],
-  /*components: {
-    dirs: [
-      '~/components/layout',
-    ]
-  },*/
+  //image: {
+    //domains: ['https://images.pexels.com'], // Add your image domains
+    //provider: 'ipx' // o 'cloudinary' if you use another provider
+  //},
+  pages: {
+    pattern: ['**/*.vue', '!**/components/**']
+  },
+  components: [
+    '~/components/', {
+      path: '~/layouts',
+      pattern: '**/components/**',
+      pathPrefix: false
+    }, {
+      path: '~/pages',
+      pattern: '**/components/**',
+      pathPrefix: false
+    }
+  ],
   i18n: {
     locales: [
       { code: 'en', iso: 'en-US', file: 'en.json' },

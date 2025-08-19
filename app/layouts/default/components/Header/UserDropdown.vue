@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { User as UserLucide } from 'lucide-vue-next'
 import { useAuthStore } from '~/store/auth';
-import type { User } from '~/types'
+import type { User } from '~~/shared/types'
 //import useClickOutside from '~/composables/useClickOutside'
 import { useClickOutside } from './useClickOutside'  
 

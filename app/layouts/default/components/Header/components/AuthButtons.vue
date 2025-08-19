@@ -9,7 +9,7 @@
       class="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[color:var(--color-burgundy)] transition-colors"
     >
       <Icon name="lucide:log-in" class="h-4 w-4" />
-      <span>{{ $t('navigation.login') }}</span>
+      <span class="whitespace-nowrap">{{ $t('navigation.login') }}</span>
     </NuxtLink>
 
     <NuxtLink

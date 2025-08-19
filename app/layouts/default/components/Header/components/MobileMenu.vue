@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LanguageSelector from './LanguageSelector.vue';
+//import LanguageSelector from './LanguageSelector.vue';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
-import { useClickOutside } from './useClickOutside'
-import type { Product, Vineyard } from '~/types'
+import { useClickOutside } from '../useClickOutside';
+import type { Product, Vineyard } from '~~/shared/types';
 
 const props = defineProps({
   modelValue: Boolean,

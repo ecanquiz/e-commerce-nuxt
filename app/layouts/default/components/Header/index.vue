@@ -3,13 +3,13 @@ import { useRoute } from 'vue-router';
 import { ShoppingCart } from 'lucide-vue-next';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
-import Logo from './Logo.vue';
-import DesktopNav from './DesktopNav.vue';
-import LanguageSelector from './LanguageSelector.vue';
-import SearchBar from './SearchBar.vue';
-import UserDropdown from './UserDropdown.vue';
-import AuthButtons from './AuthButtons.vue';
-import MobileMenu from './MobileMenu.vue';
+//import Logo from './Logo.vue';
+//import DesktopNav from './DesktopNav.vue';
+//import LanguageSelector from './LanguageSelector.vue';
+//import SearchBar from './SearchBar.vue';
+//import UserDropdown from './UserDropdown.vue';
+//import AuthButtons from './AuthButtons.vue';
+//import MobileMenu from './MobileMenu.vue';
 
 const { t } = useI18n()
 const route = useRoute();

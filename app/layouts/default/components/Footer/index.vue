@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { Grape } from 'lucide-vue-next';
-import ContactInfo from './ContactInfo.vue'; 
-import Copyright from './Copyright.vue'; 
-import SocialIcons from './SocialIcons.vue'; 
 
 const quickLinks = [
   { name: 'navigation.vineyards', href: '/vineyards' },

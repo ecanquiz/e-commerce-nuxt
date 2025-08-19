@@ -1,4 +1,4 @@
-import type { Product, Vineyard } from '~/types'
+import type { Product, Vineyard } from '~~/shared/types'
 
 // Datos mock de ejemplo (reemplaza con tus datos reales)
 export const mockProducts: Product[] = [
