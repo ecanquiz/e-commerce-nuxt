@@ -168,6 +168,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Carnes rojas', 'Quesos maduros', 'Chocolate negro'],
         awards: ['Wine Spectator 95 pts', 'Robert Parker 94 pts'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
       {
         id: '2',
@@ -186,6 +187,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Pescados', 'Mariscos', 'Pollo'],
         awards: ['Wine Advocate 92 pts'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
@@ -275,6 +277,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Asado', 'Cordero', 'Pastas'],
         awards: ['Decanter Bronze Medal'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
@@ -363,6 +366,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Carnes rojas', 'Cordero', 'Quesos duros'],
         awards: ['Tim Atkin 93 pts'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
@@ -451,6 +455,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Pizza', 'Hamburguesas', 'Pasta con salsa roja'],
         awards: [],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
@@ -510,7 +515,7 @@ export const mockVineyards: Vineyard[] = [
         ],
         schedule: 'Sábados y Domingos: 14:00',
         calComLink: 'https://cal.com/salentein/arte-vino',
-        category: 'cultural'
+        category: 'tasting' // TODO no exist this type: 'cultural'
       }
     ],
     gallery: [
@@ -539,6 +544,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Cordero patagónico', 'Bife de chorizo', 'Quesos de cabra'],
         awards: ['Wine Spectator 94 pts', 'James Suckling 95 pts'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
@@ -627,6 +633,7 @@ export const mockVineyards: Vineyard[] = [
         food_pairing: ['Milanesas', 'Empanadas', 'Chorizo'],
         awards: ['Mundus Vini Gold Medal'],
         createdAt: '2024-01-15T10:00:00Z',
+        stockHistory: []
       },
     ],
   },
