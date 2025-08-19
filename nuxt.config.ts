@@ -21,6 +21,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
 
   ],
+  //image: {
+    //domains: ['https://images.pexels.com'], // Add your image domains
+    //provider: 'ipx' // o 'cloudinary' if you use another provider
+  //},
   pages: {
     pattern: ['**/*.vue', '!**/components/**']
   },
