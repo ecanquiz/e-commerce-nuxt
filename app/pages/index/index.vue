@@ -12,6 +12,7 @@ definePageMeta({
 
 <script setup lang="ts">
 import { Grape, Star, Award, Users, ArrowRight, MapPin, Tag, TrendingUp } from 'lucide-vue-next';
+import type { Promotion } from '~~/shared/types';
 
 const { t } = useI18n()
 
@@ -53,7 +54,7 @@ const carouselSlides = [
   }
 ];
 
-const promotions = [
+const promotions: Promotion[] = [
   {
     id: '1',
     title: 'Descuento Especial',

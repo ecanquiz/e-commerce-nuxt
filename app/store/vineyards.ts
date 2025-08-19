@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Vineyard, Product } from '~/types'
+import type { Vineyard, Product } from '~~/shared/types'
 
 
 export const useVineyardsStore = defineStore('vineyards', () => {

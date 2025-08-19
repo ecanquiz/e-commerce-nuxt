@@ -1,5 +1,5 @@
 // @ts-nocheck
-import type { Vineyard, Product } from '~/types'
+import type { Vineyard, Product } from '~~/shared/types'
 
 export const mockVineyards: Vineyard[] = [
   {
