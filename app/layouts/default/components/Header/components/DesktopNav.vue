@@ -15,10 +15,10 @@ const navigation = [
       v-for="item in navigation"
       :key="item.name"
       :to="item.href"
-      class="px-3 py-2 text-sm font-medium transition-colors"
+      class="px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap"
       :class="{
-        'text-[color:var(--color-burgundy)] border-b-2 border-[color:var(--color-burgundy)]': $route.path === item.href,
-        'text-gray-700 hover:text-[color:var(--color-burgundy)]': $route.path !== item.href
+        'text-burgundy-600 border-b-2 border-burgundy-600': $route.path === item.href,
+        'text-gray-700 hover:text-burgundy-600': $route.path !== item.href
       }"
     >
       {{ $t(item.name) }}

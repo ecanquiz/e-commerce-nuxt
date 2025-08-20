@@ -24,7 +24,8 @@
     "continue": "Continuar",
     "finish": "Finalizar",
     "submit": "Enviar",
-    "reset": "Restablecer"
+    "reset": "Restablecer",
+    "guest": "Invitado"
   },
   "navigation": {
     "home": "Inicio",
@@ -274,6 +275,8 @@
   },
   "footer":{
     "quickLinks": "Enlaces Rápidos",
-    "description": "La plataforma líder en Argentina para conectar amantes del vino con los mejores viñedos del país. Descubre vinos excepcionales directamente de los productores."
+    "description": "La plataforma líder en Argentina para conectar amantes del vino con los mejores viñedos del país. Descubre vinos excepcionales directamente de los productores.",
+    "rights": "Todos los derechos reservados."
+
   }
 }

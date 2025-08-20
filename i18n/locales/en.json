@@ -24,7 +24,8 @@
     "continue": "Continue",
     "finish": "Finish",
     "submit": "Submit",
-    "reset": "Reset"
+    "reset": "Reset",
+    "guest": "Guest"
   },
   "navigation": {
     "home": "Home",
@@ -274,6 +275,7 @@
   },
   "footer":{
     "quickLinks": "Quick Links",
-    "description": "Argentina's leading platform for connecting wine lovers with the country's finest vineyards. Discover exceptional wines directly from the producers."
+    "description": "Argentina's leading platform for connecting wine lovers with the country's finest vineyards. Discover exceptional wines directly from the producers.",
+    "rights": "All rights reserved."
   }
 }

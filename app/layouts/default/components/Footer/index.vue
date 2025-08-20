@@ -15,8 +15,8 @@ const quickLinks = [
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div class="col-span-1 md:col-span-2">
           <div class="flex items-center space-x-2 mb-4">
-            <Grape class="h-8 w-8 text-[color:var(--color-gold)]" />
-            <span class="text-2xl font-bold text-[color:var(--color-gold)]">viñedosya</span>
+            <Grape class="h-8 w-8 text-gold-400" />
+            <span class="text-2xl font-bold text-gold-400">viñedosya</span>
           </div>
           <p class="text-gray-300 mb-4 max-w-md">
             {{ $t('footer.description') }}

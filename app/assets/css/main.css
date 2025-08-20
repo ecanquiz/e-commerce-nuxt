@@ -1,10 +1,30 @@
 @import "tailwindcss";
 
-:root {
-    --color-gold: #FFD700; /* Example gold-400 color */
-}
+@theme {
+  /* Colores burgundy */
+  --color-burgundy-50: #fdf2f2;
+  --color-burgundy-100: #fce7e7;
+  --color-burgundy-200: #fbd4d4;
+  --color-burgundy-300: #f7b0b0;
+  --color-burgundy-400: #f18787;
+  --color-burgundy-500: #e85d5d;
+  --color-burgundy-600: #d53f3f;
+  --color-burgundy-700: #b12f2f;
+  --color-burgundy-800: #942b2b;
+  --color-burgundy-900: #7a2929;
 
-:root {
-    --color-burgundy: #B12F2F; /* Example burgundy-600 color */
-}
+  /* Colores gold */
+  --color-gold-50: #fefce8;
+  --color-gold-100: #fef9c3;
+  --color-gold-200: #fef08a;
+  --color-gold-300: #fde047;
+  --color-gold-400: #facc15;
+  --color-gold-500: #eab308;
+  --color-gold-600: #ca8a04;
+  --color-gold-700: #a16207;
+  --color-gold-800: #854d0e;
+  --color-gold-900: #713f12;
 
+  /* Font family */
+  --font-serif: Georgia, serif;
+}

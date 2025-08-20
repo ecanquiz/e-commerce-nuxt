@@ -24,7 +24,9 @@
     "continue": "Continuar",
     "finish": "Finalizar",
     "submit": "Enviar",
-    "reset": "Redefinir"
+    "reset": "Redefinir",
+    "guest": "Convidado"
+
   },
   "navigation": {
     "home": "Início",
@@ -274,6 +276,7 @@
   },
   "footer":{
     "quickLinks": "Links Rápidos",
-    "description": "A plataforma líder na Argentina para ligar os amantes de vinho às melhores vinhas do país. Descubra vinhos excecionais diretamente dos produtores."
+    "description": "A plataforma líder na Argentina para ligar os amantes de vinho às melhores vinhas do país. Descubra vinhos excecionais diretamente dos produtores.",
+    "rights": "Todos os direitos reservados."
   }
 }
