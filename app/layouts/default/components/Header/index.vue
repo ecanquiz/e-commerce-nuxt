@@ -110,7 +110,7 @@ watch(() => route.path, () => {
       </div>
 
       <!-- Search Bar -->
-      <div class="hidden md:block py-3 border-t border-gray-100">
+      <div class="hidden md:block">
         <SearchBar />
       </div>
 
