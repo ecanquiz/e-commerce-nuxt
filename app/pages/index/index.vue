@@ -10,7 +10,7 @@ definePageMeta({
 const { t } = useI18n()
 
 const vineyardsStore = useVineyardsStore();
-vineyardsStore.fetchVineyards()
+//vineyardsStore.fetchVineyards()
 
 const vineyards : Vineyard[] = vineyardsStore.vineyards;
 

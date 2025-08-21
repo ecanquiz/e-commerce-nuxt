@@ -3,6 +3,11 @@ import { useRoute } from 'vue-router';
 import { ShoppingCart } from 'lucide-vue-next';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
+import { useVineyardsStore } from '~/store/vineyards';
+
+const vineyardsStore = useVineyardsStore();
+vineyardsStore.fetchVineyards()
+
 //import Logo from './Logo.vue';
 //import DesktopNav from './DesktopNav.vue';
 //import LanguageSelector from './LanguageSelector.vue';
