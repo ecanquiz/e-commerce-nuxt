@@ -47,12 +47,12 @@ export default defineNuxtConfig({
     ],
     //lazy: true,
     langDir: 'locales',
-    defaultLocale: 'en',         // Idioma por defecto (equivalente a fallbackLng)
+    defaultLocale: 'en',         // Default language (equivalent to fallbackLng)
     strategy: 'prefix_except_default',
-    detectBrowserLanguage: {     // Equivalente a tu "LanguageDetector"
+    detectBrowserLanguage: {     // Equivalent to your "LanguageDetector"
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root'        // Detecta el idioma al entrar en la raíz
+      redirectOn: 'root'        // Detects language when entering root
     }
   }
 })
