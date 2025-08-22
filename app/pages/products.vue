@@ -4,10 +4,26 @@ import { Search, Filter, Wine, DollarSign } from 'lucide-vue-next';
 import { useVineyardsStore } from '~/store/vineyards'
 import type { Product, Vineyard } from '~~/shared/types';
 
+/* TODO
+const vineyardsStore = useVineyardsStore()
+
+// Preload vineyards
+await useAsyncData('vineyards', () => vineyardsStore.preloadVineyards())
+
+// Get all the products from all the vineyards
+const allProducts = computed(() => {
+  return vineyardsStore.vineyards.flatMap(vineyard => 
+    vineyard.products.map(product => ({ 
+      product: { ...product, vineyard }, 
+      vineyard 
+    }))
+  )
+})
+*/
+
 const { t } = useI18n()
 
 const storeVineyardsStore = useVineyardsStore();
-//storeVineyardsStore.fetchVineyards();
 const mockVineyards = storeVineyardsStore.vineyards
 
 interface ProductWithVineyard {
@@ -24,7 +40,7 @@ interface ProductModalState {
 const route = useRoute();
 const router = useRouter();
 
-// Obtener parámetros iniciales de la URL
+// Get initial parameters from the URL
 const initialSearch = Array.isArray(route.query.search) 
   ? route.query.search[0] || '' 
   : route.query.search || '';
@@ -33,7 +49,7 @@ const initialCategory = Array.isArray(route.query.category)
   ? route.query.category[0] || ''
   : route.query.category || '';
 
-// Estado reactivo
+// Reactive state
 const searchTerm = ref(initialSearch);
 const selectedCategory = ref(initialCategory);
 const priceRange = ref('');
@@ -44,7 +60,7 @@ const productModal = reactive<ProductModalState>({
   vineyard: null
 });
 
-// Datos estáticos
+// Static data
 const categories = ['red', 'white', 'rose', 'sparkling', 'dessert'];
 const priceRanges = [
   { label: t('products.priceRanges.under5k'), value: '0-5000' },
@@ -53,12 +69,12 @@ const priceRanges = [
   { label: t('products.priceRanges.over20k'), value: '20000+' },
 ];
 
-// Obtener todos los productos de todos los viñedos
+// Get all the products from all the vineyards
 const allProducts: ProductWithVineyard[] = mockVineyards.flatMap(vineyard => 
   vineyard.products.map(product => ({ product, vineyard }))
 );
 
-// Productos filtrados
+// Filtered products
 const filteredProducts = computed(() => {
   let filtered = allProducts
     .filter(({ product }) => 
@@ -75,7 +91,7 @@ const filteredProducts = computed(() => {
       return product.price >= min && product.price <= max;
     });
 
-  // Ordenar
+  // Order
   return filtered.sort((a, b) => {
     if (sortBy.value === 'name') return a.product.name.localeCompare(b.product.name);
     if (sortBy.value === 'price-low') return a.product.price - b.product.price;
@@ -85,7 +101,7 @@ const filteredProducts = computed(() => {
   });
 });
 
-// Setters que actualizan la URL
+// Setters that update the URL
 const setSearchTerm = (value: string) => {
   searchTerm.value = value;
   updateUrl();
@@ -104,7 +120,7 @@ const setSortBy = (value: string) => {
   sortBy.value = value;
 };
 
-// Actualizar URL con los filtros
+// Update URL with filters
 const updateUrl = () => {
   const query: Record<string, string> = {};
   

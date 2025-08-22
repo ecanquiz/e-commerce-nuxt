@@ -43,14 +43,14 @@ const tabs = [
   { id: 'reviews', label: 'Reseñas' },
 ];
 
-// Cargar datos del viñedo
+// Upload vineyard data
 onMounted(async () => {
-  // En producción, esto vendría de una API
-  const mockVineyards: Vineyard[] = storeVineyardsStore.vineyards; // Tus datos mock
+  // In production, this would come from an API
+  const mockVineyards: Vineyard[] = storeVineyardsStore.vineyards; // Mock data
   vineyard.value = mockVineyards.find(v => v.id === id) || null;
   
   if (!vineyard.value) {
-    // Redirigir si no se encuentra el viñedo
+    // Redirect if vineyard not found
     await navigateTo('/vineyards');
   }
 });
@@ -72,7 +72,7 @@ const handleReviewSubmit = (reviewData: any) => {
   reviewModal.value = false;
 };
 
-// Funciones para galería y video
+// Gallery and video functions
 const openGallery = (images: string[], startIndex: number = 0, title: string = 'Galería') => {
   galleryModal.isOpen = true;
   galleryModal.images = images;
