@@ -9,10 +9,25 @@ definePageMeta({
 
 const { t } = useI18n()
 
-const vineyardsStore = useVineyardsStore();
-//vineyardsStore.fetchVineyards()
+//const vineyardsStore = useVineyardsStore()
+//const { data: vineyards, pending } = await useAsyncData(
+//  'vineyards',
+//  async () => {
+//    if (vineyardsStore.loaded) {
+//      return vineyardsStore.vineyards
+//    }
+//    return await vineyardsStore.fetchVineyards()
+//  },
+//  {
+//    server: true,
+//    default: () => []
+//  }
+//)
+//const featuredVineyards = vineyards.value.slice(0, 3);
+//const highlightedVineyards = vineyards.value.slice(0, 6);
 
-const vineyards : Vineyard[] = vineyardsStore.vineyards;
+const vineyardsStore = useVineyardsStore()
+const vineyards: Vineyard[] = vineyardsStore.vineyards
 
 const featuredVineyards = vineyards.slice(0, 3);
 const highlightedVineyards = vineyards.slice(0, 6);

@@ -20,9 +20,17 @@ const activeTab = computed({
   set: (value) => emit('update:activeTab', value)
 });
 
-const getGoogleMapsUrl = (location: string) => {
+const getGoogleMapsUrl = (location: string) => { 
   const encodedLocation = encodeURIComponent(location);
-  return `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BcqJMrQOlYs&q=${encodedLocation}`;
+  const runtimeConfig = useRuntimeConfig();
+  const { public: { googleMapApiKey, googleMapApiUrl } } = runtimeConfig;
+  
+  if (!googleMapApiKey || !googleMapApiUrl) {
+    console.error('Google Maps API key or URL is not defined in runtime config');
+    return '';
+  }
+
+  return `${googleMapApiUrl}?key=${googleMapApiKey}&q=${encodedLocation}`;
 };
 
 const openProductWithDelay = (product: Product) => {

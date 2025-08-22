@@ -25,6 +25,12 @@ export default defineNuxtConfig({
     //domains: ['https://images.pexels.com'], // Add your image domains
     //provider: 'ipx' // o 'cloudinary' if you use another provider
   //},
+  runtimeConfig: {
+    public: {
+      googleMapApiKey: process.env.NUXT_PUBLIC_GOOGLE_MAP_API_KEY || '',
+      googleMapApiUrl: process.env.NUXT_PUBLIC_GOOGLE_MAP_API_URL || '', 
+    }
+  },
   pages: {
     pattern: ['**/*.vue', '!**/components/**']
   },
@@ -39,6 +45,11 @@ export default defineNuxtConfig({
       pathPrefix: false
     }
   ],
+  plugins: [
+    '~/plugins/auth-init.ts',
+    '~/plugins/vineyards-init.ts'
+  ],
+  // middleware: [ 'auth.global', 'vineyards.global' ],
   i18n: {
     locales: [
       { code: 'en', iso: 'en-US', file: 'en.json' },

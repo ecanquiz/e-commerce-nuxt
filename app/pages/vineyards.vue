@@ -4,8 +4,6 @@ import { useVineyardsStore } from '~/store/vineyards';
 import type { Vineyard } from '~~/shared/types';
 
 const vineyardsStore = useVineyardsStore()
-
-vineyardsStore.fetchVineyards();
 const mockVineyards: Vineyard[] = vineyardsStore.vineyards
 
 const searchTerm = ref('');
@@ -24,7 +22,7 @@ const filteredVineyards = computed(() => {
       selectedRegion.value === '' || vineyard.location.includes(selectedRegion.value)
     );
 
-  // Ordenar
+  // Order
   return filtered.sort((a, b) => {
     if (sortBy.value === 'rating') return b.rating - a.rating;
     if (sortBy.value === 'name') return a.name.localeCompare(b.name);
