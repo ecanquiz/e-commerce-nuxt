@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@pinia/nuxt',
-
+    '@vueuse/nuxt'
   ],
   //image: {
     //domains: ['https://images.pexels.com'], // Add your image domains

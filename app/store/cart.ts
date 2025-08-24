@@ -1,4 +1,4 @@
-// import { defineStore } from 'pinia'
+import { defineStore } from 'pinia'
 import type { CartItem, Product, Vineyard } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
@@ -23,16 +23,23 @@ export const useCartStore = defineStore('cart', () => {
         const { data } = await useFetch('/api/cart')
         items.value = data.value?.items || []
       } else {
-        const guestCart = localStorage.getItem('guest-cart')
-        items.value = guestCart ? JSON.parse(guestCart) : []
+        // Check if we are on the client side
+        if (import.meta.client) {
+          const guestCart = localStorage.getItem('guest-cart')
+          items.value = guestCart ? JSON.parse(guestCart) : []
+        } else {
+          items.value = [] // Default value for SSR
+        }
       }
-    } finally {
+    }
+    finally{
       loading.value = false
     }
   }
 
   // Add item to cart
   const addItem = async (product: Product, vineyard: Vineyard, quantity: number = 1) => {
+
     if (!auth.isAuthenticated) {
       // Modo guest
       const existingItem = items.value.find(item => 
@@ -54,8 +61,8 @@ export const useCartStore = defineStore('cart', () => {
       throw new Error('Stock insuficiente')
     }
 
-    const existingItem = items.value.find(
-      item => item.product.id === product.id && item.vineyard?.id === vineyard.id
+    const existingItem = items.value.find(item => 
+      item.product.id === product.id && item.vineyard && item.vineyard.id === vineyard.id
     )
 
     if (existingItem) {
