@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { X, ChevronLeft, ChevronRight, Star, Wine, Calendar, Award, ShoppingCart, Play } from 'lucide-vue-next';
-import { useCart } from '../composables/useCart';
+import { useCartStore } from '~/store/cart';
 import type { Product, Vineyard } from '~~/shared/types';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const { addItem } = useCart();
+const cartStore = useCartStore();
 
 const currentImageIndex = ref(0);
 const currentVideoIndex = ref(0);
@@ -49,7 +49,7 @@ const prevImage = () => {
 };
 
 const handleAddToCart = () => {
-  addItem(props.product, props.vineyard, quantity.value);
+  cartStore.addItem(props.product, props.vineyard, quantity.value);
   props.onClose();
 };
 

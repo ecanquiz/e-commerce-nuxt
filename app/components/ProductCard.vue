@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ShoppingCart, Eye, Wine, Calendar } from 'lucide-vue-next';
-import { useCart } from '../composables/useCart';
+import { useCartStore } from '~/store/cart';
 import type { Product, Vineyard } from '~~/shared/types';
 
 interface Props {
@@ -10,7 +10,8 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const { addItem } = useCart();
+
+const cartStore = useCartStore();
 
 const categoryColors = {
   red: 'bg-red-100 text-red-800',
@@ -21,7 +22,7 @@ const categoryColors = {
 };
 
 const handleAddToCart = () => {
-  addItem(props.product, props.vineyard);
+  cartStore.addItem(props.product, props.vineyard);
 };
 
 const handleViewDetails = () => {

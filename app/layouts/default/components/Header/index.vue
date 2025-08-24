@@ -87,9 +87,9 @@ watch(() => route.path, () => {
         <!-- Desktop Actions -->
         <div class="hidden md:flex items-center space-x-4">
           <LanguageSelector />
-          <NuxtLink to="/cart" class="relative p-2 text-gray-700 hover:text-[color:var(--color-burgundy)]">
+          <NuxtLink to="/cart" class="relative p-2 text-gray-700 hover:text-color-burgundy-600">
             <ShoppingCart class="h-5 w-5" />
-            <span v-if="cart.itemCount > 0" class="absolute -top-1 -right-1 bg-[color:var(--color-burgundy)] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            <span v-if="cart.itemCount > 0" class="absolute -top-1 -right-1 bg-burgundy-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               {{ cart.itemCount }}
             </span>
           </NuxtLink>
@@ -103,7 +103,7 @@ watch(() => route.path, () => {
         <!-- Mobile Menu Button -->
         <button
           @click="toggleMobileMenu"
-          class="md:hidden p-2 text-gray-700 hover:text-[color:var(--color-burgundy)]"
+          class="md:hidden p-2 text-gray-700 hover:text-burgundy-600"
           aria-label="Toggle mobile menu"
         >
           <Icon :name="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />

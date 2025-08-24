@@ -85,11 +85,22 @@ const filteredProducts = computed(() => {
       selectedCategory.value === '' || product.category === selectedCategory.value
     )
     .filter(({ product }) => {
-      if (priceRange.value === '') return true;
-      const [min, max] = priceRange.value.split('-').map(Number);
-      if (priceRange.value.includes('+')) return product.price >= min;
-      return product.price >= min && product.price <= max;
+    if (priceRange.value === '') return true;  
+      const parts = priceRange.value.split('-');
+      const min = Number(parts[0]);
+      if (priceRange.value.endsWith('+')) {
+        return !isNaN(min) && product.price >= min;
+      }
+      const max = Number(parts[1]);
+      return !isNaN(min) && !isNaN(max) && product.price >= min && product.price <= max;
     });
+
+    // .filter(({ product }) => {
+    //  if (priceRange.value === '') return true;
+    //  const [min, max] = priceRange.value.split('-').map(Number);
+    //  if (priceRange.value.includes('+')) return product.price >= min;
+    //  return product.price >= min && product.price <= max;
+    //});
 
   // Order
   return filtered.sort((a, b) => {
