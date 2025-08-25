@@ -1,12 +1,33 @@
+// app/store/cart.ts
 import { defineStore } from 'pinia'
+import { useLocalStorage } from '@vueuse/core'
 import type { CartItem, Product, Vineyard } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref<CartItem[]>([])
-  const loading = ref(false)
   const auth = useAuthStore()
+  const loading = ref(false)
   
+  // SOLUCIÓN: Usar un ref normal y sincronizar manualmente con localStorage
+  const items = ref<CartItem[]>([])
+
+  // Cargar desde localStorage solo en cliente
+  const loadFromStorage = () => {
+    if (process.client) {
+      const stored = localStorage.getItem('guest-cart')
+      if (stored) {
+        items.value = JSON.parse(stored)
+      }
+    }
+  }
+
+  // Guardar en localStorage automáticamente
+  watch(items, (newItems) => {
+    if (process.client && !auth.isAuthenticated) {
+      localStorage.setItem('guest-cart', JSON.stringify(newItems))
+    }
+  }, { deep: true })
+
   const total = computed(() => 
     items.value.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
   )
@@ -23,25 +44,16 @@ export const useCartStore = defineStore('cart', () => {
         const { data } = await useFetch('/api/cart')
         items.value = data.value?.items || []
       } else {
-        // Check if we are on the client side
-        if (import.meta.client) {
-          const guestCart = localStorage.getItem('guest-cart')
-          items.value = guestCart ? JSON.parse(guestCart) : []
-        } else {
-          items.value = [] // Default value for SSR
-        }
+        loadFromStorage() // Cargar desde localStorage para guest
       }
-    }
-    finally{
+    } finally {
       loading.value = false
     }
   }
 
   // Add item to cart
   const addItem = async (product: Product, vineyard: Vineyard, quantity: number = 1) => {
-
     if (!auth.isAuthenticated) {
-      // Modo guest
       const existingItem = items.value.find(item => 
         item.product.id === product.id && item.vineyard?.id === vineyard.id
       )
@@ -51,8 +63,6 @@ export const useCartStore = defineStore('cart', () => {
       } else {
         items.value.push({ product, vineyard, quantity })
       }
-      
-      localStorage.setItem('guest-cart', JSON.stringify(items.value))
       return
     }
 
@@ -98,8 +108,6 @@ export const useCartStore = defineStore('cart', () => {
       
       if (auth.isAuthenticated) {
         await syncCart()
-      } else {
-        localStorage.setItem('guest-cart', JSON.stringify(items.value))
       }
     }
   }
@@ -112,8 +120,6 @@ export const useCartStore = defineStore('cart', () => {
     
     if (auth.isAuthenticated) {
       await syncCart()
-    } else {
-      localStorage.setItem('guest-cart', JSON.stringify(items.value))
     }
   }
 
@@ -136,20 +142,27 @@ export const useCartStore = defineStore('cart', () => {
     
     if (auth.isAuthenticated) {
       await syncCart()
-    } else {
+    } else if (process.client) {
       localStorage.removeItem('guest-cart')
     }
   }
 
   // Migrate cart from guest to user
   const migrateGuestCart = async () => {
-    const guestCart = localStorage.getItem('guest-cart')
-    if (guestCart) {
-      const guestItems: CartItem[] = JSON.parse(guestCart)
-      items.value = guestItems
-      await syncCart()
-      localStorage.removeItem('guest-cart')
+    if (process.client) {
+      const guestCart = localStorage.getItem('guest-cart')
+      if (guestCart) {
+        const guestItems: CartItem[] = JSON.parse(guestCart)
+        items.value = guestItems
+        await syncCart()
+        localStorage.removeItem('guest-cart')
+      }
     }
+  }
+
+  // Cargar inicialmente desde localStorage
+  if (process.client) {
+    loadFromStorage()
   }
 
   return {
