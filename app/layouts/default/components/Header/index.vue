@@ -20,9 +20,9 @@ const auth = useAuthStore();
 const cart = useCartStore();
 
 // Load cart when logging in
-watch(() => auth.isAuthenticated, (isAuth) => {
-  if (!isAuth) cart.loadCart()
-}, { immediate: true })
+//watch(() => auth.isAuthenticated, (isAuth) => {
+//  if (!isAuth) cart.loadCart()
+//}, { immediate: true })
 
 // Estado
 //const isMenuOpen = ref(false);
@@ -73,6 +73,21 @@ const navigationItems = computed<NavItem[]>(() => [
 watch(() => route.path, () => {
   isMobileMenuOpen.value = false
 })
+
+const undo = () => {
+  if (cart.undo) {
+    cart.undo()
+  }
+}
+
+const redo = () => {
+  if (cart.redo) {
+    cart.redo()
+  }
+}
+
+const canUndo = computed(() => (cart.history?.length || 0) > 1)
+const canRedo = computed(() => (cart.future?.length || 0) > 0)
 </script>
 
 <template>
@@ -93,6 +108,21 @@ watch(() => route.path, () => {
               {{ cart.itemCount }}
             </span>
           </NuxtLink>
+
+          <div class="flex gap-2">
+            <UButton 
+              @click="undo()" 
+             :disabled="!canUndo"
+            >
+              Undo
+            </UButton>
+            <UButton 
+              @click="redo()" 
+             :disabled="!canRedo"
+            >
+              Redo
+            </UButton>
+          </div>
 
           {{ auth.user ? auth.user.name : $t('common.guest') }}
 
