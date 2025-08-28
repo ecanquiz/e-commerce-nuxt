@@ -1,26 +1,22 @@
-import { mockUsers } from '~~/server/models/user.model'
+import { authService } from '~~/server/services'
 
-export default defineEventHandler((event) => {
-  const token = getHeader(event, 'authorization')?.split(' ')[1]
-  
-  if (!token) {
-    throw createError({ statusCode: 401 })
-  }
-
-  // We simulate extracting userId from the token (in reality we would decode it)
-  const userId = token.split('.')[1]
-  const user = mockUsers.find(u => u.id === userId)
-
-  if (!user) {
-    throw createError({ statusCode: 401 })
-  }
-
-  return { 
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
+export default defineEventHandler(async (event) => {
+  try {
+    const token = getHeader(event, 'authorization')?.split(' ')[1]
+    
+    if (!token) {
+      throw createError({ 
+        statusCode: 401,
+        message: 'Token requerido'
+      })
     }
+
+    const userData = await authService.validateToken(token)
+    return { user: userData }
+  } catch (error: any) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      message: error.message || 'Error al obtener usuario'
+    })
   }
 })

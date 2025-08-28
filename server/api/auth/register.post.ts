@@ -1,24 +1,22 @@
-// server/api/auth/login.post.ts
 import { authService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const { email, password } = body
-
+    
     // Validación básica
-    if (!email || !password) {
+    if (!body.email || !body.password || !body.name) {
       throw createError({
         statusCode: 400,
-        message: 'Email y contraseña son requeridos'
+        message: 'Datos requeridos faltantes'
       })
     }
 
-    return await authService.login(email, password)
+    return await authService.register(body)
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error en el login'
+      message: error.message || 'Error en el registro'
     })
   }
 })

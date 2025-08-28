@@ -647,7 +647,12 @@ export const getVineyardById = (id: string) => {
     ...vineyard,
     products: vineyard.products.map(p => ({
       ...p,
-      vineyard // Inject the vineyard into each product
+      vineyard: {
+        id: vineyard.id,
+        name: vineyard.name,
+        location: vineyard.location,
+        image: vineyard.image
+      }
     }))
   }
 }

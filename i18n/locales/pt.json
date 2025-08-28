@@ -25,8 +25,9 @@
     "finish": "Finalizar",
     "submit": "Enviar",
     "reset": "Redefinir",
-    "guest": "Convidado"
-
+    "guest": "Convidado",
+    "undo": "Desfazer",
+    "redo": "Refazer"
   },
   "navigation": {
     "home": "Início",

@@ -5,8 +5,16 @@ export default defineEventHandler(async (event) => {
   try {
     const { user } = await requireAuth(event)
     const body = await readBody(event)
-    
-    const updatedCart = await cartService.updateCart(user.id, body.items)
+    const { productId, quantity = 1 } = body
+
+    if (!productId) {
+      throw createError({
+        statusCode: 400,
+        message: 'Product ID is required'
+      })
+    }
+
+    const updatedCart = await cartService.addToCart(user.id, productId, quantity)
     const total = await cartService.calculateTotal(updatedCart)
     
     return {
@@ -17,7 +25,7 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error al actualizar carrito'
+      message: error.message || 'Error al añadir al carrito'
     })
   }
 })

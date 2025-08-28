@@ -4,9 +4,9 @@ import { requireAuth } from '~~/server/utils/auth'
 export default defineEventHandler(async (event) => {
   try {
     const { user } = await requireAuth(event)
-    const body = await readBody(event)
-    
-    const updatedCart = await cartService.updateCart(user.id, body.items)
+    const { productId } = event.context.params!
+
+    const updatedCart = await cartService.removeFromCart(user.id, productId)
     const total = await cartService.calculateTotal(updatedCart)
     
     return {
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error al actualizar carrito'
+      message: error.message || 'Error al eliminar del carrito'
     })
   }
 })
