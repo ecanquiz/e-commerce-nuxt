@@ -25,7 +25,9 @@
     "finish": "Finalizar",
     "submit": "Enviar",
     "reset": "Restablecer",
-    "guest": "Invitado"
+    "guest": "Invitado",
+    "undo": "Deshacer",
+    "redo": "Rehacer"
   },
   "navigation": {
     "home": "Inicio",

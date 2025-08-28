@@ -99,10 +99,6 @@ const promotions: Promotion[] = [
 ];
 </script>
 
-<!--template>
-<UApp> UApp </UApp>
-</template-->
-
 <template>
   <div class="min-h-screen">
     <!-- Hero Carousel -->

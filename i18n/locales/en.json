@@ -25,7 +25,9 @@
     "finish": "Finish",
     "submit": "Submit",
     "reset": "Reset",
-    "guest": "Guest"
+    "guest": "Guest",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "navigation": {
     "home": "Home",

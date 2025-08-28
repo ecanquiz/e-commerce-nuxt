@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @theme {
   /* Colores burgundy */
@@ -28,3 +29,4 @@
   /* Font family */
   --font-serif: Georgia, serif;
 }
+

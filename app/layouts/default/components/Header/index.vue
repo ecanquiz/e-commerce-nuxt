@@ -110,34 +110,38 @@ const canRedo = computed(() => (cart.future?.length || 0) > 0)
           </NuxtLink>
 
           <div class="flex gap-2">
-            <UButton 
+            <UButton
+              color="error"
+              variant="outline"
               @click="undo()" 
              :disabled="!canUndo"
             >
-              Undo
+              {{ $t('common.undo') }}
             </UButton>
-            <UButton 
+            <UButton
+              color="error"
+              variant="outline" 
               @click="redo()" 
              :disabled="!canRedo"
             >
-              Redo
+              {{ $t('common.redo') }}
             </UButton>
           </div>
 
-          {{ auth.user ? auth.user.name : $t('common.guest') }}
+            <div class="text-black">{{ auth.user ? auth.user.name : $t('common.guest') }}</div>
 
             <UserDropdown v-if="auth.user"/>
             <AuthButtons v-else/>
         </div>
 
         <!-- Mobile Menu Button -->
-        <button
+        <UButton
           @click="toggleMobileMenu"
           class="md:hidden p-2 text-gray-700 hover:text-burgundy-600"
           aria-label="Toggle mobile menu"
         >
           <Icon :name="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />
-        </button>
+        </UButton>
       </div>
 
       <!-- Search Bar -->
