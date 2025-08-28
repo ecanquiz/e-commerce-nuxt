@@ -1,15 +1,15 @@
-import { productService } from '~~/server/services'
+import { vineyardService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event)
-    const results = await productService.searchProducts(
+    const results = await vineyardService.searchVineyards(
       query.q as string,
       query.category as string | undefined
     )
     
     // Simular delay como en tu código actual
-    if (import.meta.dev) {
+    if (process.dev) {
       await new Promise(resolve => setTimeout(resolve, 300))
     }
     

@@ -4,20 +4,17 @@ import { requireAuth } from '~~/server/utils/auth'
 export default defineEventHandler(async (event) => {
   try {
     const { user } = await requireAuth(event)
-    const body = await readBody(event)
     
-    const updatedCart = await cartService.updateCart(user.id, body.items)
-    const total = await cartService.calculateTotal(updatedCart)
+    await cartService.clearCart(user.id)
     
     return {
-      items: updatedCart,
-      total,
-      success: true
+      success: true,
+      message: 'Carrito vaciado correctamente'
     }
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error al actualizar carrito'
+      message: error.message || 'Error al vaciar carrito'
     })
   }
 })

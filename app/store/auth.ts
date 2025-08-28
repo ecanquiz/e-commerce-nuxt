@@ -2,6 +2,26 @@
 import { useCartStore } from '~/store/cart';
 import type { User } from '~~/shared/types'
 
+interface RegisterData {
+  name: string
+  email: string
+  password: string
+  role: 'customer' | 'vineyard'
+  phone?: string
+  birthDate?: string
+  preferences?: {
+    wineTypes: string[]
+    notifications: boolean
+    newsletter: boolean
+  }
+}
+
+export interface AuthResponse {
+  user: User
+  token: string
+  message?: string
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<Omit<User, 'password' | 'createdAt'> | null>(null)
   const token = useCookie('auth_token')
@@ -25,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Login
   const login = async (credentials: { email: string; password: string }) => {
-    const { data, error } = await useFetch('/api/auth/login', {
+    const { data, error } = await useFetch<AuthResponse>('/api/auth/login', {
       method: 'POST',
       body: credentials
     })
@@ -39,6 +59,33 @@ export const useAuthStore = defineStore('auth', () => {
     const cartStore = useCartStore()
     await cartStore.migrateGuestCart()
   }
+
+  // Register
+  const register = async (userData: RegisterData) => {
+    //const { data, error } = await useFetch('/api/auth/register', {
+    const { data, error } = await useFetch<AuthResponse>('/api/auth/register', {
+      method: 'POST',
+      body: userData
+    })
+
+    if (error.value) {
+      throw new Error(error.value.data?.message || 'Registration failed')
+    }
+
+    // const response = data.value as { user: User; token: string }
+    // user.value = response?.user || null
+    // token.value = response?.token || null
+
+    user.value = data.value?.user as User || null
+    token.value = data.value?.token || null
+    
+    // Migrate guest cart if it exists
+    const cartStore = useCartStore()
+    await cartStore.migrateGuestCart()
+
+    return data.value
+  }
+
 
   // Logout
   const logout = async () => {
@@ -71,8 +118,9 @@ export const useAuthStore = defineStore('auth', () => {
   return { 
     user, 
     isAuthenticated, 
-    login, 
+    login,
     logout, 
-    loadUser 
+    loadUser,
+    register
   }
 });

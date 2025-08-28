@@ -35,5 +35,3 @@ export const searchProducts = (query: string, category?: string) => {
     return matchesQuery && matchesCategory
   })
 }
-
-
