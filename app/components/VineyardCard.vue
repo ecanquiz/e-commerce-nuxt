@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { MapPin, Star, Award, Clock } from 'lucide-vue-next';
 import type { PropType } from 'vue';
-import type { Vineyard } from '~~/shared/types';
+//import type { Vineyard } from '~~/shared/types';
 
 const props = defineProps({
-  vineyard: {
+  /*vineyard: {
     type: Object as PropType<Vineyard>,
     required: true
-  }
+  }*/
 });
 </script>
 
 <template>
   <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <!--
     <div class="relative">
       <img
         :src="vineyard.image"
@@ -76,5 +77,6 @@ const props = defineProps({
         </NuxtLink>
       </div>
     </div>
+  -->Proximamente !!
   </div>
 </template>

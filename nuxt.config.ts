@@ -50,7 +50,8 @@ export default defineNuxtConfig({
   ],
   plugins: [
     '~/plugins/01-pinia-history.ts',
-    '~/plugins/02-auth-init.ts'
+    '~/plugins/02-auth-init.ts',
+    '~/plugins/03-product-init.ts'
   ],
   // middleware: [ 'auth.global', 'vineyards.global' ],
   i18n: {

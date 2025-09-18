@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import Product from '~/components/Product.vue';
-import { useVineyardsStore } from '~/store/vineyards'
+import { useProductsStore } from '~/store/products'
 
 const route = useRoute();
-const storeVineyardsStore = useVineyardsStore();
+const productsStore = useProductsStore();
 
-const { vineyard, product } = storeVineyardsStore.getVineyardAndProductByIds(
-  route.params.vineyardId as string,
+const product = productsStore.getProductsById(
   route.params.productId as string
 )
 </script>
@@ -14,8 +13,7 @@ const { vineyard, product } = storeVineyardsStore.getVineyardAndProductByIds(
 <template>
   <div>
    <Product
-     v-if="vineyard && product"
-     :vineyard="vineyard"
+     v-if="product"
      :product="product"
      :isOpen="true"
      :onClose="() => {$router.go(-1)}"

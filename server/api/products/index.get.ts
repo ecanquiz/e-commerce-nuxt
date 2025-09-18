@@ -2,6 +2,8 @@ import { productService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
+    console.log('api de producto')
+
     const products = await productService.getAllProducts()
     return products
   } catch (error: any) {
