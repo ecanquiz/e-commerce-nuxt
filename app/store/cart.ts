@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 // import { useLocalStorage } from '@vueuse/core'
-import type { CartItem, Product, Vineyard } from '~~/shared/types'
+import type { CartItem, Product } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
 export const useCartStore = defineStore('cart', () => {
@@ -44,19 +44,18 @@ export const useCartStore = defineStore('cart', () => {
   // Add item to cart
   const addItem = async (
     product: Product,
-    vineyard: Vineyard,
     quantity: number = 1
   ): Promise<void> => {
     if (!auth.isAuthenticated) {
       // Guest mode
       const existingItem = items.value.find(item => 
-        item.product.id === product.id && item.vineyard?.id === vineyard.id
+        item.product.id === product.id
       );
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        items.value.push({ product, vineyard, quantity });
+        items.value.push({ product, quantity });
       }
       
       localStorage.setItem('guest-cart', JSON.stringify(items.value));
@@ -69,7 +68,7 @@ export const useCartStore = defineStore('cart', () => {
     };
 
     const existingItem = items.value.find(item => 
-      item.product.id === product.id && item.vineyard && item.vineyard.id === vineyard.id
+      item.product.id === product.id
     );
 
     if (existingItem) {
@@ -79,7 +78,7 @@ export const useCartStore = defineStore('cart', () => {
       }
       existingItem.quantity = newQuantity;
     } else {
-      items.value.push({ product, vineyard, quantity });
+      items.value.push({ product, quantity });
     }
     
     await syncCart();
@@ -88,16 +87,15 @@ export const useCartStore = defineStore('cart', () => {
   // Update quantity
   const updateQuantity = async (
     productId: string,
-    vineyardId: string,
     quantity: number
   ): Promise<void> => {
     const item = items.value.find(item => 
-      item.product.id === productId && item.vineyard?.id === vineyardId
+      item.product.id === productId
     );
     
     if (item) {
       if (quantity <= 0) {
-        await removeItem(productId, vineyardId);
+        await removeItem(productId);
         return;
       }
       
@@ -118,10 +116,9 @@ export const useCartStore = defineStore('cart', () => {
   // Delete item
   const removeItem = async (
     productId: string,
-    vineyardId: string
   ): Promise<void> => {
     items.value = items.value.filter(item => 
-      !(item.product.id === productId && item.vineyard?.id === vineyardId)
+      !(item.product.id === productId)
     );
     
     if (auth.isAuthenticated) {

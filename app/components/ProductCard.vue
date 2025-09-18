@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ShoppingCart, Eye, Wine, Calendar } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
-import type { Product, Vineyard } from '~~/shared/types';
+import type { Product } from '~~/shared/types';
 
 interface Props {
   product: Product;
-  vineyard: Vineyard;
-  onViewDetails?: (product: Product, vineyard: Vineyard) => void;
+  onViewDetails?: (product: Product) => void;
 }
 
 const props = defineProps<Props>();
@@ -22,12 +21,12 @@ const categoryColors = {
 };
 
 const handleAddToCart = () => {
-  cartStore.addItem(props.product, props.vineyard);
+  cartStore.addItem(props.product);
 };
 
 const handleViewDetails = () => {
   if (props.onViewDetails) {
-    props.onViewDetails(props.product, props.vineyard);
+    props.onViewDetails(props.product);
   }
 };
 </script>
@@ -66,7 +65,7 @@ const handleViewDetails = () => {
         </div>
       </div>
       
-      <p class="mb-2 text-sm text-gray-600">{{ vineyard.name }}</p>
+      <!--p class="mb-2 text-sm text-gray-600">{{ vineyard.name }}</p-->
       
       <p class="mb-4 text-gray-700 line-clamp-2">{{ product.description }}</p>
       

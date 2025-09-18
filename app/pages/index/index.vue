@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { Grape, Star, Award, Users, ArrowRight, MapPin, Tag, TrendingUp } from 'lucide-vue-next';
+import { useProductsStore } from '~/store/products'
+
 
 definePageMeta({ layout: 'default' })
 const { t } = useI18n()
 
- const carouselSlides = ref<CarouselSlides[]>([
+const productsStore = useProductsStore();
+
+
+const carouselSlides = ref<CarouselSlides[]>([
     {
       id: '1',
       image: 'https://images.pexels.com/photos/1543327/pexels-photo-1543327.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080',
@@ -138,14 +143,13 @@ const { t } = useI18n()
             {{ t('home.featuredVineyards.subtitle') }}
           </p>
         </div>
-        
-        <!--div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        s
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VineyardCard 
-            v-for="vineyard in vineyardsStore.featuredVineyards" 
+            v-for="vineyard in productsStore.featuredProducts" 
             :key="vineyard.id" 
-            :vineyard="vineyard" 
           />
-        </div-->
+        </div>
         
         <div class="text-center mt-12">
           <NuxtLink
@@ -175,8 +179,8 @@ const { t } = useI18n()
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!--div 
-            v-for="(vineyard, index) in vineyardsStore.highlightedVineyards" 
+          <div 
+            v-for="(vineyard, index) in productsStore.highlightedProducts" 
             :key="vineyard.id" 
             class="relative"
           >
@@ -185,8 +189,8 @@ const { t } = useI18n()
                 {{ index + 1 }}
               </div>
             </div>
-            <VineyardCard :vineyard="vineyard" />
-          </div-->
+            <!--VineyardCard :vineyard="vineyard" /-->
+          </div>
         </div>
         
         <div class="text-center mt-12">

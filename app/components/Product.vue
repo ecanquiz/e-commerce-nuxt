@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { X, ChevronLeft, ChevronRight, Star, Wine, Calendar, Award, ShoppingCart, Play } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
-import type { Product, Vineyard } from '~~/shared/types';
+import type { Product } from '~~/shared/types';
 
 interface Props {
   product: Product;
-  vineyard: Vineyard;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -49,7 +48,7 @@ const prevImage = () => {
 };
 
 const handleAddToCart = () => {
-  cartStore.addItem(props.product, props.vineyard, quantity.value);
+  cartStore.addItem(props.product, quantity.value);
   props.onClose();
 };
 
@@ -174,7 +173,7 @@ const openVideoModal = (index: number) => {
               </div>
             </div>
 
-            <p class="mb-2 text-sm text-burgundy-600">{{ vineyard.name }}</p>
+            <!--p class="mb-2 text-sm text-burgundy-600">{{ vineyard.name }}</p-->
             <p class="mb-4 text-gray-700">{{ product.description }}</p>
 
             <!-- Product Specifications -->

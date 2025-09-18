@@ -12,7 +12,6 @@ export interface AuthUser extends Omit<User, 'password'> {}
 
 export interface Product {
   id: string;
-  vineyardId: string;
   name: string;
   description: string;
   price: number;

@@ -1,11 +1,11 @@
 
 <script setup lang="ts">
 import { Search, Filter, Wine, DollarSign } from 'lucide-vue-next';
-//import { useVineyardsStore } from '~/store/vineyards'
+import { useProductsStore } from '~/store/products'
 import type { Product } from '~~/shared/types';
 
 /* TODO
-const vineyardsStore = useVineyardsStore()
+const useProductsStore = useProductsStore()
 
 // Preload vineyards
 await useAsyncData('vineyards', () => vineyardsStore.preloadVineyards())
@@ -20,6 +20,14 @@ const allProducts = computed(() => {
   )
 })
 */
+
+const productsStore = useProductsStore()
+
+/*onMounted(async ()=> {
+  await productsStore.fetchAllProducts()
+  console.log(productsStore.products)
+})*/
+
 
 const { t } = useI18n()
 
@@ -68,21 +76,20 @@ const priceRanges = [
 
 // Get all the products from all the vineyards
 //const storeVineyardsStore = useVineyardsStore();
-const allProducts: ProductWithVineyard[] = []/*storeVineyardsStore.vineyards.flatMap(vineyard => 
-  vineyard.products.map(product => ({ product, vineyard }))
-);*/
+const allProducts: Product[] = productsStore.products
 
 // Filtered products
+//const filteredProducts = computed(() => allProducts )
 const filteredProducts = computed(() => {
   let filtered = allProducts
-    .filter(({ product }) => 
+    .filter((product) => 
       product.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
       product.description.toLowerCase().includes(searchTerm.value.toLowerCase())
     )
-    .filter(({ product }) => 
+    .filter((product) => 
       selectedCategory.value === '' || product.category === selectedCategory.value
     )
-    .filter(({ product }) => {
+    .filter((product) => {
     if (priceRange.value === '') return true;  
       const parts = priceRange.value.split('-');
       const min = Number(parts[0]);
@@ -93,19 +100,12 @@ const filteredProducts = computed(() => {
       return !isNaN(min) && !isNaN(max) && product.price >= min && product.price <= max;
     });
 
-    // .filter(({ product }) => {
-    //  if (priceRange.value === '') return true;
-    //  const [min, max] = priceRange.value.split('-').map(Number);
-    //  if (priceRange.value.includes('+')) return product.price >= min;
-    //  return product.price >= min && product.price <= max;
-    //});
-
   // Order
   return filtered.sort((a, b) => {
-    if (sortBy.value === 'name') return a.product.name.localeCompare(b.product.name);
-    if (sortBy.value === 'price-low') return a.product.price - b.product.price;
-    if (sortBy.value === 'price-high') return b.product.price - a.product.price;
-    if (sortBy.value === 'vintage') return b.product.vintage - a.product.vintage;
+    if (sortBy.value === 'name') return a.name.localeCompare(b.name);
+    if (sortBy.value === 'price-low') return a.price - b.price;
+    if (sortBy.value === 'price-high') return b.price - a.price;
+    if (sortBy.value === 'vintage') return b.vintage - a.vintage;
     return 0;
   });
 });
@@ -143,11 +143,11 @@ const updateUrl = () => {
 };
 
 // Modal functions
-const openProductModal = (product: Product, vineyard: Vineyard) => {
+const openProductModal = (product: Product) => {
   //productModal.isOpen = true;
   //productModal.product = product;
   //productModal.vineyard = vineyard;
-  router.push({ path: `/products/${vineyard.id}/${product.id}` })
+  router.push({ path: `/products/${product.id}` })
 };
 
 const closeProductModal = () => {
@@ -165,6 +165,7 @@ watch(() => route.query, (newQuery) => {
     selectedCategory.value = Array.isArray(newQuery.category) ? newQuery.category[0] || '' : newQuery.category || '';
   }
 });
+
 </script>
 
 <template>
@@ -257,13 +258,12 @@ watch(() => route.query, (newQuery) => {
 
       <!-- Products Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!--ProductCard 
-          v-for="{ product, vineyard } in filteredProducts"
+        <ProductCard 
+          v-for="product in filteredProducts"
           :key="product.id"
           :product="product"
-          :vineyard="vineyard"
-          @view-details="openProductModal(product, vineyard)"
-        /-->
+          @view-details="openProductModal(product)"
+        />
       </div>
 
       <div v-if="filteredProducts.length === 0" class="text-center py-12">
@@ -281,9 +281,8 @@ watch(() => route.query, (newQuery) => {
 
     <!-- Modal de Detalles del Producto -->
     <!--ProductDetailModal
-      v-if="productModal.isOpen && productModal.product && productModal.vineyard"
+      v-if="productModal.isOpen && productModal.product"
       :product="productModal.product"
-      :vineyard="productModal.vineyard"
       :is-open="productModal.isOpen"
       @close="closeProductModal"
     /-->

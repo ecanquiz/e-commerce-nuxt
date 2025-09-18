@@ -17,6 +17,9 @@ export function createServiceService(): ServiceService {
 }
 
 export function createProductService(): ProductService {
+
+      console.log('config servicio de producto')
+
   return process.env.PRODUCT_MOCK_MODE === 'false' 
     ? new NestProductService() 
     : new MockProductService()
