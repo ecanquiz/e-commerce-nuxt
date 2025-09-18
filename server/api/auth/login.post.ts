@@ -1,4 +1,3 @@
-// server/api/auth/login.post.ts
 import { authService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
@@ -6,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const { email, password } = body
 
-    // Validación básica
+    // Basic validation
     if (!email || !password) {
       throw createError({
         statusCode: 400,

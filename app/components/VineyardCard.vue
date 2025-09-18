@@ -69,7 +69,7 @@ const props = defineProps({
         </div>
         
         <NuxtLink
-          :to="`/vineyard/${vineyard.id}`"
+          :to="`/vineyards/${vineyard.id}/overview`"
           class="bg-burgundy-600 text-white px-4 py-2 rounded-md hover:bg-burgundy-700 transition-colors text-sm font-medium"
         >
           Ver Detalles

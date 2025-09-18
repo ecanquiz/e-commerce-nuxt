@@ -179,7 +179,7 @@ const openProductWithDelay = (product: Product) => {
               <button
                 v-for="product in vineyard.products.slice(0, 3)"
                 :key="product.id"
-                @click="openProductWithDelay(product)"
+                @click="$router.push(`../../products/${vineyard.id}/${product.id}`)"
                 class="flex items-center w-full p-2 space-x-3 text-left transition-colors rounded-lg hover:bg-gray-50"
               >
                 <img

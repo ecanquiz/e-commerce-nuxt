@@ -10,26 +10,6 @@ export interface User {
 
 export interface AuthUser extends Omit<User, 'password'> {}
 
-export interface Vineyard {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  image: string;
-  coverImage: string;
-  established: number;
-  owner: string;
-  phone: string;
-  email: string;
-  website?: string;
-  services: Service[];
-  gallery: string[];
-  videos: string[];
-  rating: number;
-  reviewCount: number;
-  products: Product[];
-}
-
 export interface Product {
   id: string;
   vineyardId: string;
@@ -48,7 +28,7 @@ export interface Product {
   food_pairing: string[];
   awards: string[];
   createdAt: string;
-  vineyard?: Vineyard;
+  status?: 'active' | 'inactive' | 'discontinued';
 }
 
 export interface StockMovement {
@@ -97,7 +77,6 @@ export interface TrackingEvent {
 export interface CartItem {
   product: Product;
   quantity: number;
-  vineyard?: Vineyard; // TODO - TEMPORARILY undefined
 }
 
 export interface Order {
@@ -108,24 +87,10 @@ export interface Order {
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   shippingAddress: Address;
   shippingTracking?: ShippingTracking;
-  vineyardOrders: VineyardOrder[];
   createdAt: string;
   updatedAt: string;
 }
 
-export interface VineyardOrder {
-  id: string;
-  orderId: string;
-  vineyardId: string;
-  items: CartItem[];
-  subtotal: number;
-  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'shipped' | 'delivered';
-  estimatedPreparation: string;
-  shippingTracking?: ShippingTracking;
-  notes?: string;
-  createdAt: string;
-  updatedAt: string;
-}
 export interface Address {
   street: string;
   city: string;
@@ -177,4 +142,46 @@ export interface Promotion {
   buttonText: string;
   buttonLink: string;
   type: 'discount' | 'free-shipping' | 'special-offer';
+}
+
+export interface OrderItem {
+  id: string;
+  name: string;
+  vineyard: string;
+  quantity: number;
+  price: number;
+  image: string;
+}
+
+export interface ShippingInfo {
+  address: string;
+  method: string;
+  tracking?: string;
+}
+
+export interface TimelineStep {
+  status: string;
+  date: string;
+  completed: boolean;
+}
+
+export interface OrderTodo {
+  id: string;
+  date: string;
+  status: string;
+  total: number;
+  items: OrderItem[];
+  shipping: ShippingInfo;
+  shippingTracking?: ShippingTracking;
+  timeline: TimelineStep[];
+}
+
+export interface CarouselSlides{
+  id: string;
+  image: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
 }

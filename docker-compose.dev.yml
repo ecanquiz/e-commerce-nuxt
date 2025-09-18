@@ -1,0 +1,12 @@
+services:
+  web:    
+    image: node:22.19.0 
+    ports:
+      - 80:80    
+    volumes:
+      - ".:/nuxt"
+    environment:
+      NODE_ENV: development
+    working_dir: /nuxt
+    container_name: e_commerce_nuxt_dev_env
+    command: sh -c "cd /nuxt; npm install; npm run dev"

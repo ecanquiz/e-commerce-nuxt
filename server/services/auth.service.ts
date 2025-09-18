@@ -5,12 +5,14 @@ export interface AuthService {
   register(userData: any): Promise<{ user: any; token: string }>
   getUser(userId: string): Promise<any>
   validateToken(token: string): Promise<any>
+  logout(token: string): Promise<{ success: boolean; message: string }>
+  verifyEmail(token: string): Promise<{ message: string }>
 }
 
-// Mock implementation - BASADO EN TU CÓDIGO ACTUAL
+// Mock implementation - BASED ON YOUR CURRENT CODE
 export class MockAuthService implements AuthService {
   async login(email: string, password: string) {
-    // Import dinámico para evitar circular dependencies
+    // Dynamic import to avoid circular dependencies
     const { findUserByEmail, validatePassword } = await import('~~/server/models/user.model')
     
     const user = findUserByEmail(email)
@@ -21,7 +23,7 @@ export class MockAuthService implements AuthService {
       })
     }
 
-    // Simular JWT token (como en tu código actual)
+    // Simulate JWT token (as in your current code)
     const token = `mock-jwt-token.${user.id}`
 
     return {
@@ -46,7 +48,7 @@ export class MockAuthService implements AuthService {
       })
     }    
 
-    // Create new user (sin hashear password por ahora, como en tu mock)
+    // Create a new user (no password hashing for now, like in your mock)
     const newUser = {
       id: `user_${generateId()}`,
       ...userData,
@@ -55,7 +57,7 @@ export class MockAuthService implements AuthService {
 
     mockUsers.push(newUser)
     
-    // Simular JWT token
+    // Simulate JWT token
     const token = `mock-jwt-token.${newUser.id}`
 
     return {
@@ -89,9 +91,20 @@ export class MockAuthService implements AuthService {
   }
 
   async validateToken(token: string) {
-    // Simular validación de token (como en tu código actual)
+    console.log('Mock of validateToken')
     const userId = token.split('.')[1]
     return this.getUser(userId)
+  }
+
+  async logout(token: string): Promise<{ success: boolean; message: string }> {
+    return { 
+      success: true, 
+      message: 'Logout successful (mock)' 
+    }
+  }
+
+  async verifyEmail(token: string): Promise<{ message: string }> {
+    return { message: 'Email verified successfully (mock)' }
   }
 }
 
@@ -129,5 +142,53 @@ export class NestAuthService implements AuthService {
       headers: { Authorization: `Bearer ${token}` }
     })
     return response
+  }
+
+  async logout(token: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await $fetch(`${this.baseUrl}/auth/logout`, {
+        method: 'POST',
+        headers: { 
+          Authorization: token //Already includes "Bearer "
+        }
+      })
+      
+      return { 
+        success: true, 
+        message: (response as any).message || 'Logout successful' 
+      }
+    } catch (error: any) {
+      console.error('Logout error:', error)
+      throw createError({
+        statusCode: error.statusCode || 500,
+        message: error.data?.message || error.message || 'Error durante el logout'
+      })
+    }
+  }
+
+  async verifyEmail(token: string): Promise<{ message: string }> {
+    try {
+      console.log('🌐 [NestAuthService] Calling NestJS verify-email endpoint');
+      console.log('🌐 [NestAuthService] URL:', `${this.baseUrl}/auth/verify-email`);
+      console.log('🌐 [NestAuthService] Token:', token);
+      
+      const response = await $fetch(`${this.baseUrl}/auth/verify-email?token=${encodeURIComponent(token)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      });
+      
+      console.log('✅ [NestAuthService] Response from NestJS:', response);
+      return response as { message: string };
+      
+    } catch (error: any) {
+      console.error('❌ [NestAuthService] Error calling NestJS:', error);
+      console.error('❌ [NestAuthService] Error status:', error.statusCode);
+      console.error('❌ [NestAuthService] Error message:', error.message);
+      console.error('❌ [NestAuthService] Error data:', error.data);
+      throw error;
+    }
   }
 }
