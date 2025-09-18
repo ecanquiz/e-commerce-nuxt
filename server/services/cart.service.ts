@@ -51,7 +51,6 @@ export class MockCartService implements CartService {
 
   async addToCart(userId: string, productId: string, quantity: number) {
     const { getProductById } = await import('~~/server/models/product.model')
-    const { mockVineyards } = await import('~~/server/models/vineyard.model')
     
     const product = getProductById(productId)
     if (!product) {
@@ -81,19 +80,11 @@ export class MockCartService implements CartService {
         quantity: newCart[existingItemIndex].quantity + quantity
       }
     } else {
-      // Añadir nuevo item
-      const vineyard = mockVineyards.find(v => v.id === product.vineyardId)
+
       newCart = [
         ...currentCart,
         {
-          product: {
-            ...product,
-            vineyard: vineyard ? {
-              id: vineyard.id,
-              name: vineyard.name,
-              location: vineyard.location
-            } : undefined
-          },
+          product: { ...product,},
           quantity
         }
       ]

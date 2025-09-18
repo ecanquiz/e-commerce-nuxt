@@ -41,6 +41,7 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const error = ref('')
 const loading = ref(false)
+const showVerificationMessage = ref(false)
 
 // Tipos de vino
 const wineTypes = [
@@ -85,6 +86,8 @@ const handleSubmit = async () => {
       birthDate: formData.birthDate,
       preferences: formData.preferences
     })
+
+    showVerificationMessage.value = true;
     await router.push('/')
   } catch (err) {
     error.value = t('auth.register.accountCreationError')
@@ -399,6 +402,14 @@ const handleSubmit = async () => {
           </button>
         </div>
       </form>
+
+      <div v-if="showVerificationMessage" class="bg-blue-50 border border-blue-200 rounded p-4 mb-4">
+        <h3 class="text-blue-800 font-semibold">¡Registro exitoso!</h3>
+        <p class="text-blue-700">
+          Te hemos enviado un email de verificación. Por favor revisa tu bandeja de entrada 
+          y haz clic en el enlace para activar tu cuenta.
+        </p>
+      </div>
     </div>
   </div>
 </template>

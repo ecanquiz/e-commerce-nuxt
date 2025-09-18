@@ -9,6 +9,9 @@ interface RegisterData {
   role: 'customer' | 'vineyard'
   phone?: string
   birthDate?: string
+  vineyardName?: string
+  location?: string
+  description?: string
   preferences?: {
     wineTypes: string[]
     notifications: boolean
@@ -60,9 +63,12 @@ export const useAuthStore = defineStore('auth', () => {
     await cartStore.migrateGuestCart()
   }
 
+  const loginWithGoogle = async () => {
+    // Implementar autenticación con Google
+  };
+
   // Register
   const register = async (userData: RegisterData) => {
-    //const { data, error } = await useFetch('/api/auth/register', {
     const { data, error } = await useFetch<AuthResponse>('/api/auth/register', {
       method: 'POST',
       body: userData
@@ -89,20 +95,31 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Logout
   const logout = async () => {
-    await useFetch('/api/auth/logout', { method: 'POST' })
-    user.value = null
-    token.value = null
-    
-    // Clear cart
-    const cartStore = useCartStore()
-    await cartStore.clearCart()
+    try {
+      await useFetch('/api/auth/logout', { 
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        }
+      })
+    } catch (error) {
+      console.error('Logout error:', error)
+      // We continue with the local logout even if there is an error on the server
+    } finally {
+      // We always clean up the local state
+      user.value = null
+      token.value = null
+      
+      const cartStore = useCartStore()
+      await cartStore.clearCart()
+    }
   }
 
   // Load full user
   const loadUser = async () => {
     if (token.value) {
       try {
-        const { data } = await useFetch('/api/auth/user')
+        const { data } = await useFetch<AuthResponse>('/api/auth/user')
         user.value = data.value?.user as User || null
       } catch (error) {
         // Invalid token, clear
@@ -112,6 +129,25 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // TODO: Implement forgot password logic
+  const forgotPassword = async (email: string) => { 
+    try {
+      const { data, error } = await useFetch('/api/auth/forgot-password', {
+        method: 'POST',
+        body: { email }
+      });
+      
+      if (error.value) {
+        throw new Error(error.value.message);
+      }
+      
+      return data.value;
+    } catch (error) {
+      console.error('Error en recuperación de contraseña:', error);
+      throw error;
+    }
+  };
+
   // Hydrate when starting
   hydrateFromCookie()
 
@@ -119,8 +155,10 @@ export const useAuthStore = defineStore('auth', () => {
     user, 
     isAuthenticated, 
     login,
+    loginWithGoogle,
     logout, 
     loadUser,
-    register
+    register,
+    forgotPassword // TODO: Implement forgot password logic
   }
 });

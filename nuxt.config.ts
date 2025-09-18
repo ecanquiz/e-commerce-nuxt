@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
   css: ['~/assets/css/main.css'],
   modules: [
     '@nuxtjs/i18n',
@@ -47,8 +50,7 @@ export default defineNuxtConfig({
   ],
   plugins: [
     '~/plugins/01-pinia-history.ts',
-    '~/plugins/02-auth-init.ts',
-    '~/plugins/03-vineyards-init.ts'
+    '~/plugins/02-auth-init.ts'
   ],
   // middleware: [ 'auth.global', 'vineyards.global' ],
   i18n: {
@@ -66,5 +68,12 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_redirected',
       redirectOn: 'root'        // Detects language when entering root
     }
-  }
+  },
+  nitro: {
+    logLevel: 'verbose',
+  },
+  /*devServer: { // uncomment to use with docker in devenv.
+    port: 80,
+    host: '0.0.0.0'
+  },*/
 })

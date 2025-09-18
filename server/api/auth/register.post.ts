@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
     
-    // Validación básica
+    // Basic validation
     if (!body.email || !body.password || !body.name) {
       throw createError({
         statusCode: 400,

@@ -4,7 +4,7 @@ import type { User } from '~~/shared/types'
 export const mockUsers: User[] = [
   {
     id: '1',
-    email: 'admin@viñedosya.com',
+    email: 'admin@vinedosya.com',
     password: 'pass123', // In production we would use bcrypt
     name: 'Admin',
     role: 'admin',
@@ -12,7 +12,7 @@ export const mockUsers: User[] = [
   },
   {
     id: '2',
-    email: 'viñedo@ejemplo.com',
+    email: 'vinedo@ejemplo.com',
     password: 'pass123',
     name: 'Bodega López',
     role: 'vineyard',

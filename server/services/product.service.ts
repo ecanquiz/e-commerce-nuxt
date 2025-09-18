@@ -4,7 +4,6 @@ export interface ProductService {
   getAllProducts(): Promise<any[]>
   getProductById(id: string): Promise<any>
   searchProducts(query: string, category?: string): Promise<any[]>
-  getProductsByVineyard(vineyardId: string): Promise<any[]>
   createProduct(productData: any, userId: string): Promise<any>
   updateProduct(id: string, productData: any, userId: string): Promise<any>
   deleteProduct(id: string, userId: string): Promise<void>
@@ -14,26 +13,14 @@ export interface ProductService {
 export class MockProductService implements ProductService {
   async getAllProducts() {
     const { mockProducts } = await import('~~/server/models/product.model')
-    const { mockVineyards } = await import('~~/server/models/vineyard.model')
     
-    // Enriquecer productos con información del viñedo
-    return mockProducts.map(product => {
-      const vineyard = mockVineyards.find(v => v.id === product.vineyardId)
-      return {
-        ...product,
-        vineyard: vineyard ? {
-          id: vineyard.id,
-          name: vineyard.name,
-          location: vineyard.location,
-          image: vineyard.image
-        } : undefined
-      }
+    return mockProducts.map(product => {      
+      return { ...product }
     })
   }
 
   async getProductById(id: string) {
     const { getProductById } = await import('~~/server/models/product.model')
-    const { mockVineyards } = await import('~~/server/models/vineyard.model')
     
     const product = getProductById(id)
     if (!product) {
@@ -43,62 +30,18 @@ export class MockProductService implements ProductService {
       })
     }
     
-    // Enriquecer con información del viñedo
-    const vineyard = mockVineyards.find(v => v.id === product.vineyardId)
-    return {
-      ...product,
-      vineyard: vineyard ? {
-        id: vineyard.id,
-        name: vineyard.name,
-        location: vineyard.location,
-        image: vineyard.image
-      } : undefined
-    }
+    return { ...product }
   }
 
   async searchProducts(query: string, category?: string) {
     const { searchProducts } = await import('~~/server/models/product.model')
-    const { mockVineyards } = await import('~~/server/models/vineyard.model')
     
     const results = searchProducts(query, category)
     
-    // Enriquecer resultados con información del viñedo
     return results.map(product => {
-      const vineyard = mockVineyards.find(v => v.id === product.vineyardId)
-      return {
-        ...product,
-        vineyard: vineyard ? {
-          id: vineyard.id,
-          name: vineyard.name,
-          location: vineyard.location
-        } : undefined
-      }
+      
+      return { ...product, }
     })
-  }
-
-  async getProductsByVineyard(vineyardId: string) {
-    const { mockProducts } = await import('~~/server/models/product.model')
-    const { mockVineyards } = await import('~~/server/models/vineyard.model')
-    
-    const vineyard = mockVineyards.find(v => v.id === vineyardId)
-    if (!vineyard) {
-      throw createError({
-        statusCode: 404,
-        message: 'Viñedo no encontrado'
-      })
-    }
-    
-    const products = mockProducts.filter(p => p.vineyardId === vineyardId)
-    
-    return products.map(product => ({
-      ...product,
-      vineyard: {
-        id: vineyard.id,
-        name: vineyard.name,
-        location: vineyard.location,
-        image: vineyard.image
-      }
-    }))
   }
 
   async createProduct(productData: any, userId: string) {
@@ -145,7 +88,6 @@ export class MockProductService implements ProductService {
         message: 'Producto no encontrado'
       })
     }
-
     mockProducts.splice(index, 1)
   }
 }
@@ -172,11 +114,6 @@ export class NestProductService implements ProductService {
     const response = await $fetch(`${this.baseUrl}/products/search`, {
       query: { q: query, category }
     })
-    return response as unknown as Promise<any[]>
-  }
-
-  async getProductsByVineyard(vineyardId: string) {
-    const response = await $fetch(`${this.baseUrl}/products/vineyard/${vineyardId}`)
     return response as unknown as Promise<any[]>
   }
 

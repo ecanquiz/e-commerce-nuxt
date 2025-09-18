@@ -1,8 +1,8 @@
 
 <script setup lang="ts">
 import { Search, Filter, Wine, DollarSign } from 'lucide-vue-next';
-import { useVineyardsStore } from '~/store/vineyards'
-import type { Product, Vineyard } from '~~/shared/types';
+//import { useVineyardsStore } from '~/store/vineyards'
+import type { Product } from '~~/shared/types';
 
 /* TODO
 const vineyardsStore = useVineyardsStore()
@@ -23,18 +23,15 @@ const allProducts = computed(() => {
 
 const { t } = useI18n()
 
-const storeVineyardsStore = useVineyardsStore();
-const mockVineyards = storeVineyardsStore.vineyards
-
 interface ProductWithVineyard {
   product: Product;
-  vineyard: Vineyard;
+ // vineyard: Vineyard;
 }
 
 interface ProductModalState {
   isOpen: boolean;
   product: Product | null;
-  vineyard: Vineyard | null;
+  //vineyard: Vineyard | null;
 }
 
 const route = useRoute();
@@ -57,7 +54,7 @@ const sortBy = ref('name');
 const productModal = reactive<ProductModalState>({
   isOpen: false,
   product: null,
-  vineyard: null
+ //vineyard: null
 });
 
 // Static data
@@ -70,9 +67,10 @@ const priceRanges = [
 ];
 
 // Get all the products from all the vineyards
-const allProducts: ProductWithVineyard[] = mockVineyards.flatMap(vineyard => 
+//const storeVineyardsStore = useVineyardsStore();
+const allProducts: ProductWithVineyard[] = []/*storeVineyardsStore.vineyards.flatMap(vineyard => 
   vineyard.products.map(product => ({ product, vineyard }))
-);
+);*/
 
 // Filtered products
 const filteredProducts = computed(() => {
@@ -146,15 +144,16 @@ const updateUrl = () => {
 
 // Modal functions
 const openProductModal = (product: Product, vineyard: Vineyard) => {
-  productModal.isOpen = true;
-  productModal.product = product;
-  productModal.vineyard = vineyard;
+  //productModal.isOpen = true;
+  //productModal.product = product;
+  //productModal.vineyard = vineyard;
+  router.push({ path: `/products/${vineyard.id}/${product.id}` })
 };
 
 const closeProductModal = () => {
   productModal.isOpen = false;
   productModal.product = null;
-  productModal.vineyard = null;
+  //productModal.vineyard = null;
 };
 
 // Watch for route changes to update filters
@@ -258,13 +257,13 @@ watch(() => route.query, (newQuery) => {
 
       <!-- Products Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <ProductCard 
+        <!--ProductCard 
           v-for="{ product, vineyard } in filteredProducts"
           :key="product.id"
           :product="product"
           :vineyard="vineyard"
           @view-details="openProductModal(product, vineyard)"
-        />
+        /-->
       </div>
 
       <div v-if="filteredProducts.length === 0" class="text-center py-12">
@@ -281,13 +280,13 @@ watch(() => route.query, (newQuery) => {
     </div>
 
     <!-- Modal de Detalles del Producto -->
-    <ProductDetailModal
+    <!--ProductDetailModal
       v-if="productModal.isOpen && productModal.product && productModal.vineyard"
       :product="productModal.product"
       :vineyard="productModal.vineyard"
       :is-open="productModal.isOpen"
       @close="closeProductModal"
-    />
+    /-->
   </div>
 </template>
 
