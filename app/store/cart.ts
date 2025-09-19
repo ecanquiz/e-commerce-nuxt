@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 // import { useLocalStorage } from '@vueuse/core'
-import type { CartItem, Product } from '~~/shared/types'
+import type { CartItem, Product, Vineyard } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
 export const useCartStore = defineStore('cart', () => {
@@ -29,11 +29,15 @@ export const useCartStore = defineStore('cart', () => {
   const loadCart = async (): Promise<void> => {    
     loading.value = true;
     try {
-      if (auth.isAuthenticated) {
-        const { data } = await useFetch('/api/cart');
-        items.value = data.value?.items || [];
-      } else {
-        loadFromStorage(); // Load from localStorage for guest.
+      if (import.meta.client) {
+        if (auth.isAuthenticated) {
+          // FOR WHEN THE LOGIC IN THE BACKEND IS READY
+          // const { data } = await useFetch('/api/cart');
+          // items.value = data.value?.items || [];
+          loadFromStorage(); // Load from localStorage for guest.
+        } else {
+          loadFromStorage(); // Load from localStorage for guest.
+        }
       }
     }
     finally{
@@ -41,21 +45,28 @@ export const useCartStore = defineStore('cart', () => {
     }
   };
 
+  const saveCartToStorage = () => {
+    if (import.meta.client) {
+      localStorage.setItem('cart_items', JSON.stringify(items.value))
+    }
+  }
+
   // Add item to cart
   const addItem = async (
     product: Product,
+    vineyard: Vineyard,
     quantity: number = 1
   ): Promise<void> => {
     if (!auth.isAuthenticated) {
       // Guest mode
       const existingItem = items.value.find(item => 
-        item.product.id === product.id
+        item.product.id === product.id && item.vineyard?.id === vineyard.id
       );
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        items.value.push({ product, quantity });
+        items.value.push({ product, vineyard, quantity });
       }
       
       localStorage.setItem('guest-cart', JSON.stringify(items.value));
@@ -64,21 +75,21 @@ export const useCartStore = defineStore('cart', () => {
 
     // Authenticated user
     if (product.stock < quantity) {
-      throw new Error('Stock insuficiente');
+      throw new Error('Insufficient stock');
     };
 
     const existingItem = items.value.find(item => 
-      item.product.id === product.id
+      item.product.id === product.id && item.vineyard && item.vineyard.id === vineyard.id
     );
 
     if (existingItem) {
       const newQuantity = existingItem.quantity + quantity;
       if (newQuantity > product.stock) {
-        throw new Error('No hay suficiente stock');
+        throw new Error('Not enough stock');
       }
       existingItem.quantity = newQuantity;
     } else {
-      items.value.push({ product, quantity });
+      items.value.push({ product, vineyard, quantity });
     }
     
     await syncCart();
@@ -87,15 +98,16 @@ export const useCartStore = defineStore('cart', () => {
   // Update quantity
   const updateQuantity = async (
     productId: string,
+    vineyardId: string,
     quantity: number
   ): Promise<void> => {
     const item = items.value.find(item => 
-      item.product.id === productId
+      item.product.id === productId && item.vineyard?.id === vineyardId
     );
     
     if (item) {
       if (quantity <= 0) {
-        await removeItem(productId);
+        await removeItem(productId, vineyardId);
         return;
       }
       
@@ -116,9 +128,10 @@ export const useCartStore = defineStore('cart', () => {
   // Delete item
   const removeItem = async (
     productId: string,
+    vineyardId: string
   ): Promise<void> => {
     items.value = items.value.filter(item => 
-      !(item.product.id === productId)
+      !(item.product.id === productId && item.vineyard?.id === vineyardId)
     );
     
     if (auth.isAuthenticated) {
@@ -153,14 +166,17 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // Migrate cart from guest to user
-  const migrateGuestCart = async (): Promise<void> => {
-    const guestCart = localStorage.getItem('guest-cart');
-    if (guestCart) {
-      const guestItems: CartItem[] = JSON.parse(guestCart);
-      items.value = guestItems;
-      await syncCart();
-      localStorage.removeItem('guest-cart');
-    }
+  const migrateGuestCart = async () => {
+    console.log('📦 Cart migration would happen here with backend')
+    console.log('🛒 Current cart items:', items.value.length)
+    // FOR WHEN THE LOGIC IN THE BACKEND IS READY
+    //const guestCart = localStorage.getItem('guest-cart');
+    // if (guestCart) {
+    //   const guestItems: CartItem[] = JSON.parse(guestCart);
+    //   items.value = guestItems;
+    //   await syncCart();
+    //   localStorage.removeItem('guest-cart');
+    // }
   }
 
   return {

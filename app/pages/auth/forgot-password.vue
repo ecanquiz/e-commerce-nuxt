@@ -140,7 +140,7 @@ const resetForm = () => {
 
           <div class="text-center">
             <NuxtLink
-              to="/login"
+              to="/auth/login"
               class="inline-flex items-center text-burgundy-600 hover:text-burgundy-500 font-medium"
             >
               <ArrowLeft class="h-4 w-4 mr-2" />
