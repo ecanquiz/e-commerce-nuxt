@@ -14,12 +14,12 @@ onMounted(async () => {
 const items = computed(() => cartStore.items);
 const total = computed(() => cartStore.total);
 
-const updateQuantity = async (productId: string, vineyardId: string, quantity: number) => {
-  await cartStore.updateQuantity(productId, vineyardId, quantity);
+const updateQuantity = async (productId: string, quantity: number) => {
+  await cartStore.updateQuantity(productId, quantity);
 };
 
-const removeItem = async (productId: string, vineyardId: string) => {
-  await cartStore.removeItem(productId, vineyardId);
+const removeItem = async (productId: string) => {
+  await cartStore.removeItem(productId);
 };
 
 const clearCart = async () => {
@@ -72,7 +72,7 @@ const clearCart = async () => {
             <div class="divide-y divide-gray-200">
               <div
                 v-for="item in items"
-                :key="`${item.product.id}-${item.vineyard ? item.vineyard.id: 'falta el item.vineyard.id' }`"
+                :key="`${item.product.id}`"
                 class="px-6 py-4"
               >
                 <div class="flex items-center space-x-4">
@@ -86,9 +86,6 @@ const clearCart = async () => {
                     <h3 class="text-lg font-semibold text-gray-900">
                       {{ item.product.name }}
                     </h3>
-                    <p class="text-sm text-gray-600">
-                      {{ item.vineyard ? item.vineyard.name : 'falta el item.vineyard.name'}}
-                    </p>
                     <p class="text-sm text-gray-500">
                       {{ item.product.category }} • {{ item.product.vintage }}
                     </p>
@@ -96,7 +93,7 @@ const clearCart = async () => {
                   
                   <div class="flex items-center space-x-3">
                     <button
-                      @click="updateQuantity(item.product.id, item.vineyard ? item.vineyard.id : '', item.quantity - 1)"
+                      @click="updateQuantity(item.product.id, item.quantity - 1)"
                       class="p-1 text-gray-500 hover:text-gray-700 transition-colors"
                       :disabled="item.quantity <= 1"
                     >
@@ -108,7 +105,7 @@ const clearCart = async () => {
                     </span>
                     
                     <button
-                      @click="updateQuantity(item.product.id, item.vineyard ? item.vineyard.id : '', item.quantity + 1)"
+                      @click="updateQuantity(item.product.id, item.quantity + 1)"
                       class="p-1 text-gray-500 hover:text-gray-700 transition-colors"
                       :disabled="item.quantity >= item.product.stock"
                     >
@@ -121,7 +118,7 @@ const clearCart = async () => {
                       ${{ (item.product.price * item.quantity).toLocaleString() }}
                     </p>
                     <button
-                      @click="removeItem(item.product.id, item.vineyard ? item.vineyard.id : '')"
+                      @click="removeItem(item.product.id)"
                       class="text-red-600 hover:text-red-700 transition-colors mt-1"
                     >
                       <Trash2 class="h-4 w-4" />
