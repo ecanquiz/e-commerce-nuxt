@@ -6,9 +6,10 @@ interface RegisterData {
   name: string
   email: string
   password: string
-  role: 'customer'
+  role: 'customer' | 'vineyard'
   phone?: string
   birthDate?: string
+  vineyardName?: string
   location?: string
   description?: string
   preferences?: {
@@ -28,42 +29,99 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<Omit<User, 'password' | 'createdAt'> | null>(null)
   const token = useCookie('auth_token')
   const isAuthenticated = computed(() => !!user.value)
+  const _isHydrated = ref(false)
 
-  // Hydrate from cookie in SSR
-  const hydrateFromCookie = () => {
-    if (import.meta.server && token.value) {
-      // Extract basic user from the token (actually JWT should be decoded)
-      const tokenParts = token.value.split('.')
-      if (tokenParts.length > 1) {
-        user.value = {
-          id: tokenParts[1] as string, // ID Simulation
-          email: '',
-          name: '',
-          role: 'customer'
-        }  // User simulation
+  // Hydrate from storage
+  const hydrateFromStorage = () => {
+    if (import.meta.client && !_isHydrated.value) {
+      // Load user from localStorage
+      const savedUser = localStorage.getItem('auth_user')
+      if (savedUser) {
+        try {
+          user.value = JSON.parse(savedUser);
+          _isHydrated.value = true;
+          console.log('User hydrated from localStorage');
+        } catch (error) {
+          console.error('Error parsing saved user:', error)
+          localStorage.removeItem('auth_user')
+        }
       }
     }
-  } 
+  }
+
+  const saveUserToStorage = (userData: Omit<User, 'password' | 'createdAt'> | null) => {
+    if (import.meta.client) {
+      if (userData) {
+        localStorage.setItem('auth_user', JSON.stringify(userData))
+        console.log('User saved to localStorage')
+      } else {
+        localStorage.removeItem('auth_user')
+        console.log('User removed from localStorage')
+      }
+    }
+  }
+
+  const clearAuthData = () => {
+    if (import.meta.client) {
+      localStorage.removeItem('auth_user')
+    }
+    token.value = null
+    user.value = null
+    _isHydrated.value = false
+    console.log('Auth data cleared')
+  }
+
+  // Load user from API (to verify valid token)
+  const loadUser = async (): Promise<boolean> => {
+    if (!token.value) {
+      console.log('No token available for loadUser')
+      return false
+    }
+    
+    try {
+      console.log('Loading user from API...')
+      const { data, error } = await useFetch<AuthResponse>('/api/auth/user')
+      
+      if (error.value) {
+        throw error.value
+      }
+
+      if (data.value?.user) {
+        user.value = data.value.user
+        saveUserToStorage(user.value)
+        console.log('User loaded from API successfully')
+        return true
+      }
+      
+      return false
+    } catch (error: any) {
+      console.error('Failed to load user from API:', error)
+      return false
+    }
+  }
 
   // Login
-  const login = async (credentials: { email: string; password: string }) => {
+  const login = async (credentials: { email: string; password: string }) => { 
     const { data, error } = await useFetch<AuthResponse>('/api/auth/login', {
       method: 'POST',
       body: credentials
     })
 
-    if (error.value) throw error.value
+    if (error.value) throw error.value;
 
-    user.value = data.value?.user as User || null
-    token.value = data.value?.token || null
+    user.value = data.value?.user as User || null;
+    token.value = data.value?.token || null;
+    saveUserToStorage(user.value);
+
+    // SOLO log migration, no action
+    const cartStore = useCartStore();
+    console.log('🛒 Cart preserved during login:', cartStore.items.length, 'items');    
     
-    // Migrate guest cart if it exists
-    const cartStore = useCartStore()
-    await cartStore.migrateGuestCart()
+    return data.value
   }
 
   const loginWithGoogle = async () => {
-    // Implementar autenticación con Google
+    // Implement authentication with Google
   };
 
   // Register
@@ -79,6 +137,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     user.value = data.value?.user as User || null
     token.value = data.value?.token || null
+
+    // Persist user in localStorage
+    saveUserToStorage(user.value)
     
     // Migrate guest cart if it exists
     const cartStore = useCartStore()
@@ -102,25 +163,10 @@ export const useAuthStore = defineStore('auth', () => {
       // We continue with the local logout even if there is an error on the server
     } finally {
       // We always clean up the local state
-      user.value = null
-      token.value = null
+      clearAuthData()
       
       const cartStore = useCartStore()
       await cartStore.clearCart()
-    }
-  }
-
-  // Load full user
-  const loadUser = async () => {
-    if (token.value) {
-      try {
-        const { data } = await useFetch<AuthResponse>('/api/auth/user')
-        user.value = data.value?.user as User || null
-      } catch (error) {
-        // Invalid token, clear
-        token.value = null
-        user.value = null
-      }
     }
   }
 
@@ -160,11 +206,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // Hydrate when starting
-  hydrateFromCookie()
+  // Initialize from storage
+  if (import.meta.client) {
+    //hydrateFromStorage() <--- This is not needed here anymore
+    
+    // Verify token on page load
+    if (token.value && !user.value) {
+      loadUser()
+    }
+  }
 
   return { 
-    user, 
+    user,
+    token, // EXPOSE token for the plugin
     isAuthenticated, 
     login,
     loginWithGoogle,
@@ -172,6 +226,8 @@ export const useAuthStore = defineStore('auth', () => {
     loadUser,
     register,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    hydrateFromStorage,
+    clearAuthData
   }
 });

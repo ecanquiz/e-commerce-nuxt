@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     if (!token) {
       throw createError({ 
         statusCode: 401,
-        message: 'Token requerido'
+        message: 'Token required'
       })
     }
 
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error al obtener usuario'
+      message: error.message || 'Error getting user'
     })
   }
 })
