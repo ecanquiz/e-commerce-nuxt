@@ -1,12 +1,14 @@
 import generateId from '../utils/generateId';
 
 export interface AuthService {
-  login(email: string, password: string): Promise<{ user: any; token: string }>
-  register(userData: any): Promise<{ user: any; token: string }>
-  getUser(userId: string): Promise<any>
-  validateToken(token: string): Promise<any>
-  logout(token: string): Promise<{ success: boolean; message: string }>
-  verifyEmail(token: string): Promise<{ message: string }>
+  login(email: string, password: string): Promise<{ user: any; token: string }>;
+  register(userData: any): Promise<{ user: any; token: string }>;
+  getUser(userId: string): Promise<any>;
+  validateToken(token: string): Promise<any>;
+  logout(token: string): Promise<{ success: boolean; message: string }>;
+  verifyEmail(token: string): Promise<{ message: string }>;
+  forgotPassword(email: string): Promise<void>;
+  resetPassword(token: string, newPassword: string): Promise<{ message: string }>;
 }
 
 // Mock implementation - BASED ON YOUR CURRENT CODE
@@ -104,7 +106,15 @@ export class MockAuthService implements AuthService {
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-    return { message: 'Email verified successfully (mock)' }
+      return { message: 'Email verified successfully (mock)' }
+    }
+
+    async forgotPassword(email: string): Promise<void> {
+    console.log('Mock: Password reset email sent to', email);
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    return { message: 'Password reset successful (mock)' };
   }
 }
 
@@ -167,11 +177,7 @@ export class NestAuthService implements AuthService {
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-    try {
-      console.log('🌐 [NestAuthService] Calling NestJS verify-email endpoint');
-      console.log('🌐 [NestAuthService] URL:', `${this.baseUrl}/auth/verify-email`);
-      console.log('🌐 [NestAuthService] Token:', token);
-      
+    try {      
       const response = await $fetch(`${this.baseUrl}/auth/verify-email?token=${encodeURIComponent(token)}`, {
         method: 'GET',
         headers: {
@@ -180,15 +186,28 @@ export class NestAuthService implements AuthService {
         }
       });
       
-      console.log('✅ [NestAuthService] Response from NestJS:', response);
       return response as { message: string };
       
     } catch (error: any) {
-      console.error('❌ [NestAuthService] Error calling NestJS:', error);
-      console.error('❌ [NestAuthService] Error status:', error.statusCode);
-      console.error('❌ [NestAuthService] Error message:', error.message);
-      console.error('❌ [NestAuthService] Error data:', error.data);
+      console.error('[NestAuthService] Error calling NestJS:', error); // statusCode, message, data
       throw error;
     }
+  }
+
+  async forgotPassword(email: string): Promise<void> {
+    await $fetch(`${this.baseUrl}/auth/forgot-password`, {
+      method: 'POST',
+      body: { email },
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    const response = await $fetch(`${this.baseUrl}/auth/reset-password`, {
+      method: 'POST',
+      body: { token, newPassword },
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return response as { message: string };
   }
 }

@@ -2,7 +2,7 @@
 //import LanguageSelector from './LanguageSelector.vue';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
-import { useClickOutside } from '../useClickOutside';
+import { useClickOutside } from '../composables/useClickOutside';
 import type { Product, Vineyard } from '~~/shared/types';
 
 const props = defineProps({

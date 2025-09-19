@@ -3,7 +3,7 @@ import { User as UserLucide } from 'lucide-vue-next'
 import { useAuthStore } from '~/store/auth';
 import type { User } from '~~/shared/types'
 //import useClickOutside from '~/composables/useClickOutside'
-import { useClickOutside } from './useClickOutside'  
+import { useClickOutside } from '../composables/useClickOutside'  
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -51,7 +51,7 @@ useClickOutside(dropdownRef, closeDropdown)
       class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100"
     >
       <NuxtLink
-        to="/profile"
+        to="/auth/profile"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         @click="closeDropdown"
       >

@@ -68,7 +68,7 @@ async function verifyEmail() {
 <template>
   <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-      <h1 class="text-2xl font-bold mb-4">Verificación de Email</h1>
+      <h1 class="text-2xl font-bold mb-4 text-gray-600">Verificación de Email</h1>
       
       <div v-if="status === 'loading'" class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
@@ -81,7 +81,7 @@ async function verifyEmail() {
       <div v-else-if="status === 'success'" class="text-green-600 text-center">
         <CheckCircleIcon class="h-12 w-12 mx-auto mb-4" />
         <p class="font-semibold">{{ message }}</p>
-        <NuxtLink to="/login" class="text-blue-600 hover:underline mt-4 inline-block">
+        <NuxtLink to="/auth/login" class="text-blue-600 hover:underline mt-4 inline-block">
           Ir al login
         </NuxtLink>
       </div>
