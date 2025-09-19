@@ -3,7 +3,8 @@
 import { Search, MapPin } from 'lucide-vue-next'
 import type { Product, Vineyard } from '~~/shared/types'
 //import useClickOutside from '~/composables/useClickOutside'  
-import { useClickOutside } from '../useClickOutside'  
+import { useClickOutside } from '../composables/useClickOutside' 
+ 
 
 const { t } = useI18n()
 const router = useRouter()

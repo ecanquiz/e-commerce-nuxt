@@ -149,7 +149,7 @@ const handleSubmit = async () => {
         <div class="flex items-center justify-between">
           <div class="text-sm">
             <NuxtLink
-              to="/forgot-password"
+              to="/auth/forgot-password"
               class="font-medium text-burgundy-600 hover:text-burgundy-500"
             >
               {{ $t('auth.login.forgotPassword') }}

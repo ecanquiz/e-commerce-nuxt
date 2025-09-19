@@ -361,7 +361,7 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
               </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   Nombre Completo

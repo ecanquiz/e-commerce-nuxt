@@ -9,10 +9,10 @@ export default defineNuxtPlugin(async () => {
     if (authStore.isAuthenticated) {
       await Promise.allSettled([
         authStore.loadUser(),
-        //cartStore.loadCart()
+        cartStore.loadCart()
       ]);
     } else {
-      //await cartStore.loadCart();
+      await cartStore.loadCart();
     }
   }
 });

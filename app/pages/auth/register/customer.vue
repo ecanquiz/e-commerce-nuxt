@@ -88,7 +88,7 @@ const handleSubmit = async () => {
     })
 
     showVerificationMessage.value = true;
-    await router.push('/')
+    // await router.push('/')
   } catch (err) {
     error.value = t('auth.register.accountCreationError')
   } finally {
@@ -165,6 +165,15 @@ const handleSubmit = async () => {
           </div>
         </div>
 
+
+        <div v-if="showVerificationMessage" class="bg-blue-50 border border-blue-200 rounded p-4 mb-4">
+        <h3 class="text-blue-800 font-semibold">¡Registro exitoso!</h3>
+        <p class="text-blue-700">
+          Te hemos enviado un email de verificación. Por favor revisa tu bandeja de entrada 
+          y haz clic en el enlace para activar tu cuenta.
+        </p>
+      </div>
+
         <p class="mt-4 text-sm text-gray-600">
           {{ $t('auth.register.alreadyHaveAccount') }}
           <NuxtLink
@@ -175,6 +184,8 @@ const handleSubmit = async () => {
           </NuxtLink>
         </p>
       </div>
+
+      
 
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
         <div v-if="error" class="bg-red-50 border border-red-200 rounded-md p-4">
@@ -403,13 +414,7 @@ const handleSubmit = async () => {
         </div>
       </form>
 
-      <div v-if="showVerificationMessage" class="bg-blue-50 border border-blue-200 rounded p-4 mb-4">
-        <h3 class="text-blue-800 font-semibold">¡Registro exitoso!</h3>
-        <p class="text-blue-700">
-          Te hemos enviado un email de verificación. Por favor revisa tu bandeja de entrada 
-          y haz clic en el enlace para activar tu cuenta.
-        </p>
-      </div>
+
     </div>
   </div>
 </template>

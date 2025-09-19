@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-vue-next';
-
-
+import { useAuthStore } from '~/store/auth'
 definePageMeta({
-  //layout: 'auth', // Si tienes un layout específico para autenticación
-  //middleware: 'guest' // Middleware para redirigir usuarios autenticados
+  // layout: 'auth',
+  // middleware: 'guest'
 });
 
-
-// Reactive state
 const email = ref('');
 const isSubmitted = ref(false);
 const loading = ref(false);
 const error = ref('');
+const authStore = useAuthStore();
 
 // Validación de email
 const isValidEmail = (email: string) => {
@@ -37,18 +35,10 @@ const handleSubmit = async () => {
   loading.value = true;
 
   try {
-    // Simular llamada a la API
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Aquí integrarías con tu servicio real de recuperación de contraseña
-    // Integración con tu servicio de autenticación
-    // await $auth.forgotPassword(email.value);
-    //const { forgotPassword } = useAuth();
-    //await forgotPassword(email.value);
-    
+    await authStore.forgotPassword(email.value);
     isSubmitted.value = true;
-  } catch (err) {
-    error.value = 'Error al enviar el email de recuperación';
+  } catch (err: any) {
+    error.value = err.message || 'Error al enviar el email de recuperación';
     console.error('Error:', err);
   } finally {
     loading.value = false;
@@ -162,4 +152,3 @@ const resetForm = () => {
     </div>
   </div>
 </template>
-

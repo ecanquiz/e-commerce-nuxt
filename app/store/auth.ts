@@ -6,10 +6,9 @@ interface RegisterData {
   name: string
   email: string
   password: string
-  role: 'customer' | 'vineyard'
+  role: 'customer'
   phone?: string
   birthDate?: string
-  vineyardName?: string
   location?: string
   description?: string
   preferences?: {
@@ -78,10 +77,6 @@ export const useAuthStore = defineStore('auth', () => {
       throw new Error(error.value.data?.message || 'Registration failed')
     }
 
-    // const response = data.value as { user: User; token: string }
-    // user.value = response?.user || null
-    // token.value = response?.token || null
-
     user.value = data.value?.user as User || null
     token.value = data.value?.token || null
     
@@ -129,24 +124,41 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // TODO: Implement forgot password logic
-  const forgotPassword = async (email: string) => { 
+  const forgotPassword = async (email: string): Promise<{ message: string }> => {
     try {
       const { data, error } = await useFetch('/api/auth/forgot-password', {
         method: 'POST',
         body: { email }
-      });
-      
+      })
+
       if (error.value) {
-        throw new Error(error.value.message);
+        throw new Error(error.value.data?.message || 'Error requesting password reset')
       }
-      
-      return data.value;
+
+      return data.value as { message: string };
     } catch (error) {
-      console.error('Error en recuperación de contraseña:', error);
+      console.error('Password recovery error:', error);
       throw error;
     }
-  };
+  }
+
+  const resetPassword = async (token: string, newPassword: string): Promise<{ message: string }> => {
+    try {
+      const { data, error } = await useFetch('/api/auth/reset-password', {
+        method: 'POST',
+        body: { token, newPassword }
+      })
+
+      if (error.value) {
+        throw new Error(error.value.data?.message || 'Error resetting password')
+      }
+
+      return data.value as { message: string }
+    } catch (error) {
+      console.error('Password reset error:', error);
+      throw error;
+    }
+  }
 
   // Hydrate when starting
   hydrateFromCookie()
@@ -159,6 +171,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout, 
     loadUser,
     register,
-    forgotPassword // TODO: Implement forgot password logic
+    forgotPassword,
+    resetPassword
   }
 });
