@@ -4,19 +4,18 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
     
-    // Basic validation
-    if (!body.email || !body.password || !body.name) {
-      throw createError({
-        statusCode: 400,
-        message: 'Datos requeridos faltantes'
-      })
-    }
-
+    console.log('🔐 [Nitro] Register proxy - passing through to Nest')
+    
+    // Nitro como proxy transparente - pasar todo directamente
     return await authService.register(body)
+    
   } catch (error: any) {
+    console.error('🔐 [Nitro] Register proxy error:', error)
+    // Re-enviar el error exacto de Nest
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error en el registro'
+      message: error.message || 'Error en el registro',
+      data: error.data || error
     })
   }
 })

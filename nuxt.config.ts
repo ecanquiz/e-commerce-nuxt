@@ -31,7 +31,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleMapApiKey: process.env.NUXT_PUBLIC_GOOGLE_MAP_API_KEY || '',
-      googleMapApiUrl: process.env.NUXT_PUBLIC_GOOGLE_MAP_API_URL || '', 
+      googleMapApiUrl: process.env.NUXT_PUBLIC_GOOGLE_MAP_API_URL || '',
+      encryptionEnabled: process.env.NODE_ENV === 'production' || process.env.NUXT_PUBLIC_ENCRYPTION_ENABLED === 'true', // true only in production
+      encKey: process.env.NUXT_PUBLIC_ENC_KEY || 'your_secret_key_here',
+      nestApiUrl: process.env.NUXT_PUBLIC_NEST_API_URL || 'http://localhost:3001'
     }
   },
   pages: {
@@ -49,9 +52,10 @@ export default defineNuxtConfig({
     }
   ],
   plugins: [
-    '~/plugins/01-pinia-history.ts',
-    '~/plugins/02-auth-init.ts',
-    '~/plugins/03-product-init.ts'
+    '~/plugins/01-encryption.client.ts',
+    '~/plugins/02-pinia-history.ts',
+    '~/plugins/03-auth-init.ts',
+    '~/plugins/04-product-init.ts'
   ],
   // middleware: [ 'auth.global', 'vineyards.global' ],
   i18n: {

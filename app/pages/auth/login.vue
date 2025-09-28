@@ -60,7 +60,7 @@ const handleSubmit = async () => {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-lg mx-auto">
             <!-- Cliente Button -->
             <NuxtLink
-              to="/register/customer"
+              to="/auth/register/customer"
               class="relative flex items-center p-4 bg-gradient-to-r from-burgundy-50 to-burgundy-100 border border-burgundy-200 rounded-lg cursor-pointer hover:from-burgundy-100 hover:to-burgundy-200 transition-all duration-300 shadow-sm hover:shadow-md group"
             >
               <div class="w-10 h-10 bg-burgundy-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
@@ -75,7 +75,7 @@ const handleSubmit = async () => {
 
             <!-- Viñedo Button -->
             <NuxtLink
-              to="/register/vineyard"
+              to="/auth/register/vineyard"
               class="relative flex items-center p-4 bg-gradient-to-r from-gold-50 to-gold-100 border border-gold-200 rounded-lg cursor-pointer hover:from-gold-100 hover:to-gold-200 transition-all duration-300 shadow-sm hover:shadow-md group"
             >
               <div class="w-10 h-10 bg-gold-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">

@@ -128,7 +128,7 @@ const signInWithGoogle = async () => {
         <div class="mt-8 mb-8">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             <!-- Cliente Button -->
-            <NuxtLink to="/register/customer" class="relative">
+            <NuxtLink to="/auth/register/customer" class="relative">
               <div class="relative flex flex-col items-center p-6 bg-gradient-to-br from-burgundy-50 to-burgundy-100 border-2 border-burgundy-200 rounded-xl cursor-pointer hover:from-burgundy-100 hover:to-burgundy-200 transition-all duration-300 shadow-lg hover:shadow-xl group">
                 <div class="w-16 h-16 bg-burgundy-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                   <ShoppingBag class="w-8 h-8 text-white" />

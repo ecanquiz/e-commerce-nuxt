@@ -98,6 +98,8 @@ definePageMeta({
   //middleware: 'auth' // Proteger la página para usuarios autenticados
 });
 
+const { $toast } = useNuxtApp();
+
 // Store
 const authStore = useAuthStore();
 const user = authStore.user;
@@ -256,10 +258,27 @@ const getNotificationLabel = (key: string) => {
   }
 };
 
-const handleSave = (section: string) => {
+/*const handleSave = (section: string) => {
   // Aquí iría la lógica para guardar los datos
   console.log('Guardando datos de:', section);
   editingSection.value = null;
+};*/
+
+const handleSave = async (section: string) => {
+  if (section === 'personal') {
+    try {
+      await authStore.updateProfile({
+        name: personalInfo.value.name
+      });
+      
+      //($toast as any).success('Perfil actualizado correctamente');
+      alert('Perfil actualizado correctamente')
+      editingSection.value = null;
+    } catch (error: any) {
+      alert(error.data?.message || 'Error al actualizar el perfil')
+      //($toast as any).error(error.data?.message || 'Error al actualizar el perfil');
+    }
+  }
 };
 
 const handleAddAddress = () => {
@@ -291,6 +310,67 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
     preferences.value.wineTypes = preferences.value.wineTypes.filter(t => t !== type);
   }
 };
+
+const handleChangePassword = async () => {
+  try {
+    // Validaciones del frontend
+    if (!passwordData.value.currentPassword) {
+      alert('La contraseña actual es requerida');
+      return;
+    }
+
+    if (!passwordData.value.newPassword) {
+      alert('La nueva contraseña es requerida');
+      return;
+    }
+
+    if (passwordData.value.newPassword.length < 8) {
+      alert('La nueva contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+
+    if (passwordData.value.newPassword !== passwordData.value.confirmPassword) {
+      alert('Las nuevas contraseñas no coinciden');
+      return;
+    }
+
+    await authStore.changePassword({
+      currentPassword: passwordData.value.currentPassword,
+      newPassword: passwordData.value.newPassword,
+      confirmPassword: passwordData.value.confirmPassword
+    });
+    
+    alert('Contraseña actualizada correctamente');
+    
+    // Limpiar formulario
+    passwordData.value = {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    };
+    
+  } catch (error: any) {
+    alert(error.data?.message || 'Error al cambiar la contraseña');
+  }
+};
+
+onMounted(async () => {
+  if (authStore.user) {
+    personalInfo.value.name = authStore.user.name;
+    personalInfo.value.email = authStore.user.email;
+  }
+
+  /*console.log('🔍 Debug auth store:', {
+    token: authStore.token,
+    user: authStore.user,
+    isAuthenticated: authStore.isAuthenticated,
+    cookies: document.cookie,
+    localStorage: {
+      auth_token: localStorage.getItem('auth_token'),
+      auth_user: localStorage.getItem('auth_user')
+    }
+  });*/
+});
 </script>
 
 <template>
@@ -310,8 +390,8 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
             </button>
           </div>
           <div class="flex-1">
-            <h1 class="text-3xl font-bold text-gray-900">{{ personalInfo.name }}</h1>
-            <p class="text-gray-600">{{ personalInfo.email }}</p>
+            <h1 class="text-3xl font-bold text-gray-900">{{ authStore.user!.name }}</h1>
+            <p class="text-gray-600">{{ authStore.user!.email }}</p>
             <p class="text-sm text-gray-500 mt-1">
               Miembro desde {{ new Date().getFullYear() }}
             </p>
@@ -681,7 +761,7 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
                       <input
                         :type="showPassword ? 'text' : 'password'"
                         v-model="passwordData.currentPassword"
-                        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
+                        class="w-full text-gray-400 px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
                       />
                       <button
                         type="button"
@@ -701,7 +781,7 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
                       <input
                         :type="showNewPassword ? 'text' : 'password'"
                         v-model="passwordData.newPassword"
-                        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
+                        class="w-full text-gray-400 px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
                       />
                       <button
                         type="button"
@@ -721,7 +801,7 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
                       <input
                         :type="showConfirmPassword ? 'text' : 'password'"
                         v-model="passwordData.confirmPassword"
-                        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
+                        class="w-full text-gray-400 px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy-500"
                       />
                       <button
                         type="button"
@@ -732,8 +812,11 @@ const toggleWineType = (type: string, checked: boolean | undefined) => {
                       </button>
                     </div>
                   </div>
-
-                  <button class="bg-burgundy-600 text-white px-4 py-2 rounded-md hover:bg-burgundy-700 transition-colors">
+                  <button 
+                    @click="handleChangePassword"
+                    :disabled="!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword"
+                    class="bg-burgundy-600 text-white px-4 py-2 rounded-md hover:bg-burgundy-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
                     Actualizar Contraseña
                   </button>
                 </div>
