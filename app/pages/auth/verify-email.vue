@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { CheckCircleIcon, XCircleIcon } from 'lucide-vue-next';
+import { useAuthStore } from '~/store/auth'
 
 definePageMeta({
   ssr: false 
 })
 
 const route = useRoute()
+const authStore = useAuthStore()
 const token = ref(route.query.token as string)
 const status = ref<'loading' | 'success' | 'error'>('loading')
 const message = ref('')
 const retryCount = ref(0)
 const maxRetries = 3
-const retryDelay = 1000 // 1 segundo entre intentos
+const retryDelay = 1000 // 1 second between attempts
 
 onMounted(async () => {
   if (!token.value) {
@@ -26,7 +28,10 @@ onMounted(async () => {
 async function verifyEmailWithRetry() {
   while (retryCount.value < maxRetries && status.value === 'loading') {
     try {
-      await verifyEmail();
+      const result = await authStore.verifyEmail(token.value)
+      status.value = 'success'
+      message.value = result.message || 'Email verificado correctamente'
+      console.log('✅ Verificación exitosa')
       break; // Exit if successful
     } catch (error) {
       retryCount.value++;
@@ -43,26 +48,28 @@ async function verifyEmailWithRetry() {
   }
 }
 
-async function verifyEmail() {
-  console.log(`🔄 Intento ${retryCount.value + 1} de ${maxRetries}`)
+/*async function verifyEmail() {
+  console.log(`🔄 Intento ${retryCount.value + 1} de ${maxRetries}`) 
   
-  // Use $fetch instead of useFetch for better error handling
-  const response = await $fetch(`/api/auth/verify-email?token=${encodeURIComponent(token.value)}`, {
-    retry: 0, // Disable automatic retry of $fetch
-    onRequestError: ({ error }) => {
-      console.error('Error de request:', error)
-      throw error
-    },
-    onResponseError: ({ response }) => {
-      console.error('Error de response:', response._data)
-      throw response._data
-    }
-  })
+  const { $encryptedFetch } = useNuxtApp(); // USE $encryptedFetch with Nitro endpoint
+  const encryptedFetch = $encryptedFetch as (url: string, options?: any) => Promise<any>;
   
-  status.value = 'success'
-  message.value = response.message || 'Email verificado correctamente'
-  console.log('✅ Verificación exitosa')
-}
+  try {
+    const response = await encryptedFetch(`/api/auth/verify-email?token=${encodeURIComponent(token.value)}`, {
+      method: 'GET',
+      retry: 0
+    });
+    
+    status.value = 'success'
+    message.value = response.message || 'Email verificado correctamente'
+    console.log('✅ Verificación exitosa')
+    
+  } catch (error: any) {
+    console.error('Error verificando email:', error)
+    throw error
+  }
+}*/
+
 </script>
 
 <template>

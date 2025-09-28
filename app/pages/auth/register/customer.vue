@@ -147,7 +147,7 @@ const handleSubmit = async () => {
             </div>
 
             <!-- Viñedo Button -->
-            <NuxtLink to="/register/vineyard" class="relative">
+            <NuxtLink to="/auth/register/vineyard" class="relative">
               <div class="relative flex flex-col items-center p-6 bg-gradient-to-br from-gold-50 to-gold-100 border-2 border-gold-200 rounded-xl cursor-pointer hover:from-gold-100 hover:to-gold-200 transition-all duration-300 shadow-lg hover:shadow-xl group">
                 <div class="w-16 h-16 bg-gold-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Grape class="w-8 h-8 text-white" />

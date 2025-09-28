@@ -1,6 +1,11 @@
 //import { defineStore } from 'pinia'
 import { useCartStore } from '~/store/cart';
 import type { User } from '~~/shared/types'
+import {
+  useEncryptedFetch,
+  useEncryptedGet,
+  useEncryptedPost
+} from '~/composables/useEncryptedFetch'
 
 interface RegisterData {
   name: string
@@ -27,25 +32,63 @@ export interface AuthResponse {
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<Omit<User, 'password' | 'createdAt'> | null>(null)
-  const token = useCookie('auth_token')
-  const isAuthenticated = computed(() => !!user.value)
+  const token = ref<string | null>(null)
+  const isAuthenticated = computed(() => !!token.value && !!user.value)
   const _isHydrated = ref(false)
+
+  const setToken = (newToken: string | null) => {
+    token.value = newToken
+    
+    if (import.meta.client) {
+      if (newToken) {
+        // Usar document.cookie directamente para mejor control
+        document.cookie = `auth_token=${newToken}; path=/; max-age=86400; SameSite=Lax` // 24 hours
+        localStorage.setItem('auth_token', newToken) // Backup en localStorage
+      } else {
+        document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+        localStorage.removeItem('auth_token')
+      }
+    }
+  }
 
   // Hydrate from storage
   const hydrateFromStorage = () => {
     if (import.meta.client && !_isHydrated.value) {
-      // Load user from localStorage
+
+      // 1. Intentar desde cookie primero
+      const cookieToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+      
+      // 2. Buscar token en localStorage
+      const localStorageToken = localStorage.getItem('auth_token');
+
+      // 2. Si no hay cookie, intentar localStorage
+      const storedToken = cookieToken || localStorageToken;
+
+      if (storedToken) {
+        token.value = storedToken
+        console.log('✅ Token hydrated from storage')
+      } else {
+        console.log('❌ No token found in storage');
+      }
+
+      // 4. Cargar usuario desde localStorage
       const savedUser = localStorage.getItem('auth_user')
       if (savedUser) {
         try {
           user.value = JSON.parse(savedUser);
           _isHydrated.value = true;
-          console.log('User hydrated from localStorage');
+          console.log('✅ User hydrated from localStorage:', user.value?.email);
         } catch (error) {
-          console.error('Error parsing saved user:', error)
+          console.error('❌ Error parsing saved user:', error);
           localStorage.removeItem('auth_user')
         }
+      } else {
+        console.log('❌ No user found in localStorage');
       }
+      console.log('💧 Hydration complete');
     }
   }
 
@@ -63,6 +106,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const clearAuthData = () => {
     if (import.meta.client) {
+      document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+      localStorage.removeItem('auth_token')
       localStorage.removeItem('auth_user')
     }
     token.value = null
@@ -80,11 +125,13 @@ export const useAuthStore = defineStore('auth', () => {
     
     try {
       console.log('Loading user from API...')
-      const { data, error } = await useFetch<AuthResponse>('/api/auth/user')
+      const { data, error } = await useFetch<AuthResponse>('/api/auth/user',  {
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        }
+      })
       
-      if (error.value) {
-        throw error.value
-      }
+      if (error.value) throw error.value;
 
       if (data.value?.user) {
         user.value = data.value.user
@@ -96,24 +143,34 @@ export const useAuthStore = defineStore('auth', () => {
       return false
     } catch (error: any) {
       console.error('Failed to load user from API:', error)
+      clearAuthData() // Limpiar si el token es inválido
       return false
     }
   }
 
   // Login
   const login = async (credentials: { email: string; password: string }) => { 
-    const { data, error } = await useFetch<AuthResponse>('/api/auth/login', {
+    const { data, error, execute, status } = useEncryptedFetch<AuthResponse>('/api/auth/login', {
       method: 'POST',
-      body: credentials
+      body: credentials,
+      key: `auth-login-${credentials.email}`,
+      immediate: false,
+      onRequest: () => console.log('🔐 Starting encrypted login...'),
+      onResponse: () => console.log('✅ Login response received'),
+      onResponseError: ({ error }) => console.error('🔐 Login failed:', error)
     })
+    
+    await execute() // Run manually
 
-    if (error.value) throw error.value;
+    if (error.value) throw error.value
+    if (!data.value) throw new Error('No data received')
 
-    user.value = data.value?.user as User || null;
-    token.value = data.value?.token || null;
-    saveUserToStorage(user.value);
+    user.value = data.value.user as User || null
+    // token.value = data.value.token || null
+    setToken(data.value?.token || null)
+    saveUserToStorage(user.value)
 
-    // SOLO log migration, no action
+    // Only log migration, no action
     const cartStore = useCartStore();
     console.log('🛒 Cart preserved during login:', cartStore.items.length, 'items');    
     
@@ -124,40 +181,52 @@ export const useAuthStore = defineStore('auth', () => {
     // Implement authentication with Google
   };
 
-  // Register
+// Register
   const register = async (userData: RegisterData) => {
-    const { data, error } = await useFetch<AuthResponse>('/api/auth/register', {
-      method: 'POST',
-      body: userData
+    const { data, error, execute } = useEncryptedPost<AuthResponse>('/api/auth/register', {
+      body: userData,
+      key: `auth-register-${userData.email}`,
+      immediate: false,
+      onRequest: () => console.log('🔐 Starting encrypted registration...'),
+      onResponse: () => console.log('✅ Registration response received')
     })
 
+    await execute()
+
     if (error.value) {
-      throw new Error(error.value.data?.message || 'Registration failed')
+      throw new Error(error.value.message || 'Registration failed')
     }
 
-    user.value = data.value?.user as User || null
-    token.value = data.value?.token || null
+    if (!data.value) throw new Error('No data received')
 
-    // Persist user in localStorage
-    saveUserToStorage(user.value)
-    
-    // Migrate guest cart if it exists
+    user.value = data.value.user
+    // token.value = data.value.token
+    setToken(data.value?.token || null);
+    saveUserToStorage(user.value)  
+
     const cartStore = useCartStore()
-    await cartStore.migrateGuestCart()
+    console.log('🛒 Cart preserved during register:', cartStore.items.length, 'items')
 
     return data.value
   }
 
-
   // Logout
   const logout = async () => {
     try {
-      await useFetch('/api/auth/logout', { 
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token.value}`
-        }
-      })
+      if (token.value) {
+        const { execute } = useEncryptedFetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token.value}`
+          },
+          key: `auth-logout-${Date.now()}`,
+          immediate: false,
+          onRequest: () => console.log('🔐 Starting encrypted logout...'),
+          onResponse: () => console.log('✅ Logout completed on server')
+        })
+        
+        await execute()
+      }
     } catch (error) {
       console.error('Logout error:', error)
       // We continue with the local logout even if there is an error on the server
@@ -170,16 +239,57 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // Verify email
+  const verifyEmail = async (token: string): Promise<{ message: string }> => {
+    try {
+      const { data, error, execute } = useEncryptedGet<{ message: string }>(
+        `/api/auth/verify-email?token=${encodeURIComponent(token)}`,
+        {
+          key: `auth-verify-email-${token}`,
+          immediate: false,
+          onRequest: () => console.log('🔐 Verifying email...'),
+          onResponse: () => console.log('✅ Email verification completed'),
+          onResponseError: ({ error }) => console.error('🔐 Email verification failed:', error)
+        }
+      )
+
+    await execute()
+
+    if (error.value) {
+      throw new Error(error.value.message || 'Error verifying email')
+    }
+
+    if (!data.value) {
+      throw new Error('No response received from server')
+    }
+
+    return data.value
+
+    }
+    catch (error){
+      console.error('Verify email error:', error);
+      throw error;
+    }
+  }
+
   const forgotPassword = async (email: string): Promise<{ message: string }> => {
     try {
-      const { data, error } = await useFetch('/api/auth/forgot-password', {
-        method: 'POST',
-        body: { email }
+      const { data, error, execute } = useEncryptedPost<{ message: string }>('/api/auth/forgot-password', {
+        body: { email },
+        key: `auth-forgot-password-${email}`,
+        immediate: false,
+        onRequest: () => console.log('🔐 Requesting password reset...'),
+        onResponse: () => console.log('✅ Password reset request sent'),
+        onResponseError: ({ error }) => console.error('🔐 Password reset request failed:', error)
       })
 
+      await execute()
+
       if (error.value) {
-        throw new Error(error.value.data?.message || 'Error requesting password reset')
+        throw new Error(error.value.message || 'Error requesting password reset')
       }
+
+      if (!data.value) throw new Error('No data received')
 
       return data.value as { message: string };
     } catch (error) {
@@ -190,14 +300,22 @@ export const useAuthStore = defineStore('auth', () => {
 
   const resetPassword = async (token: string, newPassword: string): Promise<{ message: string }> => {
     try {
-      const { data, error } = await useFetch('/api/auth/reset-password', {
-        method: 'POST',
-        body: { token, newPassword }
+      const { data, error, execute } = useEncryptedPost<{ message: string }>('/api/auth/reset-password', {
+        body: { token, newPassword },
+        key: `auth-reset-password-${token}`,
+        immediate: false,
+        onRequest: () => console.log('🔐 Resetting password...'),
+        onResponse: () => console.log('✅ Password reset completed'),
+        onResponseError: ({ error }) => console.error('🔐 Password reset failed:', error)
       })
 
+      await execute()
+
       if (error.value) {
-        throw new Error(error.value.data?.message || 'Error resetting password')
+        throw new Error(error.value.message || 'Error resetting password')
       }
+
+      if (!data.value) throw new Error('No data received')
 
       return data.value as { message: string }
     } catch (error) {
@@ -206,28 +324,146 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // Initialize from storage
-  if (import.meta.client) {
-    //hydrateFromStorage() <--- This is not needed here anymore
-    
-    // Verify token on page load
-    if (token.value && !user.value) {
-      loadUser()
+  const fetchProfile = async ()=> {
+    try {
+      if (!token.value) throw new Error('No token available');
+  
+        const { data, error, execute } = useEncryptedFetch<any>('/api/auth/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token.value}`
+          },
+          key: `auth-profile-${Date.now()}`,
+          immediate: false,
+          onRequest: () => console.log('🔐 Fetching profile...'),
+          onResponse: () => console.log('✅ Profile fetched successfully')
+        })
+
+        await execute()
+
+        if (error.value) {
+          throw new Error(error.value.message || 'Error fetching profile')
+        }
+
+        if (!data.value) throw new Error('No data received')
+
+        user.value = data.value
+        return data.value
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      throw error;
+    }
+  }
+
+  const updateProfile = async(profileData: { name: string }) => {
+    try {
+      if (!token.value){
+        console.error('🔐 [Store] Token not available:', token.value)
+        console.error('🔐 [Store] User state:', user.value)
+        console.error('🔐 [Store] Is authenticated:', isAuthenticated.value)
+        throw new Error('No token available')
+      }
+
+
+        // Verificar el token JWT
+  const tokenParts = token.value.split('.')
+  if (tokenParts.length === 3) {
+    try {
+      const payload = JSON.parse(atob(tokenParts[1] as any))
+      console.log('🔐 [Store] JWT payload:', payload)
+      console.log('🔐 [Store] JWT expires:', new Date(payload.exp * 1000))
+      console.log('🔐 [Store] JWT is expired?', new Date() > new Date(payload.exp * 1000))
+    } catch (e) {
+      console.error('🔐 [Store] JWT parsing error:', e)
+    }
+  }
+
+      console.log('🔐 [Store] Token available, updating profile...')
+      console.log('🔐 [Store] Token length:', token.value.length)
+      console.log('🔐 [Store] Authorization header:', `Bearer ${token.value}`)
+
+      const { data, error, execute } = useEncryptedFetch<any>('/api/auth/profile', {
+        method: 'PUT',
+        body: profileData,
+        headers: {
+          Authorization: token.value // Already includes "Bearer" if necessary
+        },
+        key: `auth-update-profile-${Date.now()}`,
+        immediate: false,
+        onRequest: () => console.log('🔐 Updating profile...'),
+        onResponse: () => console.log('✅ Profile updated successfully')
+      })
+
+      await execute()
+
+      if (error.value) {
+        throw new Error(error.value.message || 'Error updating profile')
+      }
+
+      if (!data.value) throw new Error('No data received')
+
+      user.value = { ...user.value, ...data.value }
+      saveUserToStorage(user.value)
+
+      return data.value
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  }
+
+  const changePassword = async (passwordData: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Promise<{ message: string }> => {
+    try {
+      if (!token.value) throw new Error('No hay token disponible')
+
+      const { data, error, execute } = useEncryptedFetch<{ message: string }>('/api/auth/profile-password', {
+        method: 'PUT',
+        body: passwordData,
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        },
+        key: `auth-change-password-${Date.now()}`,
+        immediate: false,
+        onRequest: () => console.log('🔐 Changing password...'),
+        onResponse: () => console.log('✅ Password changed successfully')
+      })
+
+      await execute()
+
+      if (error.value) {
+        throw new Error(error.value.message || 'Error changing password')
+      }
+
+      if (!data.value) throw new Error('No data received')
+
+      return data.value
+    } catch (error) {
+      console.error('Error changing password:', error);
+      throw error;
     }
   }
 
   return { 
     user,
     token, // EXPOSE token for the plugin
-    isAuthenticated, 
+    isAuthenticated,
+    _isHydrated,
     login,
     loginWithGoogle,
     logout, 
     loadUser,
     register,
+    verifyEmail,
     forgotPassword,
     resetPassword,
     hydrateFromStorage,
-    clearAuthData
+    clearAuthData,
+    fetchProfile,
+    updateProfile,
+    changePassword
   }
 });
