@@ -1,8 +1,8 @@
-import { productService } from '~~/server/services'
+import { serviceService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
-    const products = await productService.getAllProducts()
+    const products = await serviceService.getAllServices()
     return products
   } catch (error: any) {
     throw createError({

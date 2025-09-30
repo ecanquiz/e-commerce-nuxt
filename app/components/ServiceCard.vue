@@ -4,7 +4,6 @@ import type { Service } from '~~/shared/types';
 
 interface Props {
   service: Service;
-  vineyardName: string;
 }
 
 const props = defineProps<Props>();
