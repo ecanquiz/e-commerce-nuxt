@@ -55,7 +55,8 @@ export default defineNuxtConfig({
     '~/plugins/01-encryption.client.ts',
     '~/plugins/02-pinia-history.ts',
     '~/plugins/03-auth-init.ts',
-    '~/plugins/04-product-init.ts'
+    '~/plugins/04-product-init.ts',
+    '~/plugins/05-service-init.ts'
   ],
   // middleware: [ 'auth.global', 'vineyards.global' ],
   i18n: {

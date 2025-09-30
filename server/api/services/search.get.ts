@@ -1,9 +1,9 @@
-import { productService } from '~~/server/services'
+import { serviceService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event)
-    const results = await productService.searchProducts(
+    const results = await serviceService.searchServices(
       query.q as string,
       query.category as string | undefined
     )
