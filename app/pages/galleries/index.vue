@@ -5,9 +5,16 @@ import GalleryModal from './components/GalleryModal.vue';
 import VideoModal from './components/VideoModal.vue';
 
 const route = useRoute()
+const gallery = ref([] as string[])
 //const vineyard = ref<Vineyard>();
 //const storeVineyardsStore = useVineyardsStore();
 //vineyard.value = storeVineyardsStore.getVineyardById(route.params.id as string);
+
+gallery.value = [
+  'https://images.pexels.com/photos/1543327/pexels-photo-1543327.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'https://images.pexels.com/photos/10039989/pexels-photo-10039989.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=800'
+]
 
 const galleryModal = reactive({
   isOpen: false,
@@ -50,13 +57,15 @@ const closeVideo = () => {
 </script>
 
 <template>
-  <div>
-    <!--GalleryTab
-      v-if="vineyard" 
-      :vineyard="vineyard"
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class=" gap-6">
+    <GalleryTab
+      v-if="gallery" 
+      :gallery="gallery"
       :open-gallery="openGallery"
       :open-video="openVideo"
-    /-->
+    />
 
     <GalleryModal
       v-if="galleryModal.isOpen"
@@ -76,5 +85,9 @@ const closeVideo = () => {
       @close="closeVideo"
     />
   </div>
+    </div>
+
+      </div>
+
 
 </template>

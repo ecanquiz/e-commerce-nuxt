@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight, Play } from 'lucide-vue-next';
-import type { Service, Vineyard } from '~~/shared/types';
 
 const props = defineProps<{
-  vineyard: Vineyard;
+  gallery: string[];
   openGallery: (images: string[], startIndex: number, title: string) => void;
   openVideo: (videoUrl: string, title: string) => void;
 }>();
@@ -11,13 +10,13 @@ const props = defineProps<{
 const currentIndex = ref(0);
 const serviceImages = ref(new Map<string, number>());
 
-const hasServiceImages = computed(() => 
+/*const hasServiceImages = computed(() => 
   props.vineyard.services.some(service => service.images.length > 0)
 );
 
 const servicesWithImages = computed(() => 
   props.vineyard.services.filter(service => service.images.length > 0)
-);
+);*/
 
 const nextImage = () => {
   currentIndex.value = (currentIndex.value + 1) % props.vineyard.gallery.length;
@@ -25,7 +24,7 @@ const nextImage = () => {
 
 const prevImage = () => {
   currentIndex.value = currentIndex.value === 0 
-    ? props.vineyard.gallery.length - 1 
+    ? props.gallery.length - 1 
     : currentIndex.value - 1;
 };
 
@@ -48,26 +47,26 @@ const setServiceImage = (service: Service, index: number) => {
     
     <!-- Galería Principal del Viñedo -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-bold text-gray-900">Instalaciones del Viñedo</h3>
+      <h3 class="mb-4 text-xl font-bold text-gray-900">Instalaciones</h3>
       <div class="relative">
         <div class="relative overflow-hidden bg-gray-100 rounded-lg h-80">
           <img
-            :src="vineyard.gallery[currentIndex] || vineyard.gallery[0]"
+            :src="gallery[currentIndex] || gallery[0]"
             :alt="`Instalaciones ${currentIndex + 1}`"
             class="object-cover w-full h-full cursor-pointer"
-            @click="openGallery(vineyard.gallery, currentIndex, 'Instalaciones del Viñedo')"
+            @click="openGallery(gallery, currentIndex, 'Instalaciones del Viñedo')"
           />
           
           <!-- Navigation Arrows -->
           <button
-            v-if="vineyard.gallery.length > 1"
+            v-if="gallery.length > 1"
             @click="prevImage"
             class="absolute p-2 text-white transition-colors transform -translate-y-1/2 bg-black/50 rounded-full left-4 top-1/2 hover:bg-black/70"
           >
             <ChevronLeft class="w-6 h-6" />
           </button>
           <button
-            v-if="vineyard.gallery.length > 1"
+            v-if="gallery.length > 1"
             @click="nextImage"
             class="absolute p-2 text-white transition-colors transform -translate-y-1/2 bg-black/50 rounded-full right-4 top-1/2 hover:bg-black/70"
           >
@@ -76,12 +75,12 @@ const setServiceImage = (service: Service, index: number) => {
 
           <!-- Image Counter -->
           <div class="absolute px-3 py-1 text-sm text-white bg-black/50 rounded bottom-4 right-4">
-            {{ currentIndex + 1 }} / {{ vineyard.gallery.length }}
+            {{ currentIndex + 1 }} / {{ gallery.length }}
           </div>
 
           <!-- Maximize Button -->
           <button
-            @click="openGallery(vineyard.gallery, currentIndex, 'Instalaciones del Viñedo')"
+            @click="openGallery(gallery, currentIndex, 'Instalaciones del Viñedo')"
             class="absolute px-3 py-1 text-sm text-white transition-colors bg-black/50 rounded bottom-4 left-4 hover:bg-black/70"
           >
             Ver en pantalla completa
@@ -89,9 +88,9 @@ const setServiceImage = (service: Service, index: number) => {
         </div>
 
         <!-- Thumbnail Navigation -->
-        <div v-if="vineyard.gallery.length > 1" class="flex mt-4 space-x-2 overflow-x-auto pb-2">
+        <div v-if="gallery.length > 1" class="flex mt-4 space-x-2 overflow-x-auto pb-2">
           <button
-            v-for="(image, index) in vineyard.gallery"
+            v-for="(image, index) in gallery"
             :key="index"
             @click="currentIndex = index"
             class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors"
@@ -108,7 +107,7 @@ const setServiceImage = (service: Service, index: number) => {
     </div>
     
     <!-- Galerías de Servicios -->
-    <div v-if="hasServiceImages" class="mb-12">
+    <!--div v-if="hasServiceImages" class="mb-12">
       <h3 class="mb-6 text-xl font-bold text-gray-900">Galerías de Servicios</h3>
       <div class="space-y-8">
         <div 
@@ -171,10 +170,10 @@ const setServiceImage = (service: Service, index: number) => {
           </div>
         </div>
       </div>
-    </div>
+    </div-->
     
     <!-- Videos -->
-    <div v-if="vineyard.videos.length > 0">
+    <!--div v-if="vineyard.videos.length > 0">
       <h3 class="mb-6 text-xl font-bold text-gray-900">Videos</h3>
       <div class="bg-white rounded-lg shadow-sm p-6">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -191,7 +190,7 @@ const setServiceImage = (service: Service, index: number) => {
           </div>
         </div>
       </div>
-    </div>
+    </div-->
   </div>
 </template>
 
