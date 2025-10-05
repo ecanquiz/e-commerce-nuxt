@@ -177,7 +177,7 @@ const handleSubmit = async () => {
         <p class="mt-4 text-sm text-gray-600">
           {{ $t('auth.register.alreadyHaveAccount') }}
           <NuxtLink
-            to="/login"
+            to="/auth/login"
             class="font-medium text-burgundy-600 hover:text-burgundy-500 ml-1"
           >
             {{ $t('navigation.login') }}
