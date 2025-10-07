@@ -33,15 +33,51 @@ const handleReviewSubmit = (reviewData: any) => {
   console.log('Nueva reseña enviada:', reviewData);
   reviewModal.value = false;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 <template>
+    <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+
   <div class="space-y-8">
-    <!--ReviewsTab
-      v-if="vineyard"
-      :vineyard="vineyard"
+    <ReviewsTab
       :open-gallery="openGallery"
       @open-review="reviewModal = true"
-    /-->
+    />
 
     <GalleryModal
       v-if="galleryModal.isOpen"
@@ -60,4 +96,7 @@ const handleReviewSubmit = (reviewData: any) => {
       @submit="handleReviewSubmit"
     /-->
   </div>
+  </div>
+  </div>
+
 </template>
