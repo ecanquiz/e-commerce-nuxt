@@ -114,16 +114,16 @@ const canRedo = computed(() => (cart.future?.length || 0) > 0)
             <UButton
               color="error"
               variant="outline"
-              @click="undo()" 
-             :disabled="!canUndo"
+              :disabled="!canUndo" 
+             @click="undo()"
             >
               {{ $t('common.undo') }}
             </UButton>
             <UButton
               color="error"
               variant="outline" 
-              @click="redo()" 
-             :disabled="!canRedo"
+              :disabled="!canRedo" 
+             @click="redo()"
             >
               {{ $t('common.redo') }}
             </UButton>
@@ -137,9 +137,9 @@ const canRedo = computed(() => (cart.future?.length || 0) > 0)
 
         <!-- Mobile Menu Button -->
         <UButton
-          @click="toggleMobileMenu"
           class="md:hidden p-2 text-gray-700 hover:text-burgundy-600"
           aria-label="Toggle mobile menu"
+          @click="toggleMobileMenu"
         >
           <Icon :name="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />
         </UButton>

@@ -50,8 +50,7 @@ const closeVideoModal = () => {
 const getYouTubeVideoId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
-  // @ts-ignore
-  return (match && match[2].length === 11) ? match[2] : null;
+  return (match && match[2]?.length === 11) ? match[2] : null;
 };
 </script>
 
@@ -63,7 +62,7 @@ const getYouTubeVideoId = (url: string) => {
         :src="service.images[selectedImage]"
         :alt="service.name"
         class="w-full h-full object-cover"
-      />
+      >
       <div class="absolute top-4 left-4">
         <span class="px-3 py-1 rounded-full text-sm font-medium" :class="categoryColors[service.category]">
           {{ categoryIcons[service.category] }} {{ service.name }}
@@ -73,14 +72,14 @@ const getYouTubeVideoId = (url: string) => {
         <button
           v-for="(_, index) in service.images"
           :key="index"
-          @click="selectedImage = index"
           class="w-3 h-3 rounded-full transition-colors"
           :class="index === selectedImage ? 'bg-white' : 'bg-white/50'"
+          @click="selectedImage = index"
         />
       </div>
       <button
-        @click="showGallery = true"
         class="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm hover:bg-black/70 transition-colors flex items-center space-x-1"
+        @click="showGallery = true"
       >
         <span>Ver galería ({{ service.images.length }})</span>
       </button>
@@ -121,7 +120,7 @@ const getYouTubeVideoId = (url: string) => {
             :key="index"
             class="flex items-center text-sm text-gray-600"
           >
-            <div class="w-2 h-2 bg-burgundy-600 rounded-full mr-2"></div>
+            <div class="w-2 h-2 bg-burgundy-600 rounded-full mr-2"/>
             {{ feature }}
           </div>
           <div v-if="service.features.length > 3" class="text-sm text-gray-500 mt-1">
@@ -157,15 +156,15 @@ const getYouTubeVideoId = (url: string) => {
       <div class="flex space-x-3">
         <button
           v-if="service.calComLink"
-          @click="handleReservation"
           class="flex-1 bg-burgundy-600 text-white py-3 px-4 rounded-lg hover:bg-burgundy-700 transition-colors font-semibold flex items-center justify-center"
+          @click="handleReservation"
         >
           <Calendar class="h-4 w-4 mr-2" />
           Reservar Ahora
         </button>
         <button
-          @click="showGallery = true"
           class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          @click="showGallery = true"
         >
           Ver Más
         </button>
@@ -177,8 +176,8 @@ const getYouTubeVideoId = (url: string) => {
       <div class="relative w-full h-full flex items-center justify-center p-4">
         <!-- Botón Cerrar -->
         <button
-          @click="showGallery = false"
           class="absolute top-4 right-4 z-10 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition-colors"
+          @click="showGallery = false"
         >
           <X class="h-6 w-6" />
         </button>
@@ -197,21 +196,21 @@ const getYouTubeVideoId = (url: string) => {
             :src="service.images[selectedImage]"
             :alt="`${service.name} ${selectedImage + 1}`"
             class="max-w-full max-h-full object-contain"
-          />
+          >
 
           <!-- Controles de Navegación -->
           <button
             v-if="service.images.length > 1"
-            @click="selectedImage = selectedImage === 0 ? service.images.length - 1 : selectedImage - 1"
             class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 transition-colors"
+            @click="selectedImage = selectedImage === 0 ? service.images.length - 1 : selectedImage - 1"
           >
             <ChevronLeft class="h-6 w-6" />
           </button>
           
           <button
             v-if="service.images.length > 1"
-            @click="selectedImage = (selectedImage + 1) % service.images.length"
             class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 transition-colors"
+            @click="selectedImage = (selectedImage + 1) % service.images.length"
           >
             <ChevronRight class="h-6 w-6" />
           </button>
@@ -223,15 +222,15 @@ const getYouTubeVideoId = (url: string) => {
             <button
               v-for="(image, index) in service.images"
               :key="index"
-              @click="selectedImage = index"
               class="flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-colors"
               :class="index === selectedImage ? 'border-white' : 'border-transparent hover:border-gray-300'"
+              @click="selectedImage = index"
             >
               <img
                 :src="image"
                 :alt="`Miniatura ${index + 1}`"
                 class="w-full h-full object-cover"
-              />
+              >
             </button>
           </div>
         </div>
@@ -258,8 +257,8 @@ const getYouTubeVideoId = (url: string) => {
         <div class="flex items-center justify-between p-4 border-b">
           <h3 class="text-xl font-bold text-gray-900">{{ service.name }} - Video</h3>
           <button
-            @click="closeVideoModal"
             class="text-gray-500 hover:text-gray-700 transition-colors"
+            @click="closeVideoModal"
           >
             <X class="h-6 w-6" />
           </button>
@@ -275,7 +274,7 @@ const getYouTubeVideoId = (url: string) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
             class="w-full h-full"
-          ></iframe>
+          />
           <div v-else class="w-full h-full bg-gray-900 flex items-center justify-center">
             <div class="text-center text-white">
               <Play class="h-16 w-16 mx-auto mb-4" />

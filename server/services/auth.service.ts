@@ -1,6 +1,6 @@
 import generateId from '../utils/generateId';
 
-export interface AuthService {  
+export interface AuthService {
   login(payload: any): Promise<{ user: any; token: string }>;
   register(userData: any): Promise<{ user: any; token: string }>;
   //getUser(userId: string): Promise<any>;
@@ -24,7 +24,7 @@ export class MockAuthService implements AuthService {
   async login(payload: any) {
     let email: string
     let password: string
-    
+
     if (payload.encData) {
       email = 'test@example.com'
       password = 'password'
@@ -32,9 +32,9 @@ export class MockAuthService implements AuthService {
       email = payload.email
       password = payload.password
     }
-    
+
     const { findUserByEmail, validatePassword } = await import('~~/server/models/user.model')
-    
+
     const user = findUserByEmail(email)
     if (!user || !validatePassword(user, password)) {
       throw createError({
@@ -58,14 +58,14 @@ export class MockAuthService implements AuthService {
 
   async register(userData: any) {
     const { mockUsers } = await import('~~/server/models/user.model')
-    
+
     // Check if user already exists
     if (mockUsers.find(u => u.email === userData.email)) {
       throw createError({
         statusCode: 400,
         message: 'User already exists'
       })
-    }    
+    }
 
     // Create a new user (no password hashing for now, like in your mock)
     const newUser = {
@@ -75,7 +75,7 @@ export class MockAuthService implements AuthService {
     }
 
     mockUsers.push(newUser)
-    
+
     // Simulate JWT token
     const token = `mock-jwt-token.${newUser.id}`
 
@@ -110,14 +110,14 @@ export class MockAuthService implements AuthService {
   }*/
 
   async logout(token: string): Promise<{ success: boolean; message: string }> {
-    return { 
-      success: true, 
-      message: 'Logout successful (mock)' 
+    return {
+      success: true,
+      message: 'Logout successful (mock)'
     }
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-      return { message: 'Email verified successfully (mock)' }
+    return { message: 'Email verified successfully (mock)' }
   }
 
   async forgotPassword(payload: any): Promise<void> {
@@ -134,14 +134,14 @@ export class MockAuthService implements AuthService {
     //return user;
     const { findUserById } = await import('~~/server/models/user.model')
     const user = findUserById(userId)
-    
+
     if (!user) {
       throw createError({
         statusCode: 404,
         message: 'User not found'
       })
     }
-    
+
     return {
       id: user.id,
       name: user.name,
@@ -149,11 +149,11 @@ export class MockAuthService implements AuthService {
       role: user.role
     }
   }
-  
+
   async updateProfile(authHeader: string, profileData: any): Promise<any> {
     const userId = authHeader.split('.')[1]; // Asumiendo formato mock
     const { mockUsers } = await import('~~/server/models/user.model');
-    
+
     const userIndex = mockUsers.findIndex(u => u.id === userId);
     if (userIndex === -1) {
       throw createError({
@@ -164,7 +164,7 @@ export class MockAuthService implements AuthService {
 
     // Update only the name (as you want)
     mockUsers[userIndex].name = profileData.name;
-    
+
     return {
       id: mockUsers[userIndex].id,
       name: mockUsers[userIndex].name,
@@ -176,7 +176,7 @@ export class MockAuthService implements AuthService {
   async changePassword(authHeader: string, passwordData: any): Promise<{ message: string }> {
     // Simular delay de red
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Validaciones básicas en el mock
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       throw createError({
@@ -209,7 +209,7 @@ export class NestAuthService implements AuthService {
     console.log('🔐 [NestAuthService] URL:', `${this.baseUrl}/auth/login`)
     console.log('🔐 [NestAuthService] Payload type:', typeof payload)
     console.log('🔐 [NestAuthService] Payload keys:', Object.keys(payload))
-    
+
     try {
       const response = await $fetch(`${this.baseUrl}/auth/login`, {
         method: 'POST',
@@ -218,7 +218,7 @@ export class NestAuthService implements AuthService {
           'Content-Type': 'application/json'
         }
       })
-      
+
       console.log('✅ [NestAuthService] Nest response received')
       return response as unknown as Promise<{ user: any; token: string }>
     } catch (error: any) {
@@ -233,7 +233,7 @@ export class NestAuthService implements AuthService {
     console.log('🔐 [Nitro→Nest] Passing through register request')
     console.log('🔐 [Nitro→Nest] Payload type:', typeof payload)
     console.log('🔐 [Nitro→Nest] Payload keys:', payload ? Object.keys(payload) : 'null')
-    
+
     const response = await $fetch(`${this.baseUrl}/auth/register`, {
       method: 'POST',
       body: payload,
@@ -241,9 +241,9 @@ export class NestAuthService implements AuthService {
         'Content-Type': 'application/json'
       }
     })
-    
+
     console.log('✅ [Nitro→Nest] Register response received from Nest')
-    
+
     // Devolver la respuesta exacta de Nest (encriptada o no)
     return response as unknown as Promise<{ user: any; token: string }>
   }
@@ -255,19 +255,19 @@ export class NestAuthService implements AuthService {
 
   async logout(token: string): Promise<{ success: boolean; message: string }> {
     console.log('🔐 [Nitro→Nest] Passing through logout request')
-    
+
     try {
       const response = await $fetch(`${this.baseUrl}/auth/logout`, {
         method: 'POST',
-        headers: { 
+        headers: {
           Authorization: token //Already includes "Bearer "
         }
       })
-      
+
       console.log('✅ [Nitro→Nest] Logout successful')
-      return { 
-        success: true, 
-        message: (response as any).message || 'Logout successful' 
+      return {
+        success: true,
+        message: (response as any).message || 'Logout successful'
       }
     } catch (error: any) {
       console.error('❌ [Nitro→Nest] Logout error:', error)
@@ -279,7 +279,7 @@ export class NestAuthService implements AuthService {
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
-    try {      
+    try {
       const response = await $fetch(`${this.baseUrl}/auth/verify-email?token=${encodeURIComponent(token)}`, {
         method: 'GET',
         headers: {
@@ -287,9 +287,9 @@ export class NestAuthService implements AuthService {
           'Accept': 'application/json',
         }
       });
-      
+
       return response as { message: string };
-      
+
     } catch (error: any) {
       console.error('[NestAuthService] Error calling NestJS:', error); // statusCode, message, data
       throw error;
@@ -298,14 +298,14 @@ export class NestAuthService implements AuthService {
 
   async forgotPassword(payload: any): Promise<void> {
     console.log('🔐 [Nitro→Nest] Passing through forgot password request')
-    
+
     // Pasar el payload completo (puede estar encriptado)
     await $fetch(`${this.baseUrl}/auth/forgot-password`, {
       method: 'POST',
       body: payload,
       headers: { 'Content-Type': 'application/json' }
     })
-    
+
     console.log('✅ [Nitro→Nest] Forgot password request completed')
   }
 
@@ -313,17 +313,17 @@ export class NestAuthService implements AuthService {
     console.log('🔐 [Nitro→Nest] Reset password payload:', payload)
     console.log('🔐 [Nitro→Nest] Payload type:', typeof payload)
     console.log('🔐 [Nitro→Nest] Payload keys:', Object.keys(payload))
-    
+
     try {
       const response = await $fetch(`${this.baseUrl}/auth/reset-password`, {
         method: 'POST',
         body: payload,
         headers: { 'Content-Type': 'application/json' }
       })
-      
+
       console.log('✅ [Nitro→Nest] Reset password successful:', response)
       return response as { message: string }
-      
+
     } catch (error: any) {
       console.error('❌ [Nitro→Nest] Reset password error details:')
       console.error('❌ Status:', error.statusCode)
@@ -340,9 +340,9 @@ export class NestAuthService implements AuthService {
     if (authHeader && !authHeader.startsWith('Bearer ')) {
       finalAuthHeader = `Bearer ${authHeader}`
     }
-    
+
     const response = await $fetch(`${this.baseUrl}/auth/profile`, {
-      headers: { 
+      headers: {
         Authorization: finalAuthHeader
       }
     })
@@ -354,24 +354,24 @@ export class NestAuthService implements AuthService {
     console.log('🔐 [Nitro→Nest] Auth header received:', authHeader)
     console.log('🔐 [Nitro→Nest] Auth header type:', typeof authHeader)
     console.log('🔐 [Nitro→Nest] Auth header first 50 chars:', authHeader?.substring(0, 50))
-    
+
     console.log('🔐 [Nitro→Nest] Body received:', body)
     console.log('🔐 [Nitro→Nest] Body type:', typeof body)
     console.log('🔐 [Nitro→Nest] Body keys:', body ? Object.keys(body) : 'null')
 
     // Determinar qué enviar a Nest
-    let requestBody = body
-      // 🔥 AGREGAR "Bearer" SI NO LO TIENE
+    const requestBody = body
+    // 🔥 AGREGAR "Bearer" SI NO LO TIENE
     let finalAuthHeader = authHeader
     if (authHeader && !authHeader.startsWith('Bearer ')) {
       console.log('🔐 [Nitro→Nest] Adding Bearer prefix to auth header')
       finalAuthHeader = `Bearer ${authHeader}`
     }
-    
-    console.log('🔐 [Nitro→Nest] Final auth header:', finalAuthHeader)
-    
 
-    
+    console.log('🔐 [Nitro→Nest] Final auth header:', finalAuthHeader)
+
+
+
     // Si los datos están encriptados, necesitamos manejarlo diferente
     if (body?.encData) {
       console.log('🔐 [Nitro→Nest] Data is encrypted, passing as-is to Nest')
@@ -379,30 +379,30 @@ export class NestAuthService implements AuthService {
     } else {
       console.log('🔐 [Nitro→Nest] Data is not encrypted')
     }
-    
+
     try {
       console.log('🔐 [Nitro→Nest] Making request to Nest...')
       console.log('🔐 [Nitro→Nest] URL:', `${this.baseUrl}/auth/profile`)
-      
+
       const response = await $fetch(`${this.baseUrl}/auth/profile`, {
         method: 'PUT',
         body: requestBody,
-        headers: { 
+        headers: {
           Authorization: finalAuthHeader,
           'Content-Type': 'application/json'
         }
       })
-      
+
       console.log('✅ [Nitro→Nest] Nest response:', response)
       return response
-      
+
     } catch (error: any) {
       console.error('❌ [Nitro→Nest] Nest request failed:')
       console.error('❌ Status:', error.statusCode)
       console.error('❌ Message:', error.message)
       console.error('❌ Data:', error.data)
       console.error('❌ Full error:', error)
-      
+
       throw error
     }
   }
@@ -416,11 +416,11 @@ export class NestAuthService implements AuthService {
 
     console.log('🔐 [Nitro→Nest] Change password - Auth header:', finalAuthHeader)
     console.log('🔐 [Nitro→Nest] Change password - Body:', passwordData)
-    
+
     const response = await $fetch(`${this.baseUrl}/auth/profile/password`, {
       method: 'PUT',
       body: passwordData,
-      headers: { 
+      headers: {
         Authorization: finalAuthHeader,
         'Content-Type': 'application/json'
       }
@@ -434,13 +434,13 @@ export class NestAuthService implements AuthService {
     if (typeof payload === 'string') {
       return { authHeader: payload, body: undefined }
     }
-    
+
     // If the payload comes with structure { authHeader, body }
     // (It can pass with encrypted data)
     if (payload.authHeader && payload.body) {
       return { authHeader: payload.authHeader, body: payload.body }
     }
-    
+
     // By default, we assume the payload is the body and the auth header is separate.
     return { authHeader: payload, body: payload }
   }
