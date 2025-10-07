@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { Star, ThumbsUp, MessageSquare, MoreHorizontal } from 'lucide-vue-next';
-import type { Vineyard } from '~~/shared/types';
 
 const props = defineProps<{
-  vineyard: Vineyard;
   openGallery: (images: string[], startIndex: number, title: string) => void;
 }>();
 
@@ -44,7 +42,7 @@ const formatDate = (date: Date) => {
     <div class="p-6 bg-white rounded-lg shadow-sm">
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <!-- Calificación Principal -->
-        <div class="text-center">
+        <!-- TODOdiv class="text-center">
           <div class="mb-2 text-6xl font-bold text-burgundy-600">
             {{ vineyard.rating }}
           </div>
@@ -61,7 +59,7 @@ const formatDate = (date: Date) => {
           <p class="text-gray-600">
             Basado en {{ vineyard.reviewCount }} reseñas
           </p>
-        </div>
+        </div-->
 
         <!-- Distribución de Calificaciones -->
         <div class="space-y-3">
