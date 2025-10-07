@@ -1,6 +1,5 @@
 import type { ApiUser, UserListResponse } from '~~/shared/types';
 import generateId from '../utils/generateId';
-import { useRequestHeaders } from 'nuxt/app';
 
 // Tipo de usuario tal como se devuelve por la API (snake_case + campos opcionales)
 export interface UserService {
@@ -95,7 +94,7 @@ export class NestUserService implements UserService {
     private baseUrl: string
 
     constructor() {
-        this.baseUrl = process.env.NEST_API_URL ?? 'http://localhost:3001'
+        this.baseUrl = import.meta.env.NEST_API_URL ?? 'http://localhost:3001'
     }
 
     async getUser(_userId: string): Promise<User | null> {
@@ -141,7 +140,7 @@ export class NestUserService implements UserService {
             } as UserListResponse;
         } catch (error) {
             console.error('Error fetching users from Nest API:', error);
-            throw(error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
+            throw (error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
         }
     }
 
