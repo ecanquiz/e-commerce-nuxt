@@ -7,8 +7,28 @@ export interface User {
   vineyardId?: string;
   createdAt: string;
 }
-
-export interface AuthUser extends Omit<User, 'password'> {}
+export interface ApiUser {
+  id: string;
+  email: string;
+  // password is intentionally omitted from API responses for security
+  name?: string;
+  is_email_verified?: boolean;
+  email_verification_token?: string | null;
+  password_reset_token?: string | null;
+  password_reset_expires?: string | null;
+  avatar?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
+export interface UserListResponse {
+  users: ApiUser[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+export interface AuthUser extends Omit<User, 'password'> { }
 
 export interface Product {
   id: string;
@@ -122,12 +142,12 @@ export interface AuthContext {
   loading: boolean;
 }
 
-export type LanguageCode =  "en" | "es" | "pt"
+export type LanguageCode = "en" | "es" | "pt"
 
 export interface Language {
-    code: LanguageCode;
-    name: string;
-    flag: string;
+  code: LanguageCode;
+  name: string;
+  flag: string;
 }
 
 
@@ -175,7 +195,7 @@ export interface OrderTodo {
   timeline: TimelineStep[];
 }
 
-export interface CarouselSlides{
+export interface CarouselSlides {
   id: string;
   image: string;
   title: string;
