@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface SimpleEncryptedFetchOptions {
   key?: string
   lazy?: boolean
@@ -15,7 +16,7 @@ export function useEncryptedFetch<T = any>(
 ) {
   const { $encryptedFetch } = useNuxtApp()
   const runtimeConfig = useRuntimeConfig()
-  
+
   const shouldEncrypt = runtimeConfig.public.encryptionEnabled as boolean
   const encKey = runtimeConfig.public.encKey as string
 
@@ -91,21 +92,21 @@ export function useEncryptedFetch<T = any>(
 }
 
 export const useEncryptedGet = <T = any>(
-  url: string, 
+  url: string,
   options?: SimpleEncryptedFetchOptions
 ) => useEncryptedFetch<T>(url, { method: 'GET', ...options })
 
 export const useEncryptedPost = <T = any>(
-  url: string, 
+  url: string,
   options?: SimpleEncryptedFetchOptions & { body?: any }
 ) => useEncryptedFetch<T>(url, { method: 'POST', ...options })
 
 export const useEncryptedPut = <T = any>(
-  url: string, 
+  url: string,
   options?: SimpleEncryptedFetchOptions & { body?: any }
 ) => useEncryptedFetch<T>(url, { method: 'PUT', ...options })
 
 export const useEncryptedDelete = <T = any>(
-  url: string, 
+  url: string,
   options?: SimpleEncryptedFetchOptions
 ) => useEncryptedFetch<T>(url, { method: 'DELETE', ...options })
