@@ -16,12 +16,23 @@ export function useUsers() {
         loading.value = true
         error.value = null
         try {
-            const res = await $fetch('/api/admin/users', {
-                query: { page: p, limit: l },
-                headers: { Authorization: `Bearer ${auth.token}` }
+
+            const { data, error, execute } = useEncryptedFetch<any>('/api/admin/users', {
+            method: 'GET',
+            query: { page: p, limit: l },
+            headers: {
+                Authorization: `Bearer ${auth.token}`
+            },          
+            key: `admi-users-${Date.now()}`,
+            immediate: false,
+            onRequest: () => console.log('🔐 Fetching profile...'),
+            onResponse: () => console.log('✅ Profile fetched successfully')
             })
-            if (res && typeof res === 'object') {
-                const r = res as Record<string, unknown>
+
+            await execute()
+
+            if (data.value && typeof data.value === 'object') {
+                const r = data.value as Record<string, unknown>
                 if ('users' in r && Array.isArray(r.users)) {
                     users.value = r.users as User[]
                 } else {

@@ -95,7 +95,7 @@ export class NestUserService implements UserService {
     private baseUrl: string
 
     constructor() {
-        this.baseUrl = import.meta.env.NEST_API_URL ?? 'http://localhost:3001'
+        this.baseUrl = process.env.NEST_API_URL ?? 'http://localhost:3001'
     }
 
     async getUser(_userId: string): Promise<User | null> {
@@ -117,7 +117,6 @@ export class NestUserService implements UserService {
     }
 
     async getAllUsers(_page?: number, _limit?: number, authorization?: string): Promise<UserListResponse> {
-
         console.log('HHeaders ', authorization)
         try {
             const params: Record<string, number> = {};
@@ -139,9 +138,10 @@ export class NestUserService implements UserService {
                 page: _page ?? 1,
                 limit: _limit ?? 10,
                 totalPages: response?.totalPages || 0
-            };
+            } as UserListResponse;
         } catch (error) {
             console.error('Error fetching users from Nest API:', error);
+            throw(error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
         }
     }
 
