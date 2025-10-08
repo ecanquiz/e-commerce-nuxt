@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
         // if (user.role.toLowerCase() !== 'admin') {
         //     throw createError({ statusCode: 401, message: 'Unauthorized' })
         // }
-
+        const token = getHeader(event, 'authorization')
         const params = getRouterParams(event) as Record<string, string>
         const userId = params.id
         if (!userId) throw createError({ statusCode: 400, message: 'Missing user id' })
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
             name: parsed.name,
             role: parsed.role ?? undefined,
             password: parsed.password
-        })
+        }, token ?? '')
 
         const apiUser = {
             id: updated.id,

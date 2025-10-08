@@ -6,12 +6,12 @@ export default defineEventHandler(async (event) => {
         // if (user.role.toLowerCase() !== 'admin') {
         //     throw createError({ statusCode: 401, message: 'Unauthorized' })
         // }
-
+        const token = getHeader(event, 'authorization')
         const params = getRouterParams(event) as Record<string, string>
         const userId = params.id
         if (!userId) throw createError({ statusCode: 400, message: 'Missing user id' })
 
-        await userService.deleteUser(userId)
+        await userService.deleteUser(userId, token ?? '')
 
         return { success: true }
     } catch (error: unknown) {
