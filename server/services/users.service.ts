@@ -103,7 +103,10 @@ export class NestUserService implements UserService {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Agrega aquí cualquier encabezado necesario, como autorización
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authorization || ''
+                    }
                 }
             });
             return response as User;
@@ -165,8 +168,21 @@ export class NestUserService implements UserService {
         }
     }
     async updateUser(_userId: string, _userData: Partial<User>, _token: string): Promise<User> {
-        // Implementación real
-        throw new Error('Not implemented');
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': _token
+            };
+            const response = await $fetch<User>(`${this.baseUrl}/users/${_userId}`, {
+                method: 'PATCH',
+                headers,
+                body: _userData
+            });
+            return response;
+        } catch (error) {
+            console.error('Error updating user in Nest API:', error);
+            throw error;
+        }
     }
 
     async deleteUser(_userId: string, _token: string): Promise<void> {

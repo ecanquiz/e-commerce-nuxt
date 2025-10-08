@@ -53,14 +53,14 @@ watch(
 )
 
 const CreateSchema = z.object({
-    email: z.string().email({ message: 'Email inválido' }),
+    email: z.email({ message: 'Email inválido' }),
     name: z.string().min(1, { message: 'Nombre requerido' }),
     role: z.enum(['customer', 'vineyard', 'admin']).default('customer'),
     password: z.string().min(8, { message: 'Password mínimo 8 caracteres' })
 })
 
 const UpdateSchema = z.object({
-    email: z.string().email({ message: 'Email inválido' }).optional(),
+    email: z.email({ message: 'Email inválido' }).optional(),
     name: z.string().min(1, { message: 'Nombre requerido' }).optional(),
     role: z.enum(['customer', 'vineyard', 'admin']).optional(),
     password: z.string().min(8, { message: 'Password mínimo 8 caracteres' }).optional()
@@ -107,12 +107,12 @@ function onCancel() {
 
 <template>
     <UForm class="space-y-4 justify-center w-full" :state="formState" @submit.prevent="handleSubmit">
-        <div class="grid grid-cols-1 gap-2 md:flex">
+        <div v-if="props.mode !== 'edit'" class="grid grid-cols-1 gap-2 md:flex">
             <UFormField label="Email" :error="errors.email">
                 <UInput v-model="state.email" type="email" class="w-full" />
             </UFormField>
 
-            <UFormField v-if="props.mode !== 'edit'" label="Password" :error="errors.password">
+            <UFormField label="Password" :error="errors.password">
                 <UInput v-model="state.password" type="password" class="w-full" />
             </UFormField>
         </div>

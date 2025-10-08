@@ -16,17 +16,16 @@ export function useUsers() {
         loading.value = true
         error.value = null
         try {
-            const { data, error: err, execute } = useEncryptedFetch<UserListResponse>('/api/admin/users', {
+            const { data, error: err, refresh } = useEncryptedFetch<UserListResponse>('/api/admin/users', {
                 method: 'GET',
-                key: `users-page-${useId}`,
-                lazy: true,
+                key: `get-users`,
                 query: { page: p, limit: l },
                 headers: { Authorization: `Bearer ${auth.token}` },
-                server: false,
+                server: true,
                 immediate: true
             })
 
-            await execute()
+            await refresh()
 
             // handle transport-level error from composable
             if (err?.value) {
@@ -66,17 +65,22 @@ export function useUsers() {
     async function createUser(payload: Partial<ApiUser> & { password?: string }) {
         loading.value = true
         try {
-            const { data, error } = useEncryptedFetch('/api/admin/users',
-                { method: 'POST', body: payload, headers: { Authorization: `Bearer ${auth.token}` } }
+            const data = await $fetch('/api/admin/users',
+                {
+                    method: 'POST',
+                    body: payload,
+                    headers: { Authorization: `Bearer ${auth.token}` },
+
+                }
             )
-            await fetchUsers()
-            if (error?.value) {
-                const msg = error.value instanceof Error ? error.value.message : String(error.value)
-                notifier.error(`Error creando usuario: ${msg || 'Unknown error'}`)
-                throw new Error(msg || 'Error creando usuario')
-            }
+            await fetchUsers(page.value, limit.value)
+            // if (error?.value) {
+            //     const msg = error.value instanceof Error ? error.value.message : String(error.value)
+            //     notifier.error(`Error creando usuario: ${msg || 'Unknown error'}`)
+            //     throw new Error(msg || 'Error creando usuario')
+            // }
             notifier.success('Usuario creado correctamente', { icon: 'lucide-check-circle' })
-            return data.value
+            return data
         } catch (e: unknown) {
             const errMsg = (() => {
                 if (e instanceof Error) return e.message
@@ -95,9 +99,20 @@ export function useUsers() {
     async function updateUser(id: string, payload: Partial<ApiUser> & { password?: string }) {
         loading.value = true
         try {
-            const res = await $fetch(`/api/admin/users/${id}`, { method: 'PATCH', body: payload, headers: { Authorization: `Bearer ${auth.token}` } })
-            await fetchUsers()
+            const res = await $fetch<ApiUser>(`/api/admin/users/${id}`,
+                {
+                    method: 'PATCH',
+                    body: payload,
+                    headers: { Authorization: `Bearer ${auth.token}` },
+                    // key: `update-user-${useId}`
+                })
+            // if (error?.value) {
+            //     const msg = error.value instanceof Error ? error.value.message : String(error.value)
+            //     notifier.error(`Error actualizando usuario: ${msg || 'Unknown error'}`)
+            //     throw new Error(msg || 'Error actualizando usuario')
+            // }
             notifier.success('Usuario actualizado correctamente')
+            await fetchUsers(page.value, limit.value)
             return res
         } catch (e: unknown) {
             const errMsg = (() => {
