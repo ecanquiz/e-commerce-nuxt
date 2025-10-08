@@ -14,6 +14,21 @@ export default defineEventHandler(async (event) => {
         const limit = query.limit ? Number(query.limit) : 10
 
         const result = await userService.getAllUsers(page, limit, authorization)
+        result.users = result.users.map(user => ({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.roles[0].name, //Parche mejorar luego de acuerdo a la necesidad
+            // role: user.roles.map(r => ({ id: r.id, name: r.name, description: r.description, is_active: r.is_active })),
+            is_email_verified: user.is_email_verified,
+            email_verification_token: null,
+            password_reset_token: null,
+            password_reset_expires: null,
+            avatar: null,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+            deleted_at: user.deleted_at
+        }))
         return result
     } catch (error: unknown) {
         console.error('[Nitro] /api/users error:', error)

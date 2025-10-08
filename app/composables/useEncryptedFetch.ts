@@ -104,7 +104,7 @@ export const useEncryptedPost = <T = any>(
 export const useEncryptedPut = <T = any>(
   url: string,
   options?: SimpleEncryptedFetchOptions & { body?: any }
-) => useEncryptedFetch<T>(url, { method: 'PUT', ...options })
+) => useEncryptedFetch<T>(url, { method: 'PATCH', ...options })
 
 export const useEncryptedDelete = <T = any>(
   url: string,

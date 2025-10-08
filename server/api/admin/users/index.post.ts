@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
             name: parsed.name,
             role: parsed.role ?? 'customer',
             password: parsed.password
-        }, token)
+        }, token ?? '')
 
         // map internal User -> ApiUser shape (omit password)
         const apiUser = {

@@ -1,6 +1,5 @@
 import type { ApiUser, UserListResponse } from '~~/shared/types';
 import generateId from '../utils/generateId';
-import { useRequestHeaders } from 'nuxt/app';
 
 // Tipo de usuario tal como se devuelve por la API (snake_case + campos opcionales)
 export interface UserService {
@@ -95,7 +94,7 @@ export class NestUserService implements UserService {
     private baseUrl: string
 
     constructor() {
-        this.baseUrl = process.env.NEST_API_URL ?? 'http://localhost:3001'
+        this.baseUrl = import.meta.env.NEST_API_URL ?? 'http://localhost:3001'
     }
 
     async getUser(_userId: string): Promise<User | null> {
@@ -104,7 +103,10 @@ export class NestUserService implements UserService {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Agrega aquí cualquier encabezado necesario, como autorización
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authorization || ''
+                    }
                 }
             });
             return response as User;
@@ -141,7 +143,7 @@ export class NestUserService implements UserService {
             } as UserListResponse;
         } catch (error) {
             console.error('Error fetching users from Nest API:', error);
-            throw(error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
+            throw (error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
         }
     }
 
@@ -166,8 +168,21 @@ export class NestUserService implements UserService {
         }
     }
     async updateUser(_userId: string, _userData: Partial<User>, _token: string): Promise<User> {
-        // Implementación real
-        throw new Error('Not implemented');
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': _token
+            };
+            const response = await $fetch<User>(`${this.baseUrl}/users/${_userId}`, {
+                method: 'PATCH',
+                headers,
+                body: _userData
+            });
+            return response;
+        } catch (error) {
+            console.error('Error updating user in Nest API:', error);
+            throw error;
+        }
     }
 
     async deleteUser(_userId: string, _token: string): Promise<void> {

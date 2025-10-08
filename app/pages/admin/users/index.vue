@@ -5,7 +5,7 @@ import { useUsers } from './composables/useUsers'
 import { ref } from 'vue'
 
 definePageMeta({ layout: 'admin' })
-
+useHead({ title: 'Admin | Users' })
 const usersApi = useUsers()
 const { users, loading: _loading, createUser, updateUser, deleteUser } = usersApi
 
