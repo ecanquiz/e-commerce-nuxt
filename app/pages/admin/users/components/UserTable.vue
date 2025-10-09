@@ -2,7 +2,11 @@
 import { ref, h } from 'vue'
 
 const props = defineProps({
-    data: { type: Array as () => Record<string, unknown>[], default: () => [] }
+    data: { type: Array as () => Record<string, unknown>[], default: () => [] },
+
+    page: { type: Number, default: 1 },
+    limit   : { type: Number, default: 10 },
+    total   : { type: Number, default: 0 },
 })
 
 const emit = defineEmits(['edit', 'delete', 'create'])
@@ -67,9 +71,13 @@ const pagination = ref({ pageIndex: 0, pageSize: 10 })
         <UTable ref="table" v-model:pagination="pagination" :data="props.data" :columns="columns" class="flex-1" />
 
         <div class="flex justify-center border-t border-default pt-4">
-            <UPagination :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-                :items-per-page="table?.tableApi?.getState().pagination.pageSize" :total="props.data.length"
-                @update:page="(p: number) => table?.tableApi?.setPageIndex(p - 1)" />
+            <UPagination 
+              :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+              :items-per-page="table?.tableApi?.getState().pagination.pageSize"
+              :total="props.data.length"
+              @update:page="(p: number) => table?.tableApi?.setPageIndex(p - 1)" 
+              size="xl"
+              />
         </div>
     </div>
 </template>
