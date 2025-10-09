@@ -7,7 +7,14 @@ import { ref } from 'vue'
 definePageMeta({ layout: 'admin' })
 useHead({ title: 'Admin | Users' })
 const usersApi = useUsers()
-const { users, loading: _loading, createUser, updateUser, deleteUser } = usersApi
+const { users, loading: _loading, createUser, updateUser, deleteUser,
+
+        page,
+        limit,
+        total,
+
+
+} = usersApi
 
 const selectedUser = ref<ApiUser | null>(null)
 const formMode = ref<'create' | 'edit'>('create')
@@ -64,7 +71,14 @@ function onCancel() {
 
 
         <div class="bg-white p-4 rounded shadow">
-            <UserTable :data="users" @edit="onEdit" @delete="onDelete" @create="onCreate" />
+            <UserTable :data="users" @edit="onEdit" @delete="onDelete" @create="onCreate" 
+            
+            
+            :page="page"
+            :limit="limit"
+            :total="total"
+            
+            />
         </div>
 
         <!-- Form modal (create / edit) -->

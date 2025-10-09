@@ -5,7 +5,7 @@ import generateId from '../utils/generateId';
 export interface UserService {
     getUser(userId: string): Promise<User | null>
     getAllUsers(page?: number, limit?: number, authorization?: string): Promise<UserListResponse>
-    createUser(userData: Partial<User>, token: string): Promise<User>
+    createUser(userData: Partial<User>, token?: string): Promise<User>
     updateUser(userId: string, userData: Partial<User>, token: string): Promise<User>
     deleteUser(userId: string, token: string): Promise<void>
 }
@@ -94,19 +94,16 @@ export class NestUserService implements UserService {
     private baseUrl: string
 
     constructor() {
-        this.baseUrl = import.meta.env.NEST_API_URL ?? 'http://localhost:3001'
+        this.baseUrl = process.env.NEST_API_URL ?? 'http://localhost:3001'
     }
 
-    async getUser(_userId: string): Promise<User | null> {
+    async getUser(_userId: string, authorization?: string): Promise<User | null> {
         try {
             const response = await $fetch(`${this.baseUrl}/users/${_userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': authorization || ''
-                    }
+                    'Authorization': authorization || ''
                 }
             });
             return response as User;
@@ -119,28 +116,25 @@ export class NestUserService implements UserService {
     }
 
     async getAllUsers(_page?: number, _limit?: number, authorization?: string): Promise<UserListResponse> {
-        console.log('HHeaders ', authorization)
         try {
             const params: Record<string, number> = {};
             if (_page) params.page = _page;
             if (_limit) params.limit = _limit;
 
+            console.log(`[Nitro] getAllUsers, page: ${_page}, limit: ${_limit}`)
+
+
             const response = await $fetch<UserListResponse>(`${this.baseUrl}/users`, {
                 method: 'GET',
+                query: { page: _page, limit: _limit },
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': authorization || ''
                 },
                 params
             });
-            // return response as UserListResponse;
-            return {
-                users: response?.users || [],
-                total: response?.total || 0,
-                page: _page ?? 1,
-                limit: _limit ?? 10,
-                totalPages: response?.totalPages || 0
-            } as UserListResponse;
+
+            return response as UserListResponse;
         } catch (error) {
             console.error('Error fetching users from Nest API:', error);
             throw (error) /* LANZAR ERROR PARA QUE TYPESCRIPT NO GRITE POR EL TIPO DE RETORNO DE LA FUNCIÓN */
