@@ -27,13 +27,12 @@ const loading = ref(false)
 const handleSubmit = async () => {
   error.value = ''
   loading.value = true
-
   try {
     const { user } = await authStore.login({
       email: email.value,
       password: password.value
     })
-    if (user?.role === 'admin') {
+    if ((authStore.user as any).roles[0].name==='admin') {
       await router.push('/admin')
     } else {
       await router.push('/')
