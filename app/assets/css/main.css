@@ -30,3 +30,15 @@
   --font-serif: Georgia, serif;
 }
 
+.bg-wine-100 {
+  background-color: #fdf2f8;
+}
+.text-wine-600 {
+  color: #d53f3f;
+}
+.bg-wine-600 {
+  background-color: #d53f3f;
+}
+.hover\:bg-wine-700:hover {
+  background-color: #b12f2f;
+}
