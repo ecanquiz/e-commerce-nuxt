@@ -1,13 +1,9 @@
-import type { AuthService } from './auth.service';
-import { MockAuthService, NestAuthService } from './auth.service'
-import type { ServiceService } from './service.service';
-import { MockServiceService, NestServiceService } from './service.service'
-import type { ProductService } from './product.service';
-import { MockProductService, NestProductService } from './product.service'
-import type { CartService } from './cart.service';
-import { MockCartService, NestCartService } from './cart.service'
-import type { UserService } from './users.service';
-import { MockUserService, NestUserService } from './users.service';
+import { MockAuthService, NestAuthService, type AuthService } from './auth.service'
+import { MockServiceService, NestServiceService, type ServiceService } from './service.service'
+import { MockProductService, NestProductService, type ProductService } from './product.service'
+import { MockCartService, NestCartService, type CartService } from './cart.service'
+import { MockUserService, NestUserService, type UserService } from './users.service';
+import { MockInventoryService, NestInventoryService, type InventoryService } from './inventory.service'
 
 // Use mock by default until NestJS is ready  
 export function createAuthService(): AuthService {
@@ -16,12 +12,7 @@ export function createAuthService(): AuthService {
     : new MockAuthService()
 }
 
-export function createUserService(): UserService {
-  console.log('DEBUGGING FROM NITRO SERVER')
-  console.log('[NITRO] USER_MOCK_MODE', process.env.USER_MOCK_MODE)
-  console.log('[NITRO] process.env.USER_MOCK_MODE === false', process.env.USER_MOCK_MODE === 'false')
-  console.log('Please: Delete these consolesLog after checking that it is working properly.')
-  
+export function createUserService(): UserService {  
   return process.env.USER_MOCK_MODE === 'false'
     ? new NestUserService()
     : new MockUserService()
@@ -48,9 +39,16 @@ export function createCartService(): CartService {
     : new MockCartService()
 }
 
+export function createInventoryService(): InventoryService {
+  return process.env.INVENTORY_MOCK_MODE === 'false' 
+    ? new NestInventoryService() 
+    : new MockInventoryService()
+}
+
 // Export for easy use
 export const authService = createAuthService()
 export const serviceService = createServiceService()
 export const productService = createProductService()
 export const cartService = createCartService()
-export const userService = createUserService() // Por ahora solo mock, no hay NestJS para usuarios
+export const userService = createUserService()
+export const inventoryService = createInventoryService()

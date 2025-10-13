@@ -13,5 +13,9 @@ export function useNotification() {
         toast.add({ color: 'info', title: 'Info', description: message, ...opts })
     }
 
-    return { success, error, info }
+    function warning(message: string, opts: Record<string, unknown> = {}) {
+        toast.add({ color: 'warning', title: 'Advertencia', description: message, ...opts })
+    }
+
+    return { success, error, info, warning }
 }
