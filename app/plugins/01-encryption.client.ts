@@ -7,28 +7,28 @@ export default defineNuxtPlugin((nuxtApp) => {
   const encKey = runtimeConfig.public.encKey as string;
   const shouldEncrypt = runtimeConfig.public.encryptionEnabled as boolean;
 
-  // 🟢 Función única que maneja ambos casos
+  // 🟢 Single function that handles both cases
   const encryptedFetch = async (url: string, options: any = {}): Promise<any> => {
-    // Caso 1: Encriptación deshabilitada - pasar directo
+    // Case 1: Encryption disabled - skip directly
     if (!encKey || !shouldEncrypt) {
       return await $fetch(url, options);
     }
 
-    // Caso 2: Encriptación habilitada
+    // Case 2: Encryption enabled
     const { encrypt, decrypt } = encryption(encKey);
     
-    // Determinar si esta llamada debe encriptarse
+    // Determine whether this call should be encrypted
     const isExternalCall = url.startsWith('/api/') || 
                           url.startsWith('/auth/') ||
                           url.startsWith('http://localhost:3001') ||
                           (runtimeConfig.public.nestApiUrl && 
-                           url.startsWith(runtimeConfig.public.nestApiUrl as string));
+                          url.startsWith(runtimeConfig.public.nestApiUrl as string));
     
     if (!isExternalCall || url.includes('/_nuxt/')) {
       return await $fetch(url, options);
     }
     
-    // 🟢 ENCRIPTAR REQUEST
+    // 🟢 ENCRYPT REQUEST
     let finalOptions = { ...options };
     if (finalOptions.body && typeof finalOptions.body === 'object') {
       try {
@@ -45,14 +45,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     
     try {
-      // 🟢 Hacer la llamada
+      // 🟢 Make the call
       const response = await $fetch(url, finalOptions);
     
-      // 🟢 DESENCRIPTAR RESPONSE
+      // 🟢 DECRYPT RESPONSE
       if (isEncryptedResponse(response)) {
         try {
           const decrypted = await decrypt(response.encData);
-          //return JSON.parse((decrypted as any).data);
 
           if (typeof decrypted === 'object' && 'data' in decrypted) {
             return JSON.parse(decrypted.data)
@@ -75,7 +74,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   };
 
-  // 🟢 Proporcionar siempre los mismos tipos
+  // 🟢 Always provide the same types
   nuxtApp.provide('encryptedFetch', encryptedFetch);
   nuxtApp.provide('encryption', encKey && shouldEncrypt ? encryption(encKey) : null);
 });
