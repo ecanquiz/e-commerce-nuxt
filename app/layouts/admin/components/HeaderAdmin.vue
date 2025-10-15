@@ -84,9 +84,6 @@ class="w-full text-left px-3 py-2 rounded hover:bg-gray-100"
                             @click="go('/admin/inventory')">Inventario</button>
                         <button
 class="w-full text-left px-3 py-2 rounded hover:bg-gray-100"
-                            @click="go('/admin/products')">Productos</button>
-                        <button
-class="w-full text-left px-3 py-2 rounded hover:bg-gray-100"
                             @click="go('/admin/orders')">Órdenes</button>
                         <hr class="my-2">
                         <button

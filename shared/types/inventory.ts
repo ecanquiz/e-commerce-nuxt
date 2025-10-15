@@ -1,26 +1,4 @@
-export interface Category {
-  id: string
-  name: string
-  description: string
-  created_at: string
-}
-
-export interface Product {
-  id: string
-  name: string
-  description: string
-  category_id: string
-  vintage_year: number
-  alcohol_content: number
-  grape_variety: string
-  region: string
-  price: number
-  image_url: string
-  is_active: boolean
-  created_at: string
-  updated_at: string
-  category?: Category
-}
+import type { Product } from "./product"
 
 export interface Inventory {
   id: string
