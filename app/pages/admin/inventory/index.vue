@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import  ProductCard from './components/ProductCard.vue'
+import  ProductForm from './components/ProductForm.vue'
+import  StockModal from './components/StockModal.vue'
+
+definePageMeta({
+    layout: 'admin'
+})
+
 const {
   // Data
   categories,
