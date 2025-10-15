@@ -129,7 +129,7 @@ const canRedo = computed(() => (cart.future?.length || 0) > 0)
             </UButton>
           </div>
 
-            <div class="text-black">{{ auth.user ? auth.user.name : $t('common.guest') }}</div>
+            <!--div class="text-black">{{ auth.user ? auth.user.name : $t('common.guest') }}</div-->
 
             <UserDropdown v-if="auth.user"/>
             <AuthButtons v-else/>
