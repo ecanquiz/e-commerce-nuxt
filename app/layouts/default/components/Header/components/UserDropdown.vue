@@ -66,16 +66,6 @@ useClickOutside(dropdownRef, closeDropdown)
       </NuxtLink>
 
       <!-- Links by role -->
-      <template v-if="user.role === 'vineyard'">
-        <NuxtLink
-          to="/dashboard/vineyard"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          @click="closeDropdown"
-        >
-          Panel de Viñedo
-        </NuxtLink>
-      </template>
-
       <template v-if="user.role === 'admin'">
         <NuxtLink
           to="/dashboard/admin"

@@ -19,7 +19,7 @@ import {
   Minus,
   X
 } from 'lucide-vue-next';
-import type { Product } from '~~/shared/types';
+import type { ProductLegacy } from '~~/shared/types';
 
 // Types
 interface Stat {
@@ -96,14 +96,13 @@ const stats = ref<Stat[]>([
   }
 ]);
 
-const products = ref<Product[]>([
+const products = ref<ProductLegacy[]>([
   { 
     id: '1', 
     name: 'Malbec Reserva 2020', 
     price: 15000, 
     stock: 25, 
     status: 'active',
-    vineyardId: '1',
     description: 'Descripción de Malbec Reserva 2020',
     category: 'red',
     vintage: 2020,

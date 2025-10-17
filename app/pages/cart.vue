@@ -6,7 +6,6 @@ import { useCartStore } from '~/store/cart';
 const cartStore = useCartStore();
 const { t } = useI18n()
 
-
 // Cargar carrito al montar el componente
 onMounted(async () => {
   await cartStore.loadCart();

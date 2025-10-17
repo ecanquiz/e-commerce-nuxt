@@ -90,7 +90,7 @@ const handleSubmit = async () => {
     showVerificationMessage.value = true;
     // await router.push('/')
   } catch (err) {
-    error.value = t('auth.register.accountCreationError ', err)
+    error.value = t('auth.register.accountCreationError ', (err as any).message || '')
   } finally {
     loading.value = false
   }

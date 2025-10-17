@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ShoppingCart, Eye, Wine, Calendar } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
-import type { Product } from '~~/shared/types';
+import type { ProductLegacy } from '~~/shared/types';
 
 interface Props {
-  product: Product;
-  onViewDetails?: (product: Product) => void;
+  product: ProductLegacy;
+  onViewDetails?: (product: ProductLegacy) => void;
 }
 
 const props = defineProps<Props>();

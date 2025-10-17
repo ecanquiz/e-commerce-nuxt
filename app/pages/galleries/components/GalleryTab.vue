@@ -19,7 +19,7 @@ const servicesWithImages = computed(() =>
 );*/
 
 const nextImage = () => {
-  currentIndex.value = (currentIndex.value + 1) % props.vineyard.gallery.length;
+  currentIndex.value = (currentIndex.value + 1) % props.gallery.length;
 };
 
 const prevImage = () => {

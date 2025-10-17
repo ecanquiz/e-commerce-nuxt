@@ -3,16 +3,15 @@ import {
   MapPin, ExternalLink, Users, Award, Calendar, 
   Phone, Mail, Globe 
 } from 'lucide-vue-next';
-import type { Product, Vineyard } from '~~/shared/types';
+import type { Product } from '~~/shared/types';
 
 const props = defineProps<{
-  vineyard: Vineyard;
   activeTab: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:activeTab', value: string): void;
-  (e: 'openProductModal', product: Product, vineyard: Vineyard): void;
+  (e: 'openProductModal', product: Product): void;
 }>();
 
 const activeTab = computed({
@@ -36,7 +35,7 @@ const getGoogleMapsUrl = (location: string) => {
 const openProductWithDelay = (product: Product) => {
   activeTab.value = 'products';
   setTimeout(() => {
-    emit('openProductModal', product, props.vineyard);
+    emit('openProductModal', product);
   }, 100);
 };
 </script>
@@ -47,7 +46,7 @@ const openProductWithDelay = (product: Product) => {
       <!-- Descripción -->
       <div class="p-6 mb-6 bg-white rounded-lg shadow-sm">
         <h2 class="mb-4 text-2xl font-bold text-gray-900">Acerca del Viñedo</h2>
-        <p class="mb-6 leading-relaxed text-gray-700">{{ vineyard.description }}</p>
+        <p class="mb-6 leading-relaxed text-gray-700">Description </p>
         
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
@@ -55,15 +54,15 @@ const openProductWithDelay = (product: Product) => {
             <div class="space-y-2">
               <div class="flex items-center">
                 <Users class="w-5 h-5 mr-3 text-gray-400" />
-                <span class="text-gray-700">Propietario: {{ vineyard.owner }}</span>
+                <span class="text-gray-700">Propietario: Owner </span>
               </div>
               <div class="flex items-center">
                 <Award class="w-5 h-5 mr-3 text-gray-400" />
-                <span class="text-gray-700">{{ vineyard.products.length }} productos</span>
+                <span class="text-gray-700">N productos</span>
               </div>
               <div class="flex items-center">
                 <Calendar class="w-5 h-5 mr-3 text-gray-400" />
-                <span class="text-gray-700">Fundado en {{ vineyard.established }}</span>
+                <span class="text-gray-700">Fundado en 2000</span>
               </div>
             </div>
           </div>
@@ -73,18 +72,18 @@ const openProductWithDelay = (product: Product) => {
             <div class="space-y-2">
               <div class="flex items-center">
                 <Phone class="w-5 h-5 mr-3 text-gray-400" />
-                <span class="text-gray-700">{{ vineyard.phone }}</span>
+                <span class="text-gray-700">+1234567890</span>
               </div>
               <div class="flex items-center">
                 <Mail class="w-5 h-5 mr-3 text-gray-400" />
-                <span class="text-gray-700">{{ vineyard.email }}</span>
+                <span class="text-gray-700">you@email.com</span>
               </div>
-              <div v-if="vineyard.website" class="flex items-center">
+              <!--div v-if="website" class="flex items-center">
                 <Globe class="w-5 h-5 mr-3 text-gray-400" />
-                <a :href="vineyard.website" class="text-burgundy-600 hover:text-burgundy-700" target="_blank" rel="noopener noreferrer">
-                  {{ vineyard.website }}
+                <a :href="website" class="text-burgundy-600 hover:text-burgundy-700" target="_blank" rel="noopener noreferrer">
+                  {{ website }}
                 </a>
-              </div>
+              </div-->
             </div>
           </div>
         </div>
@@ -97,9 +96,9 @@ const openProductWithDelay = (product: Product) => {
           Ubicación
         </h3>
         <div class="mb-4">
-          <p class="mb-2 text-gray-700">{{ vineyard.location }}</p>
+          <p class="mb-2 text-gray-700">location</p>
           <a
-            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(vineyard.location)}`"
+            :href="'https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}'"
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center text-sm text-burgundy-600 hover:text-burgundy-700"
@@ -110,14 +109,14 @@ const openProductWithDelay = (product: Product) => {
         </div>
         <div class="w-full h-64 overflow-hidden bg-gray-200 rounded-lg">
           <iframe
-            :src="getGoogleMapsUrl(vineyard.location)"
+            :src="getGoogleMapsUrl('location')"
             width="100%"
             height="100%"
             style="border: 0"
             allowfullscreen
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            :title="`Ubicación de ${vineyard.name}`"
+            :title="'Ubicación de ${name}'"
           ></iframe>
         </div>
       </div>
@@ -130,7 +129,7 @@ const openProductWithDelay = (product: Product) => {
             @click="activeTab = 'products'"
             class="p-4 text-center transition-colors rounded-lg cursor-pointer bg-burgundy-50 hover:bg-burgundy-100 group"
           >
-            <div class="text-2xl font-bold text-burgundy-600">{{ vineyard.products.length }}</div>
+            <div class="text-2xl font-bold text-burgundy-600">products.length</div>
             <div class="text-sm text-gray-600 group-hover:text-burgundy-700">Productos</div>
             <div class="mt-1 text-xs transition-opacity opacity-0 text-burgundy-500 group-hover:opacity-100">
               Ver todos →
@@ -140,7 +139,7 @@ const openProductWithDelay = (product: Product) => {
             @click="activeTab = 'services'"
             class="p-4 text-center transition-colors rounded-lg cursor-pointer bg-gold-50 hover:bg-gold-100 group"
           >
-            <div class="text-2xl font-bold text-gold-600">{{ vineyard.services.length }}</div>
+            <div class="text-2xl font-bold text-gold-600">services.length</div>
             <div class="text-sm text-gray-600 group-hover:text-gold-700">Servicios</div>
             <div class="mt-1 text-xs transition-opacity opacity-0 text-gold-500 group-hover:opacity-100">
               Ver todos →
@@ -150,7 +149,7 @@ const openProductWithDelay = (product: Product) => {
             @click="activeTab = 'reviews'"
             class="p-4 text-center transition-colors rounded-lg cursor-pointer bg-green-50 hover:bg-green-100 group"
           >
-            <div class="text-2xl font-bold text-green-600">{{ vineyard.rating }}</div>
+            <div class="text-2xl font-bold text-green-600">rating</div>
             <div class="text-sm text-gray-600 group-hover:text-green-700">Calificación</div>
             <div class="mt-1 text-xs text-green-500 transition-opacity opacity-0 group-hover:opacity-100">
               Ver reseñas →
@@ -160,7 +159,7 @@ const openProductWithDelay = (product: Product) => {
             @click="activeTab = 'reviews'"
             class="p-4 text-center transition-colors rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100 group"
           >
-            <div class="text-2xl font-bold text-blue-600">{{ vineyard.reviewCount }}</div>
+            <div class="text-2xl font-bold text-blue-600">reviewCount</div>
             <div class="text-sm text-gray-600 group-hover:text-blue-700">Reseñas</div>
             <div class="mt-1 text-xs text-blue-500 transition-opacity opacity-0 group-hover:opacity-100">
               Leer todas →
@@ -169,8 +168,8 @@ const openProductWithDelay = (product: Product) => {
         </div>
       </div>
 
-      <!-- Resumen Rápido -->
-      <div class="p-6 bg-white rounded-lg shadow-sm">
+      <!-- TODO Resumen Rápido -->
+      <!-- div class="p-6 bg-white rounded-lg shadow-sm">
         <h3 class="mb-4 text-xl font-bold text-gray-900">Resumen Rápido</h3>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
@@ -231,18 +230,18 @@ const openProductWithDelay = (product: Product) => {
             </div>
           </div>
         </div>
-      </div>
+      </div-->
     </div>
     
     <div>
-      <div class="p-6 bg-white rounded-lg shadow-sm">
+      <!--div class="p-6 bg-white rounded-lg shadow-sm">
         <h3 class="mb-4 text-lg font-semibold text-gray-900">Imagen Principal</h3>
         <img
           :src="vineyard.image"
           :alt="vineyard.name"
           class="object-cover w-full h-48 rounded-lg"
         />
-      </div>
+      </div-->
     </div>
   </div>
 </template>

@@ -11,7 +11,7 @@ import {
   Save,
   X
 } from 'lucide-vue-next';
-import type { Product } from '~~/shared/types';
+import type { ProductLegacy } from '~~/shared/types';
 
 // Types
 interface StockAdjustment {
@@ -33,7 +33,7 @@ interface StockStatus {
 
 // Props
 const props = defineProps<{
-  products: Product[];
+  products: ProductLegacy[];
 }>();
 
 // Emits

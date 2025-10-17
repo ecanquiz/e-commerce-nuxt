@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import  ProductCard from './components/ProductCard.vue'
+import  ProductCard from './components/ProductCardInventory.vue'
 import  ProductForm from './components/ProductForm.vue'
 import  StockModal from './components/StockModal.vue'
 
