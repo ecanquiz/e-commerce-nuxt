@@ -2,14 +2,14 @@ import { productService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
-    console.log('api de producto')
-
-    const products = await productService.getAllProducts()
-    return products
+    // Transparent proxy: passing everything directly
+    return await productService.getAllProducts();
   } catch (error: any) {
+    // Resend the exact error from Nest to Nest
+    console.error('🔐 [Nitro] Get all products proxy error:', error);
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error al obtener productos'
+      message: error.message || 'Error getting products'
     })
   }
 })

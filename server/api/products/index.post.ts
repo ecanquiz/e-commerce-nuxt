@@ -6,8 +6,8 @@ export default defineEventHandler(async (event) => {
     const { user } = await requireAuth(event)
     const body = await readBody(event)
     
-    // Verificar permisos (solo vineyard o admin)
-    if (user.role !== 'vineyard' && user.role !== 'admin') {
+    // Check permissions (admin only)
+    if (user.role !== 'admin') {
       throw createError({
         statusCode: 403,
         message: 'Access denied'

@@ -36,7 +36,6 @@ const orders: OrderTodo[] = [
       {
         id: '1',
         name: 'Catena Zapata Malbec 2020',
-        vineyard: 'Catena Zapata',
         quantity: 2,
         price: 15000,
         image: 'https://images.pexels.com/photos/1407840/pexels-photo-1407840.jpeg?auto=compress&cs=tinysrgb&w=300'
@@ -44,7 +43,6 @@ const orders: OrderTodo[] = [
       {
         id: '2',
         name: 'Catena Zapata Chardonnay 2021',
-        vineyard: 'Catena Zapata',
         quantity: 1,
         price: 12000,
         image: 'https://images.pexels.com/photos/1508748/pexels-photo-1508748.jpeg?auto=compress&cs=tinysrgb&w=300'
@@ -133,8 +131,7 @@ const filteredOrders = computed(() => {
   return orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
                          order.items.some(item => 
-                           item.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-                           item.vineyard.toLowerCase().includes(searchTerm.value.toLowerCase())
+                           item.name.toLowerCase().includes(searchTerm.value.toLowerCase())
                          );
     const matchesStatus = statusFilter.value === 'all' || order.status === statusFilter.value;
     return matchesSearch && matchesStatus;
@@ -278,7 +275,6 @@ const refreshTracking = () => {
                 />
                 <div class="flex-1">
                   <h3 class="font-medium text-gray-900">{{ item.name }}</h3>
-                  <p class="text-sm text-gray-500">{{ item.vineyard }}</p>
                   <p class="text-sm text-gray-500">Cantidad: {{ item.quantity }}</p>
                 </div>
                 <div class="text-right">
@@ -477,7 +473,7 @@ const refreshTracking = () => {
                   {{ item.name }}
                 </p>
                 <p class="text-xs text-gray-500">
-                  {{ item.vineyard }} • Qty: {{ item.quantity }}
+                  • Qty: {{ item.quantity }}
                 </p>
               </div>
             </div>

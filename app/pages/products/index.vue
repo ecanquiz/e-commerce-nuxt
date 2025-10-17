@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { Search, Filter, Wine, DollarSign } from 'lucide-vue-next';
 import { useProductsStore } from '~/store/products'
-import type { Product } from '~~/shared/types';
+import type { ProductLegacy } from '~~/shared/types';
 
 /* TODO
 const useProductsStore = useProductsStore()
@@ -33,13 +33,13 @@ const productsStore = useProductsStore()
 const { t } = useI18n()
 
 interface ProductWithVineyard {
-  product: Product;
+  product: ProductLegacy;
  // vineyard: Vineyard;
 }
 
 interface ProductModalState {
   isOpen: boolean;
-  product: Product | null;
+  product: ProductLegacy | null;
   //vineyard: Vineyard | null;
 }
 

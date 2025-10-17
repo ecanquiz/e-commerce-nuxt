@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 // import { useLocalStorage } from '@vueuse/core'
-import type { CartItem, Product } from '~~/shared/types'
+import type { CartItem, ProductLegacy } from '~~/shared/types'
 import { useAuthStore } from './auth'
 
 export const useCartStore = defineStore('cart', () => {
@@ -53,7 +53,7 @@ export const useCartStore = defineStore('cart', () => {
 
   // Add item to cart
   const addItem = async (
-    product: Product,
+    product: ProductLegacy,
     quantity: number = 1
   ): Promise<void> => {
     if (!auth.isAuthenticated) {
