@@ -12,11 +12,11 @@ export const mockUsers: User[] = [
   },
   {
     id: '2',
-    email: 'vinedo@ejemplo.com',
+    email: 'customer@ejemplo.com',
     password: 'pass123',
     name: 'Bodega López',
-    role: 'vineyard',
-    vineyardId: '101',
+    role: 'customer',
+    //vineyardId: '101',
     createdAt: new Date().toISOString()
   }
 ]

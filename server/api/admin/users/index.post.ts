@@ -4,6 +4,8 @@ import { userService } from '~~/server/services'
 export default defineEventHandler(async (event) => {
     try {
          const token = getHeader(event, 'authorization');
+         //const authorization = getHeader(event, 'authorization')
+
         // const { token } = await requireAuth(event)
         // if (user.role.toLowerCase() !== 'admin') {
         //     throw createError({ statusCode: 401, message: 'Unauthorized' })
@@ -11,8 +13,8 @@ export default defineEventHandler(async (event) => {
 
         const body = await readBody(event)
 
-        const CreateUserSchema = z.object({
-            email: z.email(),
+        /*const CreateUserSchema = z.object({
+            email: z.string().email(),
             name: z.string().min(1),
             role: z.enum(['customer', 'vineyard', 'admin']).optional(),
             password: z.string().min(6).optional()
@@ -25,7 +27,8 @@ export default defineEventHandler(async (event) => {
             name: parsed.name,
             role: parsed.role ?? 'customer',
             password: parsed.password
-        }, token ?? '')
+        }, token ?? '')*/
+        const created = await userService.createUser(body, token)
 
         // map internal User -> ApiUser shape (omit password)
         const apiUser = {

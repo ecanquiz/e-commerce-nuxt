@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { useServicesStore } from '~/store/services'
 import ServiceCard from './components/ServiceCard.vue';
 

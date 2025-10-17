@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
 

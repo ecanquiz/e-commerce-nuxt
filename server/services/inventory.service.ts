@@ -1,7 +1,9 @@
 import {
   categories as categoriesModel,
   products as productsModel,
-  inventory as inventoryModel
+  inventory as inventoryModel,
+  stockMovement as stockMovementModel
+
 } from '~~/server/models/inventory.model'
 import type {
   Category,
@@ -9,7 +11,7 @@ import type {
   Inventory,
   ProductWithInventory,
   StockUpdate
-} from '~~/shared/types/inventory'
+} from '~~/shared/types'
 
 
 export interface InventoryService {
@@ -20,6 +22,8 @@ export interface InventoryService {
   updateInventory(productId: string, stockUpdate: StockUpdate): Promise<Inventory>
   deleteProduct(productId: string): Promise<void>
   getLowStockProducts(): Promise<ProductWithInventory[]>
+  // If you need to manipulate stockMovements directly:
+  // createStockMovement?(movement: Omit<StockMovement, 'id' | 'created_at'>): Promise<StockMovement>
 }
 
 // Mock implementation
@@ -27,6 +31,7 @@ export class MockInventoryService implements InventoryService {
   private categories: Category[] = categoriesModel;
   private products: Product[] = productsModel;
   private inventory: Inventory[] = inventoryModel;
+  private stockMovements: StockMovement[] = stockMovementModel;
 
   private generateId(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36)
@@ -40,7 +45,8 @@ export class MockInventoryService implements InventoryService {
     return this.products.map((product: Product) => ({
       ...product,
       category: this.categories.find((cat: Category) => cat.id === product.category_id),
-      inventory: this.inventory.find((inv: Inventory) => inv.product_id === product.id)
+      inventory: this.inventory.find((inv: Inventory) => inv.product_id === product.id),
+      stock_movements: this.stockMovements.filter((mov: any) => mov.product_id === product.id)
     }))
   }
 
@@ -89,12 +95,12 @@ export class MockInventoryService implements InventoryService {
     }
 
     this.inventory[index] = {
-      ...this.inventory[index],
+      ...this.inventory[index]!,
       ...stockUpdate,
       last_updated: new Date().toISOString()
     }
 
-    return this.inventory[index]
+    return this.inventory[index]!;
   }
 
   async deleteProduct(productId: string): Promise<void> {

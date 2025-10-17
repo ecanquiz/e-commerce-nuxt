@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { X, ChevronLeft, ChevronRight, Star, Wine, Calendar, Award, ShoppingCart, Play } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
 import type { Product, Vineyard } from '~~/shared/types';

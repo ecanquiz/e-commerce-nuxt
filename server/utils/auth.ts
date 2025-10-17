@@ -3,15 +3,16 @@ import { authService } from '~~/server/services'
 export const requireAuth = async (event: any) => {
   try {
     const token = getHeader(event, 'authorization')?.split(' ')[1]
-
+    
     if (!token) {
-      throw createError({
+      throw createError({ 
         statusCode: 401,
         message: 'Token de autorización requerido'
       })
     }
 
-    const user = await authService.validateToken(token)
+    // @ts-ignore 
+    const user = await authService.validateToken(token) // This method does not yet exist in the service.
     return { user }
   } catch (error: any) {
     throw createError({

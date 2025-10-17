@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/store/auth';
 import {
   User,
   MapPin,
@@ -23,82 +24,25 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-vue-next';
-import { useAuthStore } from '~/store/auth';
+import type {
+  PersonalInfo,
+  AddressProfile,
+  PaymentMethod,
+  OrderProfile,
+  FavoriteProduct,
+  Preferences,
+  PasswordData,
+  Tab
+} from '~~/shared/types'
 
-// Types
-interface PersonalInfo {
-  name: string;
-  email: string;
-  phone: string;
-  birthDate: string;
-  bio: string;
-  avatar: string;
-}
-
-interface Address {
-  id: string;
-  type: string;
-  name: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  isDefault: boolean;
-}
-
-interface PaymentMethod {
-  id: string;
-  type: string;
-  lastFour: string;
-  expiryDate: string;
-  isDefault: boolean;
-}
-
-interface Order {
-  id: string;
-  date: string;
-  status: string;
-  total: number;
-  items: number;
-  vineyard: string;
-}
-
-interface FavoriteProduct {
-  id: string;
-  name: string;
-  vineyard: string;
-  price: number;
-  image: string;
-}
-
-interface Preferences {
-  wineTypes: string[];
-  priceRange: { min: number; max: number };
-  notifications: {
-    email: boolean;
-    sms: boolean;
-    promotions: boolean;
-    orderUpdates: boolean;
-  };
-}
-
-interface PasswordData {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface Tab {
-  id: string;
-  label: string;
-  icon: any;
-}
 
 definePageMeta({
-  //middleware: 'auth' // Proteger la página para usuarios autenticados
+  middleware: 'auth' // Proteger la página para usuarios autenticados
 });
 
-const { $toast } = useNuxtApp();
+// const { $toast } = useNuxtApp();
+const notifier = useNotification();
+
 
 // Store
 const authStore = useAuthStore();
@@ -121,7 +65,7 @@ const personalInfo = ref<PersonalInfo>({
   avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150'
 });
 
-const addresses = ref<Address[]>([
+const addresses = ref<AddressProfile[]>([
   {
     id: '1',
     type: 'home',
@@ -171,7 +115,7 @@ const tabs = ref<Tab[]>([
   { id: 'security', label: 'Seguridad', icon: Shield },
 ]);
 
-const recentOrders = ref<Order[]>([
+const recentOrders = ref<OrderProfile[]>([
   {
     id: 'VY-001',
     date: '2024-01-15',
@@ -271,18 +215,17 @@ const handleSave = async (section: string) => {
         name: personalInfo.value.name
       });
       
-      //($toast as any).success('Perfil actualizado correctamente');
-      alert('Perfil actualizado correctamente')
+      notifier.success('Perfil actualizado correctamente')
       editingSection.value = null;
     } catch (error: any) {
-      alert(error.data?.message || 'Error al actualizar el perfil')
-      //($toast as any).error(error.data?.message || 'Error al actualizar el perfil');
+      console.error(error.data?.message || 'Error al actualizar el perfil');
+      throw (error);
     }
   }
 };
 
 const handleAddAddress = () => {
-  const newAddress: Address = {
+  const newAddress: AddressProfile = {
     id: Date.now().toString(),
     type: 'other',
     name: 'Nueva Dirección',
@@ -340,9 +283,9 @@ const handleChangePassword = async () => {
       confirmPassword: passwordData.value.confirmPassword
     });
     
-    alert('Contraseña actualizada correctamente');
+    notifier.success('Contraseña actualizada correctamente');    
     
-    // Limpiar formulario
+    // Clear form
     passwordData.value = {
       currentPassword: '',
       newPassword: '',

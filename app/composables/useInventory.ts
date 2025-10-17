@@ -1,4 +1,4 @@
-import type { ProductWithInventory, Category, Product, StockUpdate } from '~~/shared/types/inventory'
+import type { ProductWithInventory, Category, Product, StockUpdate } from '~~/shared/types'
 
 export const useInventory = () => {
   // Reactive states for filters

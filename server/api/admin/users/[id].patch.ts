@@ -15,9 +15,9 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event)
 
         const UpdateUserSchema = z.object({
-            email: z.email().optional(),
+            email: z.string().email().optional(),
             name: z.string().min(1).optional(),
-            role: z.enum(['customer', 'vineyard', 'admin']).optional(),
+            role: z.enum(['customer', 'admin']).optional(),
             password: z.string().min(6).optional()
         })
 

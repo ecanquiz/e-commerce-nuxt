@@ -1,4 +1,4 @@
-export type * from './auth';
+export type * from './auth/index';
 export type * from './carouselSlides';
 export type * from './cart';
 export type * from './category';

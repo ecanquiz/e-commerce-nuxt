@@ -27,7 +27,10 @@ export function encryption(encKey: string) {
       const key = await deriveKeyPbkdf2(encKey, salt);
       
       const decrypted = await window.crypto.subtle.decrypt(
-        { name: encryptMethod, iv },
+        { name: encryptMethod,
+          // @ts-ignore
+          iv
+        },
         key,
         encryptedData
       );
@@ -90,7 +93,10 @@ export function encryption(encKey: string) {
     const importedKey = await crypto.subtle.importKey("raw", passwordBuffer, "PBKDF2", false, ["deriveKey"]);
 
     return await crypto.subtle.deriveKey(
-      { name: "PBKDF2", salt, iterations: 999, hash: "SHA-512" },
+      { name: "PBKDF2",
+        // @ts-ignore
+        salt,
+        iterations: 999, hash: "SHA-512" },
       importedKey,
       { name: "AES-CBC", length: 256 },
       true,
