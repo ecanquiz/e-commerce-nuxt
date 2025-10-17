@@ -3,11 +3,18 @@ import { requireAuth } from '~~/server/utils/auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { user } = await requireAuth(event)
-    const { productId } = event.context.params!
+    const { user } = await requireAuth(event);
+    const { productId } = event.context.params!;
 
-    const updatedCart = await cartService.removeFromCart(user.id, productId)
-    const total = await cartService.calculateTotal(updatedCart)
+    if (!productId) {
+      throw createError({
+        statusCode: 400,
+        message: 'Product id required'
+      });
+    }
+
+    const updatedCart = await cartService.removeFromCart(user.id, productId);
+    const total = await cartService.calculateTotal(updatedCart);
     
     return {
       items: updatedCart,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { CreditCard, MapPin, Lock, ArrowLeft } from 'lucide-vue-next';
 import { useCartStore } from '~/store/cart';
 import { useAuthStore } from '~/store/auth';

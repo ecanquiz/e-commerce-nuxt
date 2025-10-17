@@ -2,9 +2,16 @@ import { productService } from '~~/server/services'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { id } = event.context.params!
-    const product = await productService.getProductById(id)
-    return product
+    const { id } = event.context.params!;
+
+    if (!id) {
+      throw createError({
+        statusCode: 400,
+        message: 'Product id required'
+      });
+    }
+
+    return await productService.getProductById(id);
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,

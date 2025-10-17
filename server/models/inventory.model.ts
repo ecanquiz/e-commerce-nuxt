@@ -1,12 +1,12 @@
-import { Category, Product, Inventory } from '~~/shared/types/inventory';
+import type { Category, Product, Inventory, StockMovement } from '~~/shared/types';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Tinto', description: 'Vinos tintos con cuerpo y estructura', created_at: new Date().toISOString() },
-  { id: '2', name: 'Blanco', description: 'Vinos blancos frescos y aromáticos', created_at: new Date().toISOString() },
-  { id: '3', name: 'Rosado', description: 'Vinos rosados ligeros y afrutados', created_at: new Date().toISOString() },
-  { id: '4', name: 'Espumoso', description: 'Vinos espumosos y champagnes', created_at: new Date().toISOString() },
-  { id: '5', name: 'Dulce', description: 'Vinos dulces y de postre', created_at: new Date().toISOString() },
-  { id: '6', name: 'Fortificado', description: 'Vinos fortificados como Oporto y Jerez', created_at: new Date().toISOString() },
+  { id: '1', name: 'Tinto', description: 'Vinos tintos con cuerpo y estructura', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product'  },
+  { id: '2', name: 'Blanco', description: 'Vinos blancos frescos y aromáticos', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product' },
+  { id: '3', name: 'Rosado', description: 'Vinos rosados ligeros y afrutados', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product' },
+  { id: '4', name: 'Espumoso', description: 'Vinos espumosos y champagnes', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product' },
+  { id: '5', name: 'Dulce', description: 'Vinos dulces y de postre', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product' },
+  { id: '6', name: 'Fortificado', description: 'Vinos fortificados como Oporto y Jerez', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), type: 'product' },
 ];
 
 export const products: Product[] = [
@@ -20,10 +20,15 @@ export const products: Product[] = [
     grape_variety: 'Cabernet Sauvignon',
     region: 'Valle de Uco, Mendoza',
     price: 45.99,
-    image_url: 'https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg',
+    image_url: 'https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg',    
     is_active: true,
     created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
+    volume: 1000,
+    images: ['https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg'],
+    tasting_notes: 'hardcode string',
+    food_pairing: ['hardcode string'],
+    awards: ['hardcode string']
   },
   {
     id: '2',
@@ -38,7 +43,12 @@ export const products: Product[] = [
     image_url: 'https://images.pexels.com/photos/434311/pexels-photo-434311.jpeg',
     is_active: true,
     created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
+    volume: 1000,
+    images: ['https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg'],
+    tasting_notes: 'hardcode string',
+    food_pairing: ['hardcode string'],
+    awards: ['hardcode string']
   },
   {
     id: '3',
@@ -53,7 +63,12 @@ export const products: Product[] = [
     image_url: 'https://images.pexels.com/photos/1170099/pexels-photo-1170099.jpeg',
     is_active: true,
     created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
+    volume: 1000,
+    images: ['https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg'],
+    tasting_notes: 'hardcode string',
+    food_pairing: ['hardcode string'],
+    awards: ['hardcode string']
   },
   {
     id: '4',
@@ -68,7 +83,12 @@ export const products: Product[] = [
     image_url: 'https://images.pexels.com/photos/5946984/pexels-photo-5946984.jpeg',
     is_active: true,
     created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
+    volume: 1000,
+    images: ['https://images.pexels.com/photos/290316/pexels-photo-290316.jpeg'],
+    tasting_notes: 'hardcode string',
+    food_pairing: ['hardcode string'],
+    awards: ['hardcode string']
   }
 ];
 
@@ -112,5 +132,30 @@ export const inventory: Inventory[] = [
     maximum_stock: 100,
     last_updated: new Date().toISOString(),
     updated_by: 'system - sample data'
+  }
+];
+
+export const stockMovement: StockMovement[] = [
+  {
+    id: 'mov-1',
+    product_id: '1', // Related to Reserva Cabernet
+    type: 'in',
+    quantity: 42,
+    previous_stock: 0,
+    new_stock: 42,
+    reason: 'Stock inicial',
+    created_at: new Date().toISOString(),
+    created_by: 'system',
+  },
+  {
+    id: 'mov-2', 
+    product_id: '4', // Related to Sparkling Wine (low stock)
+    type: 'out',
+    quantity: 5,
+    previous_stock: 13,
+    new_stock: 8,
+    reason: 'Venta',
+    created_at: new Date().toISOString(),
+    created_by: 'system',
   }
 ];

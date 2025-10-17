@@ -1,4 +1,4 @@
-import type { User } from './user';
+import type { User } from '../user';
 
 export interface AuthUser extends Omit<User, 'password'> {};
 
@@ -9,3 +9,5 @@ export interface AuthContext {
   logout: () => void;
   loading: boolean;
 }
+
+export * from './profile';

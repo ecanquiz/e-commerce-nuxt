@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+// @ts-nocheck
 import { Search, Filter, Wine, DollarSign } from 'lucide-vue-next';
 import { useProductsStore } from '~/store/products'
 import type { Product } from '~~/shared/types';

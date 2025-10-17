@@ -5,18 +5,22 @@ export default defineEventHandler(async (event) => {
     const authHeader = getHeader(event, 'Authorization')
     const body = await readBody(event)
     
-    console.log('🔐 [Nitro] Change password proxy - passing through to Nest')
-    
-    // Proxy transparente - Nest hará todas las validaciones
-    const result = await authService.changePassword(authHeader, body)
-    return result
-    
+    if (!authHeader) {
+      throw createError({
+        statusCode: 401,
+        message: 'Authorization token required'
+      });
+    }
+
+    // Transparent proxy: passing everything directly to Nest
+    return await authService.changePassword(authHeader, body);    
   } catch (error: any) {
-    console.error('🔐 [Nitro] Change password error:', error)
+    // Resend the exact error from Nest
+    console.error('🔐 [Nitro] Change password error:', error);
     throw createError({
       statusCode: error.statusCode || 500,
       message: error.message || 'Error al cambiar la contraseña',
       data: error.data || error
-    })
+    });
   }
 })

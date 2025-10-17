@@ -1,7 +1,7 @@
-import type { Product } from '~~/shared/types'
+import type { ProductLegacy } from '~~/shared/types'
 
 // Datos mock de ejemplo (reemplaza con tus datos reales)
-export const mockProducts: Product[] = [
+export const mockProducts: ProductLegacy[] = [
       {
         id: '1',
         name: 'Catena Zapata Malbec',
