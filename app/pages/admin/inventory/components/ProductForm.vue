@@ -1,11 +1,14 @@
 <script setup lang="ts">
 // @ts-nocheck
+import { useInventory } from '../composables/useInventory';
+import { useNotification } from '@/composables/useNotification';
+
 const emit = defineEmits<{
   close: []
   success: []
 }>()
 
-const { categories, categoriesPending, createProduct } = useInventory()
+const { categories, categoriesPending, createProduct } = useInventory();
 
 const loading = ref(false)
 const currentYear = new Date().getFullYear()
@@ -61,7 +64,7 @@ const handleSubmit = async () => {
         </button>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+      <form @submit.prevent="handleSubmit" class="p-6 space-y-6 text-gray-800">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
