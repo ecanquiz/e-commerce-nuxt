@@ -1,27 +1,20 @@
 import { inventoryService } from '~~/server/services'
-import type { Product } from '~~/shared/types'
 
 export default defineEventHandler(async (event) => {
   try {
-    const body = await readBody(event)
-    
-    /*const productData: Omit<Product, 'id' | 'created_at' | 'updated_at'> = {
-      name: body.name,
-      description: body.description,
-      category_id: body.category_id,
-      vintage_year: body.vintage_year,
-      alcohol_content: body.alcohol_content,
-      grape_variety: body.grape_variety,
-      region: body.region,
-      price: body.price,
-      image_url: body.image_url,
-      is_active: body.is_active !== undefined ? body.is_active : true
-    }*/
-
-    //const newProduct = await inventoryService.createProduct(productData)
-    const newProduct = await inventoryService.createProduct(body)
-    return newProduct
+    const body = await readBody(event);
+    const authorization = getHeader(event, 'authorization'); 
+    if (!authorization) {
+      throw createError({ 
+        statusCode: 401,
+        message: 'Authorization required'
+      });
+    }
+    // Transparent proxy: passing everything directly to Nest
+    return await inventoryService.createProduct(body, authorization);
   } catch (error: any) {
+    // Resend the exact error from Nest to Nest
+    console.error('🔐 [Nitro] Create product proxy error:', error);
     throw createError({
       statusCode: error.statusCode || 500,
       message: error.message || 'Error creating product'

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useInventory } from '../composables/useInventory';
 import type { ProductWithInventory } from '~~/shared/types/inventory'
 
 interface Props {
@@ -20,6 +21,23 @@ const operation = ref<'add' | 'subtract' | 'set'>('add')
 const minimumStock = ref(inventory.value?.minimum_stock || 10)
 const maximumStock = ref(inventory.value?.maximum_stock || 1000)
 const reason = ref('')
+const loadingInventory = ref(false)
+
+// Cargar inventory cuando se abre el modal
+watch(() => props.product, async (product) => {
+  if (product) {
+    loadingInventory.value = true
+    try {
+      const { getProductInventory } = useInventory()
+      inventory.value = await getProductInventory(product.id)
+    } catch (error) {
+      console.error('Error loading inventory:', error)
+      useNotification().error('Error al cargar información de inventario')
+    } finally {
+      loadingInventory.value = false
+    }
+  }
+}, { immediate: true })
 
 const handleUpdateStock = async () => {
   if (!inventory.value) {
@@ -62,7 +80,12 @@ const handleUpdateStock = async () => {
 <template>
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-      <div class="flex items-center justify-between p-6 border-b">
+      <!-- Loading state -->
+      <div v-if="loadingInventory" class="p-6 text-center">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <p class="mt-2 text-gray-500">Cargando información de inventario...</p>
+      </div>
+      <div v-else class="flex items-center justify-between p-6 border-b">
         <h3 class="text-lg font-semibold text-gray-900">
           Gestionar Stock - {{ product.name }}
         </h3>

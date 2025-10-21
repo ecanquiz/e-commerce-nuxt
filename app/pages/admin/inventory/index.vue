@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import  ProductCard from './components/ProductCardInventory.vue'
-import  ProductForm from './components/ProductForm.vue'
-import  StockModal from './components/StockModal.vue'
-
 definePageMeta({
     layout: 'admin'
 })
+import { useAuthStore } from '~/store/auth';
+import { useInventory } from './composables/useInventory';
+import ProductCard from './components/ProductCard.vue';
+
+const auth = useAuthStore();
 
 const {
   // Data
@@ -90,8 +91,7 @@ onMounted(async () => {
           <div class="flex items-center">
             <Icon name="mdi:barrel" class="w-8 h-8 text-wine-600 mr-3" />
             <div>
-              <h1 class="text-2xl font-bold text-gray-900">Viñedo San Miguel</h1>
-              <p class="text-sm text-gray-500">Sistema de Inventario de Vinos</p>
+              <h1 class="text-2xl font-bold text-gray-900">Sistema de Inventario de Vinos</h1>
             </div>
           </div>
 

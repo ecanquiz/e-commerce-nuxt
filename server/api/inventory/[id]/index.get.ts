@@ -6,23 +6,23 @@ export default defineEventHandler(async (event) => {
     if (!id) {
       throw createError({
         statusCode: 400,
-        message: 'Required product ID is missing'
+        message: 'Product ID is required'
       })
     }
 
-    const product = await inventoryService.getProduct(id)
-    if (!product) {
-      throw createError({
-        statusCode: 404,
-        message: 'Product not found'
+    const authorization = getHeader(event, 'authorization')
+    if (!authorization) {
+      throw createError({ 
+        statusCode: 401,
+        message: 'Authorization required'
       })
     }
 
-    return product
+    return await inventoryService.getProductInventory(id, authorization)
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Error getting the product'
+      message: error.message || 'Error getting product inventory'
     })
   }
 })

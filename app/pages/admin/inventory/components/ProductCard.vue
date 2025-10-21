@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useInventory } from '../composables/useInventory';
 import type { ProductWithInventory } from '~~/shared/types/inventory'
 
 interface Props {
@@ -61,7 +62,7 @@ const handleImageError = (event: Event) => {
 
       <div class="space-y-2 text-sm text-gray-600 mb-4">
         <div v-if="product.grape_variety" class="flex items-center">
-          <Icon name="mdi:grapes" class="w-4 h-4 mr-2" />
+          <Icon name="mdi:fruit-grapes" class="w-4 h-4 mr-2" />
           <span>{{ product.grape_variety }}</span>
         </div>
         <div v-if="product.region" class="flex items-center">
@@ -76,7 +77,7 @@ const handleImageError = (event: Event) => {
 
       <div class="flex justify-between items-center mb-4">
         <div class="text-2xl font-bold text-wine-600">
-          ${{ product.price.toFixed(2) }}
+          ${{ Number(product.price).toFixed(2) }}
         </div>
         <div class="text-right">
           <div class="text-sm text-gray-500">Stock</div>

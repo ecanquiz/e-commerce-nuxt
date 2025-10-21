@@ -1,6 +1,8 @@
 import type { ProductWithInventory, Category, Product, StockUpdate } from '~~/shared/types'
+import { useAuthStore } from '~/store/auth';
 
 export const useInventory = () => {
+  const auth = useAuthStore();
   // Reactive states for filters
   const searchQuery = ref('')
   const selectedCategory = ref('')
@@ -9,6 +11,7 @@ export const useInventory = () => {
   //Categories - only one instance
   const categoriesFetch = useEncryptedFetch<Category[]>('/api/categories', {
     key: 'inventory-categories',
+    headers: { Authorization: `Bearer ${auth.token}` },
     server: true,
     immediate: false,
     lazy: true
@@ -19,8 +22,9 @@ export const useInventory = () => {
   // Products - only one instance
   const productsFetch = useEncryptedFetch<ProductWithInventory[]>('/api/inventory', {
     key: 'inventory-products',
-    server: true,
+    headers: { Authorization: `Bearer ${auth.token}` },
     immediate: false,
+    server: true,
     lazy: true
   })
 
@@ -110,6 +114,7 @@ export const useInventory = () => {
   const getProduct = async (id: string) => {
     const { data, error, execute } = useEncryptedFetch<ProductWithInventory>(`/api/inventory/${id}`, {
       key: `product-${id}`,
+      headers: { Authorization: `Bearer ${auth.token}` },
       server: true,
       lazy: true,
       immediate: false
@@ -128,10 +133,12 @@ export const useInventory = () => {
   }
 
   const createProduct = async (productData: Omit<Product, 'id' | 'created_at' | 'updated_at'>) => {
+    productData.is_active = productData.is_active !== undefined ? productData.is_active : true;
     const { data, error, execute } = useEncryptedFetch<Product>('/api/inventory', {
       method: 'POST',
       body: productData,
       key: 'create-product',
+      headers: { Authorization: `Bearer ${auth.token}` },
       lazy: true,
       immediate: false
     })
@@ -152,10 +159,19 @@ export const useInventory = () => {
   }
 
   const updateInventory = async (productId: string, stockUpdate: StockUpdate) => {
+
+        /*const stockUpdate: StockUpdate = {
+      current_stock: body.current_stock,
+      minimum_stock: body.minimum_stock,
+      maximum_stock: body.maximum_stock,
+      updated_by: body.updated_by || 'user'
+    }*/
+    stockUpdate.updated_by = stockUpdate.updated_by || 'user';
     const { data, error, execute } = useEncryptedFetch<any>(`/api/inventory/${productId}`, {
       method: 'PUT',
       body: stockUpdate,
       key: `update-inventory-${productId}`,
+      headers: { Authorization: `Bearer ${auth.token}` },
       lazy: true,
       immediate: false
     })
@@ -179,6 +195,7 @@ export const useInventory = () => {
     const { error, execute } = useEncryptedFetch(`/api/inventory/${productId}`, {
       method: 'DELETE',
       key: `delete-product-${productId}`,
+      headers: { Authorization: `Bearer ${auth.token}` },
       lazy: true,
       immediate: false
     })
@@ -194,6 +211,28 @@ export const useInventory = () => {
     } catch (error) {
       console.error('❌ Error deleting product:', error)
       throw error
+    }
+  }
+
+  const getProductInventory = async (productId: string): Promise<Inventory> => {
+    const { data, error, execute } = useEncryptedFetch<Inventory>(
+      `/api/inventory/${productId}`,
+      {
+        headers: { Authorization: `Bearer ${auth.token}` },
+        key: `inventory-${productId}`,
+        lazy: true,
+        immediate: false,
+      }
+    )
+
+    try {
+      await execute()
+      if (error.value) throw error.value
+      if (!data.value) throw new Error('No inventory data received')
+      return data.value
+    } catch (err) {
+      console.error('Error loading inventory:', err)
+      throw err
     }
   }
 
@@ -228,6 +267,7 @@ export const useInventory = () => {
     
     // Utilities
     getStockStatus,
+    getProductInventory,
     
     // Refresh methods
     refreshProducts: productsFetch.refresh,
