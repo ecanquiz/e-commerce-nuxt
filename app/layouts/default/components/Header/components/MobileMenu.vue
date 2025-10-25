@@ -1,10 +1,11 @@
 <script setup lang="ts">
 // @ts-nocheck
+
 //import LanguageSelector from './LanguageSelector.vue';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
 import { useClickOutside } from '../composables/useClickOutside';
-import type { Product } from '~~/shared/types';
+import type { Product, Vineyard } from '~~/shared/types';
 
 const props = defineProps({
   modelValue: Boolean,
@@ -27,7 +28,7 @@ const { t } = useI18n()
 const searchQuery = ref('')
 const searchCategory = ref('all')
 const showSearchResults = ref(false)
-const searchResults = ref<Array<{ product: Product; }>>([])
+const searchResults = ref<Array<{ product: Product; vineyard: Vineyard }>>([])
 
 // Categorías de búsqueda
 const searchCategories = [

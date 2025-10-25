@@ -33,9 +33,6 @@
     "home": "Início",
     "vineyards": "Vinícolas",
     "products": "Produtos",
-    "services": "Serviços",
-    "galleries": "Galerias",
-    "reviews": "Avaliações",
     "about": "Sobre",
     "contact": "Contato",
     "cart": "Carrinho",
@@ -43,7 +40,9 @@
     "register": "Registrar",
     "profile": "Meu Perfil",
     "orders": "Meus Pedidos",
-    "logout": "Sair"
+    "logout": "Sair",
+    "vineyardPanel": "Painel de Admin",
+    "adminPanel": "Admin Panel"
   },
   "auth": {
     "login": {

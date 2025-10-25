@@ -4,9 +4,8 @@ import { ShoppingCart } from 'lucide-vue-next';
 import { useAuthStore } from '~/store/auth';
 import { useCartStore } from '~/store/cart';
 import UserDropdown from './components/UserDropdown.vue';
+import Logo from '../../../components/Logo.vue';
 
-
-//import Logo from './Logo.vue';
 //import DesktopNav from './DesktopNav.vue';
 //import LanguageSelector from './LanguageSelector.vue';
 //import SearchBar from './SearchBar.vue';
@@ -114,32 +113,29 @@ const canRedo = computed(() => (cart.future?.length || 0) > 0)
             <UButton
               color="error"
               variant="outline"
-              :disabled="!canUndo" 
-             @click="undo()"
+              @click="undo()" 
+             :disabled="!canUndo"
             >
               {{ $t('common.undo') }}
             </UButton>
             <UButton
               color="error"
               variant="outline" 
-              :disabled="!canRedo" 
-             @click="redo()"
+              @click="redo()" 
+             :disabled="!canRedo"
             >
               {{ $t('common.redo') }}
             </UButton>
           </div>
-
-            <!--div class="text-black">{{ auth.user ? auth.user.name : $t('common.guest') }}</div-->
-
-            <UserDropdown v-if="auth.user"/>
-            <AuthButtons v-else/>
+          <UserDropdown v-if="auth.user"/>
+          <AuthButtons v-else/>
         </div>
 
         <!-- Mobile Menu Button -->
         <UButton
+          @click="toggleMobileMenu"
           class="md:hidden p-2 text-gray-700 hover:text-burgundy-600"
           aria-label="Toggle mobile menu"
-          @click="toggleMobileMenu"
         >
           <Icon :name="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />
         </UButton>

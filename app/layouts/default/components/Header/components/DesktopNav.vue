@@ -2,10 +2,8 @@
 // Navigation (using i18n)
 const navigation = [
   { name: 'navigation.home', href: '/' },
+  { name: 'navigation.vineyards', href: '/vineyards' },
   { name: 'navigation.products', href: '/products' },
-  { name: 'navigation.services', href: '/services' },
-  { name: 'navigation.galleries', href: '/galleries' },
-  { name: 'navigation.reviews', href: '/reviews' },
   { name: 'navigation.about', href: '/about' },
   { name: 'navigation.contact', href: '/contact' }
 ];
@@ -21,7 +19,7 @@ const isActive = (routePath: string, itemHref: string) => {
 </script>
 
 <template>
-  <nav class="hidden md:flex space-x-2">
+  <nav class="hidden md:flex space-x-8">
     <NuxtLink 
       v-for="item in navigation"
       :key="item.name"
