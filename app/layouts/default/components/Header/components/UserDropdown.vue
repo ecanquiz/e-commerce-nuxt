@@ -66,13 +66,23 @@ useClickOutside(dropdownRef, closeDropdown)
       </NuxtLink>
 
       <!-- Links by role -->
-      <template v-if="user.role === 'admin'">
+      <template v-if="auth.user?.roles![0]!.name === 'merchant'">
         <NuxtLink
-          to="/dashboard/admin"
+          to="/merchant"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           @click="closeDropdown"
         >
-          Panel de Admin
+          {{ $t('navigation.vineyardPanel') }}
+        </NuxtLink>
+      </template>
+
+      <template v-if="auth.user?.roles![0]!.name === 'admin'">
+        <NuxtLink
+          to="/admin"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          @click="closeDropdown"
+        >
+          {{ $t('navigation.adminPanel') }}
         </NuxtLink>
       </template>
 
