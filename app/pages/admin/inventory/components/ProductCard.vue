@@ -100,6 +100,22 @@ const handleImageError = (event: Event) => {
         >
           <Icon name="mdi:delete" class="w-4 h-4" />
         </button>
+        <NuxtLink 
+          :to="`/admin/inventory/${product.id}/images`"
+          class="btn-icon"
+          title="Gestionar imágenes"
+        >
+          <IconImage />
+          <div class="flex items-center space-x-2">
+          <!--span>{{ product.name }}</span-->
+          <span 
+            v-if="product.images.length > 0"
+            class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs"
+          >
+            {{ product.images.length }} img
+          </span>
+         </div>
+        </NuxtLink>
       </div>
     </div>
   </div>
